@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="53365" started-at="2016-01-21T21:05:23Z" finished-at="2016-01-21T21:06:16Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="53365" started-at="2016-01-21T21:05:23Z" finished-at="2016-01-21T21:06:16Z">
+      <class name="Tests.TestSignIn">
+        <test-method status="PASS" signature="before()[pri:0, instance:Tests.TestSignIn@3c09711b]" name="before" is-config="true" duration-ms="24060" started-at="2016-01-21T16:05:23Z" finished-at="2016-01-21T16:05:47Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- before -->
+        <test-method status="PASS" signature="testSignInFromGate()[pri:0, instance:Tests.TestSignIn@3c09711b]" name="testSignInFromGate" duration-ms="20772" started-at="2016-01-21T16:05:47Z" finished-at="2016-01-21T16:06:07Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSignInFromGate -->
+        <test-method status="PASS" signature="after()[pri:0, instance:Tests.TestSignIn@3c09711b]" name="after" is-config="true" duration-ms="8523" started-at="2016-01-21T16:06:07Z" finished-at="2016-01-21T16:06:16Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- after -->
+      </class> <!-- Tests.TestSignIn -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
