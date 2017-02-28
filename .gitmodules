@@ -1,0 +1,6 @@
+[submodule "test-commons"]
+	path = test-commons
+	url = git@github.com:iheartradio/test-commons.git
+[submodule "src/test-commons"]
+	path = src/test-commons
+	url = git@github.com:iheartradio/test-commons.git
