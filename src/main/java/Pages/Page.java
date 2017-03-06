@@ -19,6 +19,7 @@ public class Page extends TestRoot {
 	public static String androidId = "android:id/";
 	
 	private static String cancelButtonId = Page.connectId + "back_btn";
+	private static String previousButtonId = Page.connectId + "prev_btn";
 	private static String nextButtonId = Page.connectId + "next_btn";
 	
 	private static String emailEditTextId = Page.connectId + "email_text";
@@ -31,6 +32,10 @@ public class Page extends TestRoot {
 
 	public static AndroidElement getCancelButton (AndroidDriver<MobileElement> d) {
 		return waitForVisible(d, By.id(cancelButtonId), 3);
+	}
+	
+	public static AndroidElement getPreviousButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(previousButtonId), 3);
 	}
 	
 	public static AndroidElement getNextButton (AndroidDriver<MobileElement> d) {
