@@ -69,7 +69,6 @@ public class GenrePicker extends Page {
 		if (shouldClick) {
 			String errorMessage = String.format("Could not %s genre element with row: %d and column: %d!", mode.toString(), row, column);
 			errs.add(d, TestRoot.click(d, getGenreItem(d, row, column), errorMessage));
-			sleep(500);
 		}
 		
 		return errs;

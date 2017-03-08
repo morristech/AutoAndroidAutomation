@@ -2,9 +2,7 @@ package Pages;
 
 import org.openqa.selenium.By;
 
-import Pages.SignUp.Gender;
 import Utilities.Errors;
-import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -51,30 +49,4 @@ public class SignUpLogInGate extends Page {
 		return click(d, getMaybeLaterButton(d), "Cannot tap maybe later button!", "tapMaybeLaterButton");
 	}
 	
-	/*******************/
-	/* *** Utility *** */
-	/*******************/
-	
-	public static Errors signUp (AndroidDriver<MobileElement> d) {
-		String email = Pages.SignUp.generateEmailAddress();
-		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "11013", Pages.SignUp.Gender.MALE);
-	}
-	
-	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender) {
-		Errors err = new Errors();
-		err.add(d, tapSignUpButton(d));
-		err.add(d, Pages.SignUp.signUp(d));
-		return err;
-	}
-	
-	public static Errors logIn (AndroidDriver<MobileElement> d) {
-		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD);
-	}
-	
-	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password) {
-		Errors err = new Errors();
-		err.add(d, tapLogInButton(d));
-		err.add(d, Pages.LogIn.logIn(d, email, password));
-		return err;
-	}
 }

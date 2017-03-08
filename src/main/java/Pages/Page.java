@@ -2,6 +2,7 @@ package Pages;
 
 import org.openqa.selenium.By;
 
+import Pages.SignUp.Gender;
 import Utilities.Errors;
 import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
@@ -50,6 +51,10 @@ public class Page extends TestRoot {
 		return waitForVisible(d, By.id(passwordEditTextId), 3);
 	}
 	
+	/********************/
+	/* *** Behavior *** */
+	/********************/ 
+	
 	public static Errors enterEmail (AndroidDriver<MobileElement> d, String email) {
 		return sendKeys(d, getEmailEditText(d), email, true);
 	}
@@ -57,10 +62,6 @@ public class Page extends TestRoot {
 	public static Errors enterPassword (AndroidDriver<MobileElement> d, String password) {
 		return sendKeys(d, getPasswordEditText(d), password, true);
 	}
-	
-	/********************/
-	/* *** Behavior *** */
-	/********************/ 
 	
 	public static Errors tapCancelButton (AndroidDriver<MobileElement> d) {
 		return TestRoot.click(d, getCancelButton(d), "Cannot tap cancel button!", "tapCancelButton");
@@ -84,40 +85,46 @@ public class Page extends TestRoot {
 		d.navigate().back();
 	}
 	
-	public static void hideKey(AndroidDriver<MobileElement> d) {
-		try{
-			d.hideKeyboard();
-		}
-		catch(Exception e){
-			// We want to be able to use this even if the keyboard is not visible.
-			// No error or exception will be reported if this is the case. 
-		}
+	/*******************/
+	/* *** Utility *** */
+	/*******************/
+	
+	public static Errors signUp (AndroidDriver<MobileElement> d) {
+		String email = Pages.SignUp.generateEmailAddress();
+		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "11013", Pages.SignUp.Gender.MALE);
 	}
 	
-	public static Errors click(AndroidDriver<MobileElement> d, MobileElement element, String errorMessage, String methodName) {
-		Errors errors = new Errors();
-		if (isVisible(element)) {
-			element.click();
-		}
-		else {
-			errors.add(d, errorMessage, methodName);
-		}
-		
-		return errors;
-	}
-	
-	public static Errors sendKeys(AndroidDriver<MobileElement> d, AndroidElement element, String text, boolean clear){
+	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender) {
 		Errors err = new Errors();
-		if (isVisible(element)) {
-			if (clear) {
-				element.clear();
-			}
-			element.sendKeys(text);
-			hideKey(d);
+		if (isVisible(Pages.SignUpLogInGate.getSignUpButton(d))) {
+			err.add(d, Pages.SignUpLogInGate.tapSignUpButton(d));
 		}
-		else {
-			err.add(d, String.format("Unable to send text: %s", text));
-		}
+		err.add(d, Pages.SignUp.enterEmail(d, email));
+		err.add(d, Pages.SignUp.enterEmailConfirmation(d, email));
+		err.add(d, Pages.SignUp.tapNextButton(d));
+		err.add(d, Pages.SignUp.enterPassword(d, password));
+		err.add(d, Pages.SignUp.enterBirthYear(d, year));
+		err.add(d, Pages.SignUp.enterZipCode(d, zipCode));
+		err.add(d, Pages.SignUp.checkGender(d, gender));
+		err.add(d, Pages.SignUp.checkAgree(d));
+		err.add(d, Pages.SignUp.tapSignUpButton(d));
+		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
 		return err;
 	}
+	
+	public static Errors logIn (AndroidDriver<MobileElement> d) {
+		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD);
+	}
+	
+	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password) {
+		Errors err = new Errors();
+		if (isVisible(Pages.SignUpLogInGate.getLogInButton(d))) {
+			err.add(d, Pages.SignUpLogInGate.tapLogInButton(d));
+		}
+		err.add(d, Page.enterEmail(d, email));
+		err.add(d, Page.enterPassword(d, password));
+		Pages.LogIn.tapLogInButton(d);
+		return err;
+	}
+
 }

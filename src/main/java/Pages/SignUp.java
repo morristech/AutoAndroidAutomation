@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 
 import Pages.Page;
 import Utilities.Errors;
-import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -90,25 +89,6 @@ public class SignUp extends Page {
 	public static String generateEmailAddress () {
 		String timeStamp = String.valueOf(System.currentTimeMillis());
 		return timeStamp + "androidAutomationTester@mailinator.com";
-	}
-	
-	public static Errors signUp (AndroidDriver<MobileElement> d) {
-		String email = Pages.SignUp.generateEmailAddress();
-		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "11013", Pages.SignUp.Gender.MALE);
-	}
-	
-	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender) {
-		Errors err = new Errors();
-		err.add(d, Pages.SignUp.enterEmail(d, email));
-		err.add(d, Pages.SignUp.enterEmailConfirmation(d, email));
-		err.add(d, Pages.SignUp.tapNextButton(d));
-		Pages.SignUp.enterPassword(d, password);
-		Pages.SignUp.enterBirthYear(d, year);
-		Pages.SignUp.enterZipCode(d, zipCode);
-		Pages.SignUp.checkGender(d, gender);
-		Pages.SignUp.checkAgree(d);
-		Pages.SignUp.tapSignUpButton(d);
-		return err;
 	}
 
 }

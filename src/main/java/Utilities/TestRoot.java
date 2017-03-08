@@ -621,6 +621,31 @@ public class TestRoot {
 		return false; 
 	}
 	
+	public static void hideKey(AndroidDriver<MobileElement> d) {
+		try{
+			d.hideKeyboard();
+		}
+		catch(Exception e){
+			// We want to be able to use this even if the keyboard is not visible.
+			// No error or exception will be reported if this is the case. 
+		}
+	}
+	
+	public static Errors sendKeys(AndroidDriver<MobileElement> d, AndroidElement element, String text, boolean clear){
+		Errors err = new Errors();
+		if (isVisible(element)) {
+			if (clear) {
+				element.clear();
+			}
+			element.sendKeys(text);
+			hideKey(d);
+		}
+		else {
+			err.add(d, String.format("Unable to send text: %s", text));
+		}
+		return err;
+	}
+	
 	public static Errors click(AndroidDriver<MobileElement> d, MobileElement element, String errorMessage) {
 		return click(d, element, errorMessage, "");
 	}
