@@ -17,8 +17,6 @@ public class ConnectionGate extends Page{
 	private static String optionsButtonId = Page.connectId + "options_btn";
 	private static String helpButtonId = Page.connectId + "help_btn";
 	private static String dontshowDisclaimerAgainCheckBoxId = Page.connectId + "check_box_one";
-	private static String acceptDisclaimerButtonId = Page.connectId + "button_red_top";
-	private static String denyDisclaimerButtonId = Page.connectId + "button_white_top";
 	
 	/*******************/
 	/* *** Getters *** */
@@ -41,11 +39,11 @@ public class ConnectionGate extends Page{
 	}
 	
 	public static AndroidElement getAcceptDisclaimerButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(acceptDisclaimerButtonId), 3);
+		return getAcceptButton(d);
 	}
 	
 	public static AndroidElement getDenyDisclaimerButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(denyDisclaimerButtonId), 3);
+		return getDenyButton(d);
 	}
 	
 	/***************************************/
