@@ -109,6 +109,7 @@ public class Page extends TestRoot {
 		err.add(d, Pages.SignUp.checkAgree(d));
 		err.add(d, Pages.SignUp.tapSignUpButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
+		err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
 		return err;
 	}
 	
@@ -123,7 +124,9 @@ public class Page extends TestRoot {
 		}
 		err.add(d, Page.enterEmail(d, email));
 		err.add(d, Page.enterPassword(d, password));
-		Pages.LogIn.tapLogInButton(d);
+		err.add(d, Pages.LogIn.tapLogInButton(d));
+		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
+		err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
 		return err;
 	}
 
