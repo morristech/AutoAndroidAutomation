@@ -24,7 +24,6 @@ public class GenrePicker extends Page {
 	/* *** Elements *** */
 	/********************/
 	
-	private static String genreItemId = Page.connectId + "card_%d_%d";
 	private static String genreItemNameId = Page.connectId + "item_name";
 	private static String genreItemCheckId = Page.connectId + "item_check";
 	private static String continueButtonId = Page.connectId + "continue_button";
@@ -34,8 +33,7 @@ public class GenrePicker extends Page {
 	/*******************/
 
 	public static AndroidElement getGenreItem (AndroidDriver<MobileElement> d, int row, int column) {
-		String id = String.format(genreItemId, row, column);
-		return waitForVisible(d, By.id(id), 3);
+		return getCardItem(d, row, column);
 	}
 	
 	public static AndroidElement getGenreItemCheck (AndroidDriver<MobileElement> d, int row, int column) {
