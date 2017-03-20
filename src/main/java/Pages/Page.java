@@ -25,6 +25,9 @@ public class Page extends TestRoot {
 	
 	private static String emailEditTextId = Page.connectId + "email_text";
 	private static String passwordEditTextId = Page.connectId + "password_text";
+	
+	private static String acceptButtonId = Page.connectId + "button_red_top";
+	private static String denyButtonId = Page.connectId + "button_white_top";
 
 	private static String cardItemId = Page.connectId + "card_%d_%d";
 	
@@ -52,9 +55,18 @@ public class Page extends TestRoot {
 		return waitForVisible(d, By.id(passwordEditTextId), 3);
 	}
 	
+
 	public static AndroidElement getCardItem (AndroidDriver<MobileElement> d, int index1, int index2) {
 		String id = String.format(cardItemId, index1, index2);
 		return waitForVisible(d, By.id(id), 3);
+
+    
+	public static AndroidElement getAcceptButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(acceptButtonId), 3);
+	}
+	
+	public static AndroidElement getDenyButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(denyButtonId), 3);
 	}
 	
 	/********************/
