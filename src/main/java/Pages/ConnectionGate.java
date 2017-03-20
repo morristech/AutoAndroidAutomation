@@ -16,6 +16,7 @@ public class ConnectionGate extends Page{
 	private static String byPassButtonId = Page.connectId + "bypass_btn";
 	private static String optionsButtonId = Page.connectId + "options_btn";
 	private static String helpButtonId = Page.connectId + "help_btn";
+	private static String closeButtonId = Page.connectId + "close_btn";
 	private static String dontshowDisclaimerAgainCheckBoxId = Page.connectId + "check_box_one";
 	
 	/*******************/
@@ -32,6 +33,10 @@ public class ConnectionGate extends Page{
 	
 	public static AndroidElement getHelpButton (AndroidDriver<MobileElement> d) {
 		return waitForVisible(d, By.id(helpButtonId), 3);
+	}
+	
+	public static AndroidElement getCloseButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(closeButtonId), 3);
 	}
 	
 	public static AndroidElement getDontShowDisclaimerAgainCheckBox (AndroidDriver<MobileElement> d) {
@@ -60,6 +65,10 @@ public class ConnectionGate extends Page{
 	
 	public static Errors tapHelpButton (AndroidDriver<MobileElement> d) {
 		return click(d, getHelpButton(d), "Cannot tap help button!", "tapHelpButton");
+	}
+	
+	public static Errors tapCloseButton (AndroidDriver<MobileElement> d) {
+		return click(d, getCloseButton(d), "Cannot tap close button!", "tapCloseButton");
 	}
 	
 	public static Errors checkDontShowDisclaimerAgainCheckBox (AndroidDriver<MobileElement> d) {
