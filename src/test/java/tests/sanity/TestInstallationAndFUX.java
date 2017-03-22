@@ -4,8 +4,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import Utilities.TestRoot;
+import suites.CategoryInterfaces.Sanity;
 
 public class TestInstallationAndFUX extends TestRoot{
 	@Before
@@ -21,11 +23,12 @@ public class TestInstallationAndFUX extends TestRoot{
 	public ScreenshotRule screenshot = new ScreenshotRule();
 	
 	@Test
+	@Category(Sanity.class)
 	public void testInstall () {
 		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUpLogInGate.tapSignUpButton(driver).noErrors());
 		Assert.assertTrue("Cannot find confirmation e-mail edit text!", isVisible(Pages.SignUp.getEmailConfirmEditText(driver)));
 		Assert.assertTrue("Cannot tap cancel button!", Pages.SignUp.tapCancelButton(driver).noErrors());
-		
+		 
 		Assert.assertTrue("Cannot tap log in button!", Pages.SignUpLogInGate.tapLogInButton(driver).noErrors());
 		Assert.assertTrue("Cannot find password edit text!", isVisible(Pages.LogIn.getPasswordEditText(driver)));
 		Assert.assertTrue("Cannot tap cancel button!", Pages.LogIn.tapCancelButton(driver).noErrors());
@@ -35,6 +38,7 @@ public class TestInstallationAndFUX extends TestRoot{
 	}
 	
 	@Test
+	@Category(Sanity.class)
 	public void testGenreGameStartUpFlow () {
 		Assert.assertTrue("Cannot tap maybe later button!", Pages.SignUpLogInGate.tapMaybeLaterButton(driver).noErrors());
 		

@@ -4,9 +4,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import Pages.Page;
 import Utilities.TestRoot;
+import suites.CategoryInterfaces.Sanity;
 
 public class TestSignUpLogIn extends TestRoot {
 	
@@ -23,6 +25,7 @@ public class TestSignUpLogIn extends TestRoot {
 	public ScreenshotRule screenshot = new ScreenshotRule();
 	
 	@Test
+	@Category(Sanity.class)
 	public void testSignUp () {
 		String randomlyGeneratedEmail = Pages.SignUp.generateEmailAddress();
 		
@@ -44,6 +47,7 @@ public class TestSignUpLogIn extends TestRoot {
 	}
 	
 	@Test
+	@Category(Sanity.class)
 	public void testLogInAndOptionAndHelp () {
 		Assert.assertTrue("Unable to tap Log In Button!", Pages.SignUpLogInGate.tapLogInButton(driver).noErrors());
 		Assert.assertTrue("Unable to enter e-mail!", Page.enterEmail(driver, TestRoot.IHEARTUSERNAME).noErrors());
