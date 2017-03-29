@@ -42,6 +42,8 @@ public class Player extends Page {
 	private static String returnToPlayerButtonId = Page.connectId + "return_to_player_btn";
 	private static String thumbUpButtonId = Page.connectId + "thumb_up_button";
 	private static String thumbDownButtonId = Page.connectId + "thumb_down_button";
+	private static String createStationTextId = Page.connectId + "text_title";
+	private static String playButtonID = Page.connectId + "play_pause_btn";
 	
 	
 	/*******************/
@@ -87,6 +89,21 @@ public class Player extends Page {
 		return waitForVisible(d, By.id(id), 3);
 	}
 	
+	public static AndroidElement getCreateStationYesButton (AndroidDriver<MobileElement> d) {
+		return getAcceptButton(d);
+	}
+	
+	public static AndroidElement getCreateStationNoButton (AndroidDriver<MobileElement> d) {
+		return getDenyButton(d);
+	}
+	
+	public static AndroidElement getCreateStationMessageTextView (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(createStationTextId), 3);
+	}
+	
+	public static AndroidElement getPlayButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(playButtonID), 3);
+	}
 	
 	/***************************************/
 	/* *** Individual Element Behavior *** */
@@ -121,15 +138,28 @@ public class Player extends Page {
 		return click(d, getThumbUpOrDownButton(d, option), errorMessage, "tapThumbUpOrDownButton");
 	}
 	
+	public static Errors tapCreateStationYesButton (AndroidDriver<MobileElement> d) {
+		return click(d, getAcceptButton(d), "Cannot click Create Station yes button!", "tapCreateStationYesButton");
+	}
+	
+	public static Errors tapCreateStationNoButton (AndroidDriver<MobileElement> d) {
+		return click(d, getCreateStationNoButton(d), "Cannot click Create Station no button!", "tapCreateStationNoButton");
+	}
+	
 	/*******************/
 	/* *** Utility *** */
 	/*******************/
 	
-	public String getCurrentMenuTitle (AndroidDriver<MobileElement> d) {
+	public static String getCurrentMenuTitle (AndroidDriver<MobileElement> d) {
 		return getText(getCurrentMenuTitleTextView(d));
 	}
 	
-	public String getPlayerMetaLineText (AndroidDriver<MobileElement> d, int index) {
+	public static String getPlayerMetaLineText (AndroidDriver<MobileElement> d, int index) {
 		return getText(getPlayerMetaLine(d, index));
 	}
+	
+	public static String getCreateStationMessageText (AndroidDriver<MobileElement> d) {
+		return getText(getCreateStationMessageTextView(d));
+	}
+
 }

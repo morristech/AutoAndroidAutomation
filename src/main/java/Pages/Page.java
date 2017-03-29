@@ -54,7 +54,6 @@ public class Page extends TestRoot {
 	public static AndroidElement getPasswordEditText (AndroidDriver<MobileElement> d) {
 		return waitForVisible(d, By.id(passwordEditTextId), 3);
 	}
-	
 
 	public static AndroidElement getCardItem (AndroidDriver<MobileElement> d, int index1, int index2) {
 		String id = String.format(cardItemId, index1, index2);
@@ -83,6 +82,10 @@ public class Page extends TestRoot {
 	
 	public static Errors tapCancelButton (AndroidDriver<MobileElement> d) {
 		return TestRoot.click(d, getCancelButton(d), "Cannot tap cancel button!", "tapCancelButton");
+	}
+	
+	public static Errors tapPreviousButton (AndroidDriver<MobileElement> d) {
+		return TestRoot.click(d, getPreviousButton(d), "Cannot tap previous button", "tapPreviousButton");
 	}
 	
 	public static Errors tapNextButton (AndroidDriver<MobileElement> d) {
