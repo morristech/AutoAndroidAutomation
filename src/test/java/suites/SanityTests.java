@@ -11,7 +11,8 @@ import suites.CategoryInterfaces.Sanity;
 @IncludeCategory(Sanity.class)
 @Suite.SuiteClasses({
 	tests.sanity.TestInstallationAndFUX.class,
-	tests.sanity.TestSignUpLogIn.class
+	tests.sanity.TestSignUpLogIn.class,
+	tests.sanity.TestLiveStations.class
 })
 
 public class SanityTests {

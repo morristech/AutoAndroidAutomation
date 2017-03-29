@@ -29,6 +29,9 @@ public class TestLiveStations extends TestRoot {
 	@Rule
 	public ScreenshotRule screenshot = new ScreenshotRule();
 	
+	@Rule
+	public RetryRule retry = new RetryRule(1);
+	
 	@Test
 	@Category(Sanity.class)
 	public void testNearYou () {
