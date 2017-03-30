@@ -13,18 +13,18 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import Pages.Xpath;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-
+import testCommons.CommandExecutor;
 import testCommons.LoadProperties;
 
 
@@ -143,6 +143,7 @@ public class TestRoot {
         capabilities.setCapability("platformVersion", platformVersion);
         capabilities.setCapability("app", appPath);
         capabilities.setCapability("appPackage", appPackage);
+        capabilities.setCapability("fullReset", true);
         
         // Load other properties
         address = LoadProperties.getProperties(testProperties, "APPIUM.WEBDRIVER.URL");
@@ -203,10 +204,11 @@ public class TestRoot {
 		}
 
         try{
+        	System.out.println("Attempting to start driver...");
         	driver = new AndroidDriver<MobileElement>(appiumUrl, capabilities);
         }
-        catch(SessionNotCreatedException | UnreachableBrowserException exc){
-        	System.err.println("Could not start driver. Emulator or device may be unavailable. Appium may have disconnected or stopped. Sleeping 30 seconds to retry.\n"
+        catch(Exception exc){
+        	System.err.println("Could not start driver. Emulator or device may be unavailable. Appium may have disconnected or stopped. Sleeping a few seconds to retry (will retry twice).\n"
         			+ "Properties:\n"
         			+ "Device name: " + device + "\n"
         			+ "Platform version: " + platformVersion+ "\n"
@@ -216,28 +218,56 @@ public class TestRoot {
         			+ "Appium port: " + port + "\n"
         			+ "Model name: " + model + "\n"
         			);
-
-        	for(int i = 30; i > 0; i -= 5){
-        		System.err.println("Retrying in: " + i + "...");
-        		sleep(5000);
+        	System.out.println("\n\nOriginal Error:");
+        	exc.printStackTrace();
+        	
+        	int maxRetries = 7;
+        	int secondDelay = 30;
+        	System.out.println("\n\n");
+        	// TODO See if we can get this to reboot Appium, to resolve potential issues
+        	for (int retry = 0; retry < maxRetries; retry++){
+        		// Delay for X seconds before retrying
+	        	for(int i = secondDelay; i > 0; i--){
+	        		if (i % 5 == 0){
+	        			System.err.println("Retrying in: " + i + "...");
+	        		}
+	        		sleep(1000);
+	        	}
+	        	
+	        	// Attempt to restart the driver
+	        	System.err.println("RETRYING INITIALIZATION (" + (retry + 1) + " tries so far).");
+	        	try{
+	        		driver = new AndroidDriver<MobileElement>(appiumUrl, capabilities);
+	        	}
+	        	catch(Exception e2){
+        			driver = null;
+	        	}
+	        	
+	        	if (driver != null){
+	        		break;
+	        	}
+	        	// Restart ADB (it's now failed twice), try again
+        		System.out.println("\n\nAttempting to restart ADB, "
+        				+ "in case this is the problem. Make sure a device is attached!\n");
+        		// Get ADB
+        		String adb = CommandExecutor.executeCommand("which adb", false);
+        		if (!strGood(adb)){
+        			// Use a default location
+        			adb = "/usr/local/bin/adb";
+        		}
+        		
+        		// Execute the commands to restart adb
+    			System.out.println("Using adb from: " + adb);
+    			System.out.println("Shutting down ADB.\n" 
+    					+ CommandExecutor.executeCommand(adb + " kill-server"));
+    			System.out.println("Restarting ADB and listing attached devices:\n"
+    					+ CommandExecutor.executeCommand(adb + " devices"));
         	}
-        	System.err.println("LAST CHANCE... TRYING TO START APPIUM BEFORE RETRYING DRIVER INITIALIZATION...\n");
-        	driver = new AndroidDriver<MobileElement>(appiumUrl, capabilities);
-        	sleep(100);
-        }
-        catch(Exception e){
-        	System.err.println("UNEXPECTED ERROR. Please check configuration:");
-        	System.err.println("Could not start driver. Emulator or device may be unavailable. Appium may have disconnected or stopped. Sleeping 30 seconds to retry.\n"
-        			+ "Properties:\n"
-        			+ "Device name: " + device + "\n"
-        			+ "Platform version: " + platformVersion+ "\n"
-        			+ "IPA/App file name: " + appPath + "\n"
-        			+ "Using Emulator: " + useEmulator + "\n"
-        			+ "Appium URL: " + appiumUrl + "\n"
-        			+ "Appium port: " + port + "\n"
-        			+ "Model name: " + model + "\n"
-        			);
-        	e.printStackTrace();
+        	
+        	if (driver == null){
+        		System.err.println("\n\n\nFAILED TO START DRIVER. QUITTING.");
+        		return false;
+        	}
         }
         
         // Set this for quicker access in other methods
@@ -246,34 +276,7 @@ public class TestRoot {
         // We have our own timeouts, don't need this as much, reduced it
 		driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
 		
-//		// If there are any other permissions, take care of them
-//		int maxPermissions = 10;
-//		int permissionsAllowed = 1; // The one above
-//		while (permissionsAllowed <= maxPermissions && Pages.Page.isPermissionRequestPresent(driver)){
-//			permissionsAllowed++;
-//			Pages.Page.allowPermission(driver, true);
-//		}
-//		
-//		// Make sure we have an Internet connection (sometimes dropped, so pause before hitting OK, to perhaps fix the issue
-//		MobileElement alertTitle = waitForVisible(driver, find("android:id/alertTitle"), 3);
-//		if(alertTitle != null && alertTitle.getText().contains("Connection problem.")){
-//			System.err.println("Pausing to see if connectivity problem will resolve itself, currently cannot connect to iHeartRadio.\nIs the device connected to the internet?");
-//			sleep(5000);
-//			Pages.Page.popupOk(driver);
-//		}
-//		
-//		// Set the location to the iHeart Office in NYC
-//		// 20 seconds because splash screen may take longer to load over some connections
-//		// Reduced from 30 due to checking other elements prior to this now
-//		if (waitForVisible(driver, By.id(Pages.Page.zipcodeTextbox), 20) != null){
-//			// Skip the iHeart location request
-//			Pages.Page.enterZip();
-//		}
-		
 		APPIUM_VERSION = getAppiumVersion(driver);
-		
-		//  Finally, if Google Smart lock is here, dismiss it
-//		Pages.Account.dismissGoogleLockPopup(driver);
 		
 		if (driver != null)
 			System.out.println("Driver initialized, starting test.");
@@ -634,9 +637,10 @@ public class TestRoot {
 	public static Errors sendKeys(AndroidDriver<MobileElement> d, AndroidElement element, String text, boolean clear){
 		Errors err = new Errors();
 		if (isVisible(element)) {
-			if (clear) {
-				element.clear();
-			}
+//			Appium's clear is currently broken.			
+//			if (clear) {
+//				element.clear();
+//			}
 			element.sendKeys(text);
 			hideKey(d);
 		}
@@ -965,6 +969,52 @@ public class TestRoot {
 		return false;
 	}
 	
+	public class RetryRule implements TestRule{
+		int retries = 1; // default
+		public RetryRule(){
+			this.retries = 1;
+		}
+		public RetryRule(int r){
+			this.retries = r;
+		}
+		
+		@Override
+		public Statement apply(Statement base, Description description) {
+			return statement(base, description);
+		}
+		
+		private Statement statement(final Statement base, final Description description){
+			return new Statement(){
+				@Override
+				public void evaluate() throws Throwable {
+					// Save the exception for the end of the retries
+					Throwable caughtThrowable = null;
+					
+					for (int i = 0; i < retries; i++){
+						try{
+							base.evaluate();
+							return; // End
+						}
+						catch (Throwable t){
+							System.out.println(t);
+							caughtThrowable = t;
+							// Only retry if it was a driver issue, not an assertion
+							if(!(t instanceof java.lang.AssertionError)
+									&& t.getMessage().contains("session is either terminated or not started")){
+								System.err.println("\n\nRun #" + (i + 1) + " failed, may retry.");
+							}
+							else{
+								throw t;
+							}
+						}
+					}
+					if (caughtThrowable != null){
+						throw caughtThrowable;
+					}
+				}
+			};
+		}
+	}
 	
 	/**
 	 * Screenshot Rule
