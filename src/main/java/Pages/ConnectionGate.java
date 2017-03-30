@@ -43,14 +43,6 @@ public class ConnectionGate extends Page{
 		return waitForVisible(d, By.id(dontshowDisclaimerAgainCheckBoxId), 3);
 	}
 	
-	public static AndroidElement getAcceptDisclaimerButton (AndroidDriver<MobileElement> d) {
-		return getAcceptButton(d);
-	}
-	
-	public static AndroidElement getDenyDisclaimerButton (AndroidDriver<MobileElement> d) {
-		return getDenyButton(d);
-	}
-	
 	/***************************************/
 	/* *** Individual Element Behavior *** */
 	/***************************************/
@@ -75,14 +67,6 @@ public class ConnectionGate extends Page{
 		return click(d, getDontShowDisclaimerAgainCheckBox(d), "Cannot check the don't show disclaimer again check box!", "checkDontShowDisclaimerAgainCheckBox");
 	}
 	
-	public static Errors tapAcceptDisclaimerButton (AndroidDriver<MobileElement> d) {
-		return click(d, getAcceptDisclaimerButton(d), "Cannot tap accept disclaimer button!", "tapAcceptDisclaimerButton");
-	}
-	
-	public static Errors tapDenyDisclaimerButton (AndroidDriver<MobileElement> d) {
-		return click(d, getDenyDisclaimerButton(d), "Cannot tap deny disclaimer button!", "tapDenyDisclaimerButton");
-	}
-	
 	/*******************/
 	/* *** Utility *** */
 	/*******************/
@@ -90,7 +74,7 @@ public class ConnectionGate extends Page{
 	public static Errors byPassAndAcceptDisclaimer (AndroidDriver<MobileElement> d) {
 		Errors err = new Errors();
 		err.add(d, tapByPassButton(d));
-		err.add(d, tapAcceptDisclaimerButton(d));
+		err.add(d, tapDialogButton(d, DialogOptions.ACCEPT));
 		return err;
 	}
 }

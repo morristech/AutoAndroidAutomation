@@ -10,6 +10,33 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class Page extends TestRoot {
+	
+	public enum DialogOptions {
+		// Accept / Left Button
+		ACCEPT(acceptButtonId),
+		ENTER_ZIP_OKAY(acceptButtonId),
+		LOG_OUT(acceptButtonId),
+		OPTIONS(acceptButtonId),
+		YES(acceptButtonId),
+		
+		// Deny / Right Button
+		CANCEL(denyButtonId),
+		CONTINUE(denyButtonId),
+		DENY(denyButtonId),
+		NO(denyButtonId),
+		LOG_OUT_OKAY(denyButtonId),
+		RESET_PASSWORD_OKAY(denyButtonId);
+		
+		private String mId;
+		
+		private DialogOptions(String id) {
+			mId = id;
+		}
+		
+		public String getId () {
+			return mId;
+		}
+	}
 
 	/********************/
 	/* *** Elements *** */
@@ -35,6 +62,10 @@ public class Page extends TestRoot {
 	/* *** Getters *** */
 	/*******************/
 
+	public static AndroidElement getDialogButton (AndroidDriver<MobileElement> d, DialogOptions option) {
+		return waitForVisible(d, By.id(option.getId()), 3);
+	}
+	
 	public static AndroidElement getCancelButton (AndroidDriver<MobileElement> d) {
 		return waitForVisible(d, By.id(cancelButtonId), 3);
 	}
@@ -59,18 +90,15 @@ public class Page extends TestRoot {
 		String id = String.format(cardItemId, index1, index2);
 		return waitForVisible(d, By.id(id), 3);
 	}
-    
-	public static AndroidElement getAcceptButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(acceptButtonId), 3);
-	}
-	
-	public static AndroidElement getDenyButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(denyButtonId), 3);
-	}
 	
 	/********************/
 	/* *** Behavior *** */
 	/********************/ 
+	
+	public static Errors tapDialogButton (AndroidDriver<MobileElement> d, DialogOptions option) {
+		String errorMessage = String.format("Cannot tap dialog option: %s.", option.toString());
+		return click(d, getDialogButton(d, option), errorMessage,"tapDialogButton");
+	}
 	
 	public static Errors enterEmail (AndroidDriver<MobileElement> d, String email) {
 		return sendKeys(d, getEmailEditText(d), email, true);
@@ -110,12 +138,12 @@ public class Page extends TestRoot {
 	/* *** Utility *** */
 	/*******************/
 	
-	public static Errors signUp (AndroidDriver<MobileElement> d) {
+	public static Errors signUp (AndroidDriver<MobileElement> d, boolean bypass) {
 		String email = Pages.SignUp.generateEmailAddress();
-		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "11013", Pages.SignUp.Gender.MALE);
+		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "11013", Pages.SignUp.Gender.MALE, bypass);
 	}
 	
-	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender) {
+	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender, boolean bypass) {
 		Errors err = new Errors();
 		if (isVisible(Pages.SignUpLogInGate.getSignUpButton(d))) {
 			err.add(d, Pages.SignUpLogInGate.tapSignUpButton(d));
@@ -130,15 +158,17 @@ public class Page extends TestRoot {
 		err.add(d, Pages.SignUp.checkAgree(d));
 		err.add(d, Pages.SignUp.tapSignUpButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
-		err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		if (bypass) {
+			err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		}
 		return err;
 	}
 	
-	public static Errors logIn (AndroidDriver<MobileElement> d) {
-		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD);
+	public static Errors logIn (AndroidDriver<MobileElement> d, boolean bypass) {
+		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD, bypass);
 	}
 	
-	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password) {
+	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password, boolean bypass) {
 		Errors err = new Errors();
 		if (isVisible(Pages.SignUpLogInGate.getLogInButton(d))) {
 			err.add(d, Pages.SignUpLogInGate.tapLogInButton(d));
@@ -147,7 +177,9 @@ public class Page extends TestRoot {
 		err.add(d, Page.enterPassword(d, password));
 		err.add(d, Pages.LogIn.tapLogInButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
-		err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		if (bypass) {
+			err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		}
 		return err;
 	}
 

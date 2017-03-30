@@ -397,6 +397,14 @@ public class TestRoot {
 		return false;
 	}
 
+	public static AndroidElement getListItem(AndroidDriver<MobileElement> d, By listItem, int index){
+		List<MobileElement> list = findElements(d, listItem);
+		if (list.size() > index){
+			return (AndroidElement) list.get(index);
+		}
+		return null;
+	}
+	
 	public static MobileElement findElement(AndroidDriver<MobileElement> d, By by){
 		MobileElement e = null;
 		try{

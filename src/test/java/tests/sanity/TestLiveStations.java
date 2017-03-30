@@ -10,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import Pages.Page.DialogOptions;
 import Utilities.TestRoot;
 import suites.CategoryInterfaces.Sanity;
 
@@ -36,7 +37,7 @@ public class TestLiveStations extends TestRoot {
 	@Category(Sanity.class)
 	public void testNearYou () {
 		// Logic for getting to Live Radio
-		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver).noErrors());
+		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
 		checkMainMenuItems();
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
@@ -66,7 +67,7 @@ public class TestLiveStations extends TestRoot {
 	@Category(Sanity.class)
 	public void testByGenre () {
 		// Logic for getting to Live Radio
-		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver).noErrors());
+		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap next button!", Pages.Player.tapNextButton(driver).noErrors());
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
@@ -79,7 +80,7 @@ public class TestLiveStations extends TestRoot {
 		
 		// Check if By Genre items are all present
 		Assert.assertTrue("Unable to tap By Genre!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.BY_GENRE).noErrors());
-		List<String> expectedByGenreItems = Pages.Menu.getByGenreMenuItemTextList();
+		List<String> expectedByGenreItems = Pages.Menu.getLiveRadioByGenreMenuItemTextList();
 		List<String> actualByGenreItems = Pages.Menu.getAllItemTextOnScreen(driver);
 		int MAX_PAGES = 4;
 		for (int numPages = 0; numPages < MAX_PAGES; numPages++) {
@@ -89,7 +90,7 @@ public class TestLiveStations extends TestRoot {
 		numMissing = getNumOfMissingItems(expectedByGenreItems, actualByGenreItems);
 		Assert.assertEquals(String.format("Missing %d By Genre menu items!", numMissing), 0, numMissing);
 		
-		Assert.assertTrue("Unable to tap EDM", Pages.Menu.tapMenuItem(driver, Pages.Menu.ByGenreMenuItem.EDM).noErrors());
+		Assert.assertTrue("Unable to tap EDM", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioByGenreMenuItem.EDM).noErrors());
 	}
 	
 	@Test
@@ -128,7 +129,7 @@ public class TestLiveStations extends TestRoot {
 		if (!isCommercialPlaying()) {
 			Assert.assertTrue("Unable to tap Create Station", Pages.Player.tapPlayerButton(driver, Pages.Player.PlayerButton.CREATE_STATION).noErrors());
 			String stationName = Pages.Player.getCreateStationMessageText(driver);
-			Assert.assertTrue("Unable to tap Yes button!", Pages.Player.tapCreateStationYesButton(driver).noErrors());
+			Assert.assertTrue("Unable to tap Yes button!", Pages.Player.tapDialogButton(driver, DialogOptions.YES).noErrors());
 			String actualStationCreated = Pages.Player.getPlayerMetaLineText(driver, 1);
 			Assert.assertTrue("Created wrong station.", stationName.contains(actualStationCreated));
 		}
@@ -190,11 +191,11 @@ public class TestLiveStations extends TestRoot {
 		
 		// Verify that the station is not in favorites
 		goToFavorites.accept(5000);
-		Assert.assertTrue("Cannot tap no favorites continue button!", Pages.Menu.tapNoFavoritesContinueButton(driver).noErrors());
+		Assert.assertTrue("Cannot tap no favorites continue button!", Pages.Menu.tapDialogButton(driver, DialogOptions.CONTINUE).noErrors());
 	}
 	
 	private static void testPathToNearYou () {
-		Assert.assertTrue("Unable to sign up!", Pages.SignUpLogInGate.signUp(driver).noErrors());
+		Assert.assertTrue("Unable to sign up!", Pages.SignUpLogInGate.signUp(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap next!", Pages.Menu.tapNextButton(driver).noErrors());
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
