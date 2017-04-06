@@ -35,11 +35,11 @@ public class OptionsSubpage extends Page {
 	/*******************/
 	
 	public static AndroidElement getOptionsBackButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(optionsBackButtonId), 3);
+		return waitForVisible(d, By.id(optionsBackButtonId), 7);
 	}
 	
 	public static AndroidElement getOptionsSubpageOnOffButton (AndroidDriver<MobileElement> d, OptionsOnOff option) {
-		return waitForVisible(d, By.id(option.getId()), 3);
+		return waitForVisible(d, By.id(option.getId()), 7);
 	}
 	
 	/***************************************/

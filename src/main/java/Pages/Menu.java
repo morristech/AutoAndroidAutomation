@@ -97,8 +97,8 @@ public class Menu extends Page {
 		R_AND_B("R&B"),
 		LATIN("Latin"),
 		BLUES("Blues"),
-		JAZZ("JAZZ"),
-		WORLD("WORLD"),
+		JAZZ("Jazz"),
+		WORLD("World"),
 		ELECTRONIC("Electronic"),
 		HOLIDAY("Holiday"),
 		CHRISTIAN("Christian"),
@@ -132,11 +132,11 @@ public class Menu extends Page {
 	/*******************/
 	
 	public static AndroidElement getMenuBackButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(menuBackButton), 3);
+		return waitForVisible(d, By.id(menuBackButton), 7);
 	}
 	
 	public static AndroidElement getMenuCloseButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(menuCloseButton), 3);
+		return waitForVisible(d, By.id(menuCloseButton), 7);
 	}
 	
 	public static AndroidElement getItem (AndroidDriver<MobileElement> d, int position) {

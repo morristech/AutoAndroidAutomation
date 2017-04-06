@@ -500,7 +500,7 @@ public class TestRoot {
 	}
 	
 	public static AndroidElement scrollUntil(AndroidDriver<MobileElement> d, int direction, By by){
-		AndroidElement foundElement = waitForVisible(d, by, 1);
+		AndroidElement foundElement = waitForVisible(d, by, 3);
 		int maxSwipes = 10;
 		int count = 0;
 		// Loop until it's found

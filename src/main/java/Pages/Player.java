@@ -51,29 +51,29 @@ public class Player extends Page {
 	/*******************/
 	
 	public static AndroidElement getMenuButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(menuButtonId), 3);
+		return waitForVisible(d, By.id(menuButtonId), 7);
 	}
 	
 	public static AndroidElement getCurrentMenuTitleTextView (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(currentMenuTitleTextViewId), 3);
+		return waitForVisible(d, By.id(currentMenuTitleTextViewId), 7);
 	}
 	
 	public static AndroidElement getFavoriteButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(favoriteButtonId), 3);
+		return waitForVisible(d, By.id(favoriteButtonId), 7);
 	}
 	
 	public static AndroidElement getCoverImage (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(coverImageId), 3);
+		return waitForVisible(d, By.id(coverImageId), 7);
 	}
 	
 	public static AndroidElement getPlayerMetaLine (AndroidDriver<MobileElement> d, int index) {
 		String id = String.format(playerMetaLineId, index);
-		return waitForVisible(d, By.id(id), 3);
+		return waitForVisible(d, By.id(id), 7);
 	}
 	
 	public static AndroidElement getPlayerButton (AndroidDriver<MobileElement> d, PlayerButton option) {
 		String id = String.format(playerButtonId, option.mPosition);
-		AndroidElement button = waitForVisible(d, By.id(id), 3);
+		AndroidElement button = waitForVisible(d, By.id(id), 7);
 		if (isVisible(button) && TestRoot.getText(button).equalsIgnoreCase(option.toString())) {
 			return button;
 		}
@@ -81,20 +81,20 @@ public class Player extends Page {
 	}
 	
 	public static AndroidElement getReturnToPlayerButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(returnToPlayerButtonId), 3);
+		return waitForVisible(d, By.id(returnToPlayerButtonId), 7);
 	}
 	
 	public static AndroidElement getThumbUpOrDownButton (AndroidDriver<MobileElement> d, Thumb option) {
 		String id = (option == Thumb.UP) ? thumbUpButtonId : thumbDownButtonId;
-		return waitForVisible(d, By.id(id), 3);
+		return waitForVisible(d, By.id(id), 7);
 	}
 	
 	public static AndroidElement getCreateStationMessageTextView (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(createStationTextId), 3);
+		return waitForVisible(d, By.id(createStationTextId), 7);
 	}
 	
 	public static AndroidElement getPlayButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(playButtonID), 3);
+		return waitForVisible(d, By.id(playButtonID), 7);
 	}
 	
 	/***************************************/

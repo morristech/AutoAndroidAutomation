@@ -8,7 +8,6 @@ import org.junit.experimental.categories.Category;
 
 import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
-import Pages.Page.DialogOptions;
 import Utilities.TestRoot;
 import suites.CategoryInterfaces.Sanity;
 
@@ -45,7 +44,7 @@ public class TestSettings extends TestRoot {
 		Assert.assertTrue("Unable to tap Choose A City!", MyLocation.scrollAndTapMyLocationItem(driver, UP, MyLocation.MyLocationOption.CHOOSE_A_CITY).noErrors());
 		String chosenCity = MyLocation.getChooseACityListItemText(driver, chosenCityIndex);
 		Assert.assertTrue("Unable to tap choose a city list item!", MyLocation.tapChooseACityListItem(driver, chosenCityIndex).noErrors());
-		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapDialogButton(driver, DialogOptions.CONTINUE).noErrors());
+		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapWhiteDialogButton(driver).noErrors()); // Continue Button
 		Assert.assertTrue("Unable to scroll to current city!", isVisible(MyLocation.scrollToGetMyLocationItem(driver, DOWN, MyLocation.MyLocationOption.CURRENT_CITY)));
 		String currentCityForChooseACity = MyLocation.getCurrentCityAndStateText(driver);
 		Assert.assertEquals(String.format("Cities don't match! Expected: %s Actual: %s.", chosenCity, currentCityForChooseACity), chosenCity, currentCityForChooseACity);
@@ -59,7 +58,7 @@ public class TestSettings extends TestRoot {
 		
 		// Turn on Update Automatically
 		Assert.assertTrue("Unable to turn update automatically on!", MyLocation.tapOptionsSubpageOnOffButton(driver, OptionsOnOff.ON).noErrors());
-		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapDialogButton(driver, DialogOptions.CONTINUE).noErrors());
+		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapWhiteDialogButton(driver).noErrors()); // Continue Button
 		String currentCityForUpdateAutomatically = MyLocation.getCurrentCityAndStateText(driver);
 		Assert.assertEquals(String.format("Cities don't match! Expected: %s Actual: %s", originalCurrentCity, currentCityForUpdateAutomatically), originalCurrentCity, currentCityForUpdateAutomatically);
 		
@@ -80,7 +79,7 @@ public class TestSettings extends TestRoot {
 		Assert.assertTrue("Unable to click on forgot password link!", UpdateResetPassword.tapForgotPasswordLink(driver).noErrors());
 		Assert.assertTrue("Unable to enter email!", UpdateResetPassword.enterEmail(driver, email).noErrors());
 		Assert.assertTrue("Unable to tap reset button!", UpdateResetPassword.tapResetPasswordButton(driver).noErrors());
-		Assert.assertTrue("Unable to tap OK!", UpdateResetPassword.tapDialogButton(driver, DialogOptions.RESET_PASSWORD_OKAY).noErrors());
+		Assert.assertTrue("Unable to tap OK!", UpdateResetPassword.tapWhiteDialogButton(driver).noErrors()); // Okay button
 		
 		// Verify that we are in the sign up log in gate.
 		Assert.assertTrue("Unable to see maybe later!", isVisible(SignUpLogInGate.getMaybeLaterButton(driver)));
@@ -103,7 +102,7 @@ public class TestSettings extends TestRoot {
 		Assert.assertTrue("Unable to enter new password confirmation!", UpdateResetPassword.enterConfirmNewPassword(driver, newPassword).noErrors());
 		Assert.assertTrue("Unable to press update!", UpdateResetPassword.tapUpdatePasswordButton(driver).noErrors());
 		
-		sleep(5000); // Wait for modal to disappear.
+		Page.waitForDialogToDisappear(driver); // Wait for modal to disappear.
 		
 		// Logging Out
 		Assert.assertTrue("Unable to log out!", Options.logOut(driver).noErrors());
@@ -124,9 +123,9 @@ public class TestSettings extends TestRoot {
 	public void testExplicitContentOff () {
 		setExplicitContentAndGoToPop(OptionsOnOff.OFF);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
-		Assert.assertTrue("Unable to click cancel button!", Menu.tapDialogButton(driver, DialogOptions.CANCEL).noErrors());
+		Assert.assertTrue("Unable to click cancel button!", Menu.tapWhiteDialogButton(driver).noErrors()); // Cancel button
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
-		Assert.assertTrue("Unable to click options button!", Menu.tapDialogButton(driver, DialogOptions.OPTIONS).noErrors());
+		Assert.assertTrue("Unable to click options button!", Menu.tapRedDialogButton(driver).noErrors()); // Options button
 	}
 	
 	@Test
@@ -134,7 +133,7 @@ public class TestSettings extends TestRoot {
 	public void testExplicitContentOn () {
 		setExplicitContentAndGoToPop(OptionsOnOff.ON);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
-		Assert.assertFalse("Error! Options button is visible for some reason!", isVisible(Menu.getDialogButton(driver, DialogOptions.OPTIONS)));
+		Assert.assertFalse("Error! Options button is visible for some reason!", isVisible(Menu.getRedDialogButton(driver))); // Options button
 	}
 	
 	

@@ -41,11 +41,11 @@ public class MyLocation extends OptionsSubpage {
 	/*******************/
 	
 	public static AndroidElement getCurrentCityAndState (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(currentCityAndStateId), 3);
+		return waitForVisible(d, By.id(currentCityAndStateId), 7);
 	}
 	
 	public static AndroidElement getEnterZIPDialogEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(enterZIPDialogEditTextId), 3);
+		return waitForVisible(d, By.id(enterZIPDialogEditTextId), 7);
 	}
 	
 	public static AndroidElement scrollToGetMyLocationItem (AndroidDriver<MobileElement> d, int direction, MyLocationOption option) {
@@ -88,8 +88,8 @@ public class MyLocation extends OptionsSubpage {
 	public static Errors enterZIPAndContinue (AndroidDriver<MobileElement> d, String zip) {
 		Errors errors = new Errors();
 		errors.add(d, enterZIP(d, zip));
-		errors.add(d, tapDialogButton(d, DialogOptions.ENTER_ZIP_OKAY));
-		errors.add(d, Page.tapDialogButton(d, DialogOptions.CONTINUE));
+		errors.add(d, tapRedDialogButton(d)); // Enter Zip okay button
+		errors.add(d, Page.tapWhiteDialogButton(d)); // Continue button
 		return errors;
 	}
 }

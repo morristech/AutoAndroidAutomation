@@ -24,23 +24,23 @@ public class ConnectionGate extends Page{
 	/*******************/
 	
 	public static AndroidElement getByPassButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(byPassButtonId), 3);
+		return waitForVisible(d, By.id(byPassButtonId), 7);
 	}
 	
 	public static AndroidElement getOptionsButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(optionsButtonId), 3);
+		return waitForVisible(d, By.id(optionsButtonId), 7);
 	}
 	
 	public static AndroidElement getHelpButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(helpButtonId), 3);
+		return waitForVisible(d, By.id(helpButtonId), 7);
 	}
 	
 	public static AndroidElement getCloseButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(closeButtonId), 3);
+		return waitForVisible(d, By.id(closeButtonId), 7);
 	}
 	
 	public static AndroidElement getDontShowDisclaimerAgainCheckBox (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(dontshowDisclaimerAgainCheckBoxId), 3);
+		return waitForVisible(d, By.id(dontshowDisclaimerAgainCheckBoxId), 7);
 	}
 	
 	/***************************************/
@@ -74,7 +74,7 @@ public class ConnectionGate extends Page{
 	public static Errors byPassAndAcceptDisclaimer (AndroidDriver<MobileElement> d) {
 		Errors err = new Errors();
 		err.add(d, tapByPassButton(d));
-		err.add(d, tapDialogButton(d, DialogOptions.ACCEPT));
+		err.add(d, tapRedDialogButton(d)); // Accept Button
 		return err;
 	}
 }

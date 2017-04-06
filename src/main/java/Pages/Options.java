@@ -50,7 +50,7 @@ public class Options extends Page {
 	/*******************/
 	
 	public static AndroidElement getDoneButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(optionsDoneButtonId), 3);
+		return waitForVisible(d, By.id(optionsDoneButtonId), 7);
 	}
 	
 	public static AndroidElement getLoggedInEmailTextView (AndroidDriver<MobileElement> d) {
@@ -85,8 +85,8 @@ public class Options extends Page {
 	public static Errors logOut (AndroidDriver<MobileElement> d) {
 		Errors err = new Errors();
 		err.add(d, scrollAndTapOptionItem(d, DOWN, OptionItem.LOGGED_IN_AS));
-		err.add(d, tapDialogButton(d, DialogOptions.LOG_OUT));
-		err.add(d, Page.tapDialogButton(d, DialogOptions.LOG_OUT_OKAY));
+		err.add(d, tapRedDialogButton(d)); // Log out button
+		err.add(d, Page.tapWhiteDialogButton(d)); // Okay button
 		return err;
 	}
 }

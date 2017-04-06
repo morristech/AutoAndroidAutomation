@@ -10,33 +10,6 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class Page extends TestRoot {
-	
-	public enum DialogOptions {
-		// Accept / Left Button
-		ACCEPT(acceptButtonId),
-		ENTER_ZIP_OKAY(acceptButtonId),
-		LOG_OUT(acceptButtonId),
-		OPTIONS(acceptButtonId),
-		YES(acceptButtonId),
-		
-		// Deny / Right Button
-		CANCEL(denyButtonId),
-		CONTINUE(denyButtonId),
-		DENY(denyButtonId),
-		NO(denyButtonId),
-		LOG_OUT_OKAY(denyButtonId),
-		RESET_PASSWORD_OKAY(denyButtonId);
-		
-		private String mId;
-		
-		private DialogOptions(String id) {
-			mId = id;
-		}
-		
-		public String getId () {
-			return mId;
-		}
-	}
 
 	/********************/
 	/* *** Elements *** */
@@ -53,52 +26,52 @@ public class Page extends TestRoot {
 	private static String emailEditTextId = Page.connectId + "email_text";
 	private static String passwordEditTextId = Page.connectId + "password_text";
 	
-	private static String acceptButtonId = Page.connectId + "button_red_top";
-	private static String denyButtonId = Page.connectId + "button_white_top";
+	private static String redDialogButtonId = Page.connectId + "button_red_top";
+	private static String whiteDialogButtonId = Page.connectId + "button_white_top";
 
 	private static String cardItemId = Page.connectId + "card_%d_%d";
+	private static String customDialogContainerId = Page.connectId + "custom_dialog_container";
 	
 	/*******************/
 	/* *** Getters *** */
 	/*******************/
-
-	public static AndroidElement getDialogButton (AndroidDriver<MobileElement> d, DialogOptions option) {
-		return waitForVisible(d, By.id(option.getId()), 3);
-	}
 	
 	public static AndroidElement getCancelButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(cancelButtonId), 3);
+		return waitForVisible(d, By.id(cancelButtonId), 7);
 	}
 	
 	public static AndroidElement getPreviousButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(previousButtonId), 3);
+		return waitForVisible(d, By.id(previousButtonId), 7);
 	}
 	
 	public static AndroidElement getNextButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(nextButtonId), 3);
+		return waitForVisible(d, By.id(nextButtonId), 7);
 	}
 
 	public static AndroidElement getEmailEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(emailEditTextId), 3);
+		return waitForVisible(d, By.id(emailEditTextId), 7);
 	}
 	
 	public static AndroidElement getPasswordEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(passwordEditTextId), 3);
+		return waitForVisible(d, By.id(passwordEditTextId), 7);
 	}
 
 	public static AndroidElement getCardItem (AndroidDriver<MobileElement> d, int index1, int index2) {
 		String id = String.format(cardItemId, index1, index2);
-		return waitForVisible(d, By.id(id), 3);
+		return waitForVisible(d, By.id(id), 7);
+	}
+	
+	public static AndroidElement getRedDialogButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(redDialogButtonId), 7);
+	}
+	
+	public static AndroidElement getWhiteDialogButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(whiteDialogButtonId), 7);
 	}
 	
 	/********************/
 	/* *** Behavior *** */
 	/********************/ 
-	
-	public static Errors tapDialogButton (AndroidDriver<MobileElement> d, DialogOptions option) {
-		String errorMessage = String.format("Cannot tap dialog option: %s.", option.toString());
-		return click(d, getDialogButton(d, option), errorMessage,"tapDialogButton");
-	}
 	
 	public static Errors enterEmail (AndroidDriver<MobileElement> d, String email) {
 		return sendKeys(d, getEmailEditText(d), email, true);
@@ -118,6 +91,14 @@ public class Page extends TestRoot {
 	
 	public static Errors tapNextButton (AndroidDriver<MobileElement> d) {
 		return TestRoot.click(d, getNextButton(d), "Cannot tap next button!", "tapNextButton");
+	}
+	
+	public static Errors tapRedDialogButton (AndroidDriver<MobileElement> d) {
+		return click(d, getRedDialogButton(d), "Cannot tap red dialog button!", "tapRedDialogButton");
+	}
+	
+	public static Errors tapWhiteDialogButton (AndroidDriver<MobileElement> d) {
+		return click(d, getWhiteDialogButton(d), "Cannot tap white dialog button!", "tapWhiteDialogButton");
 	}
 	
 	/**
@@ -182,5 +163,14 @@ public class Page extends TestRoot {
 		}
 		return err;
 	}
+	
+	public static boolean waitForDialogToDisappear (AndroidDriver<MobileElement> d) {
+		By by = By.id(customDialogContainerId);
+		waitForVisible(d, by, 7);
+		boolean result = waitForNotVisible(d, by, 7);
+		return result;
+	}
+	
+	
 
 }

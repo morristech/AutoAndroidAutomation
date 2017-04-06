@@ -10,7 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import Pages.Page.DialogOptions;
 import Utilities.TestRoot;
 import suites.CategoryInterfaces.Sanity;
 
@@ -129,7 +128,7 @@ public class TestLiveStations extends TestRoot {
 		if (!isCommercialPlaying()) {
 			Assert.assertTrue("Unable to tap Create Station", Pages.Player.tapPlayerButton(driver, Pages.Player.PlayerButton.CREATE_STATION).noErrors());
 			String stationName = Pages.Player.getCreateStationMessageText(driver);
-			Assert.assertTrue("Unable to tap Yes button!", Pages.Player.tapDialogButton(driver, DialogOptions.YES).noErrors());
+			Assert.assertTrue("Unable to tap Yes button!", Pages.Player.tapRedDialogButton(driver).noErrors()); // Yes button
 			String actualStationCreated = Pages.Player.getPlayerMetaLineText(driver, 1);
 			Assert.assertTrue("Created wrong station.", stationName.contains(actualStationCreated));
 		}
@@ -191,7 +190,7 @@ public class TestLiveStations extends TestRoot {
 		
 		// Verify that the station is not in favorites
 		goToFavorites.accept(5000);
-		Assert.assertTrue("Cannot tap no favorites continue button!", Pages.Menu.tapDialogButton(driver, DialogOptions.CONTINUE).noErrors());
+		Assert.assertTrue("Cannot tap no favorites continue button!", Pages.Menu.tapWhiteDialogButton(driver).noErrors()); // Continue button
 	}
 	
 	private static void testPathToNearYou () {

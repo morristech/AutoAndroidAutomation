@@ -42,7 +42,7 @@ public class GenrePicker extends Page {
 	}
 	
 	public static AndroidElement getContinueButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(continueButtonId), 3);
+		return waitForVisible(d, By.id(continueButtonId), 7);
 	}
 	
 	/***************************************/

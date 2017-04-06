@@ -30,33 +30,33 @@ public class UpdateResetPassword extends OptionsSubpage {
 	
 	// Update Password Getters
 	public static AndroidElement getCurrentPasswordEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(currentPasswordEditTextId), 3);
+		return waitForVisible(d, By.id(currentPasswordEditTextId), 7);
 	}
 	
 	public static AndroidElement getNewPasswordEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(newPasswordEditTextId), 3);
+		return waitForVisible(d, By.id(newPasswordEditTextId), 7);
 	}
 	
 	public static AndroidElement getConfirmNewPasswordEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(confirmNewPasswordEditTextId), 3);
+		return waitForVisible(d, By.id(confirmNewPasswordEditTextId), 7);
 	}
 	
 	public static AndroidElement getUpdatePasswordButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(updatePasswordButtonId), 3);
+		return waitForVisible(d, By.id(updatePasswordButtonId), 7);
 	}
 	
 	public static AndroidElement getForgotPasswordLink (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(forgotPasswordLinkId), 3);
+		return waitForVisible(d, By.id(forgotPasswordLinkId), 7);
 	}
 	
 	
 	// Reset Password Getters
 	public static AndroidElement getEmailEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(emailEditTextId), 3);
+		return waitForVisible(d, By.id(emailEditTextId), 7);
 	}
 	
 	public static AndroidElement getResetPasswordButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(resetPasswordButtonId), 3);
+		return waitForVisible(d, By.id(resetPasswordButtonId), 7);
 	}
 	
 	/***************************************/
