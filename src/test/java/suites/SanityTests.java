@@ -13,7 +13,8 @@ import suites.CategoryInterfaces.Sanity;
 	tests.sanity.TestInstallationAndFUX.class,
 	tests.sanity.TestSettings.class,
 	tests.sanity.TestSignUpLogIn.class,
-	tests.sanity.TestLiveStations.class
+	tests.sanity.TestLiveStations.class,
+	tests.sanity.TestAnonymousUser.class
 })
 
 public class SanityTests {
