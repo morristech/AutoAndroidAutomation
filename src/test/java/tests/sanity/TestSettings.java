@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import Pages.*;
-import Pages.OptionsSubpage.OptionsOnOff;
 import Utilities.TestRoot;
 import suites.CategoryInterfaces.Sanity;
 
@@ -35,7 +34,7 @@ public class TestSettings extends TestRoot {
 		Assert.assertTrue("Unable to tap on Options!", ConnectionGate.tapOptionsButton(driver).noErrors());
 		Assert.assertTrue("Unable to select My Location!", Options.scrollAndTapOptionItem(driver, UP, Options.OptionItem.MY_LOCATION).noErrors());
 		
-		Assert.assertTrue("Unable to turn update automatically off!", MyLocation.tapOptionsSubpageOnOffButton(driver, OptionsOnOff.OFF).noErrors());
+		Assert.assertTrue("Unable to turn update automatically off!", MyLocation.turnOptionOffIfOn(driver).noErrors());
 		
 		String originalCurrentCity = MyLocation.getCurrentCityAndStateText(driver);
 		
@@ -57,7 +56,7 @@ public class TestSettings extends TestRoot {
 		Assert.assertNotEquals(String.format("City didn't change! Actual: %s.", currentCityForEnterZIP), currentCityForChooseACity, currentCityForEnterZIP);
 		
 		// Turn on Update Automatically
-		Assert.assertTrue("Unable to turn update automatically on!", MyLocation.tapOptionsSubpageOnOffButton(driver, OptionsOnOff.ON).noErrors());
+		Assert.assertTrue("Unable to turn update automatically on!", MyLocation.turnOptionOnIfOff(driver).noErrors());
 		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapWhiteDialogButton(driver).noErrors()); // Continue Button
 		String currentCityForUpdateAutomatically = MyLocation.getCurrentCityAndStateText(driver);
 		Assert.assertEquals(String.format("Cities don't match! Expected: %s Actual: %s", originalCurrentCity, currentCityForUpdateAutomatically), originalCurrentCity, currentCityForUpdateAutomatically);
@@ -121,7 +120,7 @@ public class TestSettings extends TestRoot {
 	@Test
 	@Category(Sanity.class)
 	public void testExplicitContentOff () {
-		setExplicitContentAndGoToPop(OptionsOnOff.OFF);
+		setExplicitContentAndGoToPop(false);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
 		Assert.assertTrue("Unable to click cancel button!", Menu.tapWhiteDialogButton(driver).noErrors()); // Cancel button
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
@@ -131,21 +130,24 @@ public class TestSettings extends TestRoot {
 	@Test
 	@Category(Sanity.class)
 	public void testExplicitContentOn () {
-		setExplicitContentAndGoToPop(OptionsOnOff.ON);
+		setExplicitContentAndGoToPop(true);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
 		Assert.assertFalse("Error! Options button is visible for some reason!", isVisible(Menu.getRedDialogButton(driver))); // Options button
 	}
 	
 	
-	private void setExplicitContentAndGoToPop (OptionsOnOff option) {
+	private void setExplicitContentAndGoToPop (boolean turnOn) {
 		Assert.assertTrue("Unable to sign up!", SignUpLogInGate.signUp(driver, false).noErrors());
 		Assert.assertTrue("Unable to tap on Options!", ConnectionGate.tapOptionsButton(driver).noErrors());
 		Assert.assertTrue("Unable to select Explicit Content!", Options.scrollAndTapOptionItem(driver, UP, Options.OptionItem.EXPLICIT_CONTENT).noErrors());
 		
-		// Explicit Content ON is default for newly created accounts.
-		if (option == OptionsOnOff.OFF) {
-			Assert.assertTrue("Unable to switch explicit content to off!", OptionsSubpage.tapOptionsSubpageOnOffButton(driver, option).noErrors());
+		if (turnOn) {
+			Assert.assertTrue("Unable to switch explicit content to on!", OptionsSubpage.turnOptionOnIfOff(driver).noErrors());
 		}
+		else {
+			Assert.assertTrue("Unable to switch explicit content to off!", OptionsSubpage.turnOptionOffIfOn(driver).noErrors());
+		}
+			
 		Assert.assertTrue("Cannot tap back button!", MyLocation.tapOptionsBackButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap done button!", Options.tapDoneButton(driver).noErrors());
 		Assert.assertTrue("Unable to bypass connection page!", ConnectionGate.byPassAndAcceptDisclaimer(driver).noErrors());
