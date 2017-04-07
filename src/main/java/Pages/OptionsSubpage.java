@@ -18,6 +18,10 @@ import io.appium.java_client.android.AndroidElement;
 
 public class OptionsSubpage extends Page {
 	
+	public enum OptionsOnOff {
+		ON, OFF
+	}
+	
 	/********************/
 	/* *** Elements *** */
 	/********************/
@@ -53,20 +57,16 @@ public class OptionsSubpage extends Page {
 	/* *** Utility *** */
 	/*******************/
 	
-	public static Errors turnOptionOffIfOn (AndroidDriver<MobileElement> d) {
+	public static Errors toggleOnOff (AndroidDriver<MobileElement> d, OptionsOnOff option) {
 		Errors err = new Errors();
-		if (isOn(d)) {
+		if ( (option == OptionsOnOff.OFF && isOn(d)) || (option == OptionsOnOff.ON && isOff(d)) ) {
 			err.add(d, tapOptionsSubpageOnButton(d));
 		}
 		return err;
 	}
 	
-	public static Errors turnOptionOnIfOff (AndroidDriver<MobileElement> d) {
-		Errors err = new Errors();
-		if (!isOn(d)) {
-			err.add(d, tapOptionsSubpageOnButton(d));
-		}
-		return err;
+	public static boolean isOff (AndroidDriver<MobileElement> d) {
+		return !isOn(d);
 	}
 	
 	public static boolean isOn (AndroidDriver<MobileElement> d){
