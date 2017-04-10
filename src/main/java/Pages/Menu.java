@@ -48,7 +48,7 @@ public class Menu extends Page {
 		}
 	}
 	
-	public enum ByGenreMenuItem {
+	public enum LiveRadioByGenreMenuItem {
 		ALTERNATIVE("Alternative"),
 		CLASSIC_ROCK("Classic Rock"),
 		COUNTRY("Country"),
@@ -80,7 +80,36 @@ public class Menu extends Page {
 		
 		private String displayName;
 		
-		private ByGenreMenuItem (String displayName) {
+		private LiveRadioByGenreMenuItem (String displayName) {
+			this.displayName = displayName;
+		}
+		
+		public String toString () {
+			return displayName;
+		}
+	}
+	
+	public enum ArtistRadioByGenreMenuItem {
+		POP("Pop"),
+		RAP("Rap"),
+		COUNTRY("Country"),
+		ROCK("Rock"),
+		R_AND_B("R&B"),
+		LATIN("Latin"),
+		BLUES("Blues"),
+		JAZZ("Jazz"),
+		WORLD("World"),
+		ELECTRONIC("Electronic"),
+		HOLIDAY("Holiday"),
+		CHRISTIAN("Christian"),
+		SOUNDTRACK("Soundtrack"),
+		VOCAL("Vocal"),
+		EASY_LISTENING("Easy Listening"),
+		REGGAE("Reggae");
+		
+		private String displayName;
+		
+		private ArtistRadioByGenreMenuItem (String displayName) {
 			this.displayName = displayName;
 		}
 		
@@ -103,11 +132,11 @@ public class Menu extends Page {
 	/*******************/
 	
 	public static AndroidElement getMenuBackButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(menuBackButton), 3);
+		return waitForVisible(d, By.id(menuBackButton), 7);
 	}
 	
 	public static AndroidElement getMenuCloseButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(menuCloseButton), 3);
+		return waitForVisible(d, By.id(menuCloseButton), 7);
 	}
 	
 	public static AndroidElement getItem (AndroidDriver<MobileElement> d, int position) {
@@ -128,12 +157,6 @@ public class Menu extends Page {
 	public static AndroidElement getMenuItem (AndroidDriver<MobileElement> d, Enum<?> item) {
 		return getItem(d, item.toString());
 	}
-	
-	public static AndroidElement getNoFavoritesContinueButton (AndroidDriver<MobileElement> d) {
-		return getDenyButton(d);
-	}
-	
-
 	
 	/***************************************/
 	/* *** Individual Element Behavior *** */
@@ -165,10 +188,6 @@ public class Menu extends Page {
 	public static Errors tapMenuItem (AndroidDriver<MobileElement> d, Enum<?> item) {
 		String errorMessage = String.format("Cannot tap menu item: %s.", item.toString());
 		return click(d, getMenuItem(d, item), errorMessage, "tapMenuItem");
-	}
-	
-	public static Errors tapNoFavoritesContinueButton (AndroidDriver<MobileElement> d) {
-		return click(d, getNoFavoritesContinueButton(d), "Cannot tap no favorites continue button.", "tapNoFavoritesContinueButton");
 	}
 	
 	/*******************/
@@ -204,8 +223,8 @@ public class Menu extends Page {
 		return getMenuItemTextList(MainMenuItem.class);
 	}
 	
-	public static List<String> getByGenreMenuItemTextList() {
-		return getMenuItemTextList(ByGenreMenuItem.class);
+	public static List<String> getLiveRadioByGenreMenuItemTextList() {
+		return getMenuItemTextList(LiveRadioByGenreMenuItem.class);
 	}
 	
 }

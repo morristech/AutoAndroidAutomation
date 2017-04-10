@@ -22,15 +22,15 @@ public class SignUpLogInGate extends Page {
 	/*******************/
 	
 	public static AndroidElement getSignUpButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(signUpButtonId), 3);
+		return waitForVisible(d, By.id(signUpButtonId), 7);
 	}
 	
 	public static AndroidElement getLogInButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(logInButtonId), 3);
+		return waitForVisible(d, By.id(logInButtonId), 7);
 	}
 	
 	public static AndroidElement getMaybeLaterButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(maybeLaterButtonId), 3);
+		return waitForVisible(d, By.id(maybeLaterButtonId), 7);
 	}
 	
 	/********************/

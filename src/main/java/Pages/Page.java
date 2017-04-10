@@ -26,46 +26,47 @@ public class Page extends TestRoot {
 	private static String emailEditTextId = Page.connectId + "email_text";
 	private static String passwordEditTextId = Page.connectId + "password_text";
 	
-	private static String acceptButtonId = Page.connectId + "button_red_top";
-	private static String denyButtonId = Page.connectId + "button_white_top";
+	private static String redDialogButtonId = Page.connectId + "button_red_top";
+	private static String whiteDialogButtonId = Page.connectId + "button_white_top";
 
 	private static String cardItemId = Page.connectId + "card_%d_%d";
+	private static String customDialogContainerId = Page.connectId + "custom_dialog_container";
 	
 	/*******************/
 	/* *** Getters *** */
 	/*******************/
-
+	
 	public static AndroidElement getCancelButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(cancelButtonId), 3);
+		return waitForVisible(d, By.id(cancelButtonId), 7);
 	}
 	
 	public static AndroidElement getPreviousButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(previousButtonId), 3);
+		return waitForVisible(d, By.id(previousButtonId), 7);
 	}
 	
 	public static AndroidElement getNextButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(nextButtonId), 3);
+		return waitForVisible(d, By.id(nextButtonId), 7);
 	}
 
 	public static AndroidElement getEmailEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(emailEditTextId), 3);
+		return waitForVisible(d, By.id(emailEditTextId), 7);
 	}
 	
 	public static AndroidElement getPasswordEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(passwordEditTextId), 3);
+		return waitForVisible(d, By.id(passwordEditTextId), 7);
 	}
 
 	public static AndroidElement getCardItem (AndroidDriver<MobileElement> d, int index1, int index2) {
 		String id = String.format(cardItemId, index1, index2);
-		return waitForVisible(d, By.id(id), 3);
-	}
-    
-	public static AndroidElement getAcceptButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(acceptButtonId), 3);
+		return waitForVisible(d, By.id(id), 7);
 	}
 	
-	public static AndroidElement getDenyButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(denyButtonId), 3);
+	public static AndroidElement getRedDialogButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(redDialogButtonId), 7);
+	}
+	
+	public static AndroidElement getWhiteDialogButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(whiteDialogButtonId), 7);
 	}
 	
 	/********************/
@@ -92,6 +93,14 @@ public class Page extends TestRoot {
 		return TestRoot.click(d, getNextButton(d), "Cannot tap next button!", "tapNextButton");
 	}
 	
+	public static Errors tapRedDialogButton (AndroidDriver<MobileElement> d) {
+		return click(d, getRedDialogButton(d), "Cannot tap red dialog button!", "tapRedDialogButton");
+	}
+	
+	public static Errors tapWhiteDialogButton (AndroidDriver<MobileElement> d) {
+		return click(d, getWhiteDialogButton(d), "Cannot tap white dialog button!", "tapWhiteDialogButton");
+	}
+	
 	/**
 	 * Taps the hardware (or overlayed) Android system back button
 	 * 
@@ -110,12 +119,12 @@ public class Page extends TestRoot {
 	/* *** Utility *** */
 	/*******************/
 	
-	public static Errors signUp (AndroidDriver<MobileElement> d) {
+	public static Errors signUp (AndroidDriver<MobileElement> d, boolean bypass) {
 		String email = Pages.SignUp.generateEmailAddress();
-		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "11013", Pages.SignUp.Gender.MALE);
+		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "10013", Pages.SignUp.Gender.MALE, bypass);
 	}
 	
-	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender) {
+	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender, boolean bypass) {
 		Errors err = new Errors();
 		if (isVisible(Pages.SignUpLogInGate.getSignUpButton(d))) {
 			err.add(d, Pages.SignUpLogInGate.tapSignUpButton(d));
@@ -130,15 +139,17 @@ public class Page extends TestRoot {
 		err.add(d, Pages.SignUp.checkAgree(d));
 		err.add(d, Pages.SignUp.tapSignUpButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
-		err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		if (bypass) {
+			err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		}
 		return err;
 	}
 	
-	public static Errors logIn (AndroidDriver<MobileElement> d) {
-		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD);
+	public static Errors logIn (AndroidDriver<MobileElement> d, boolean bypass) {
+		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD, bypass);
 	}
 	
-	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password) {
+	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password, boolean bypass) {
 		Errors err = new Errors();
 		if (isVisible(Pages.SignUpLogInGate.getLogInButton(d))) {
 			err.add(d, Pages.SignUpLogInGate.tapLogInButton(d));
@@ -147,8 +158,19 @@ public class Page extends TestRoot {
 		err.add(d, Page.enterPassword(d, password));
 		err.add(d, Pages.LogIn.tapLogInButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
-		err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		if (bypass) {
+			err.add(d, Pages.ConnectionGate.byPassAndAcceptDisclaimer(d));
+		}
 		return err;
 	}
+	
+	public static boolean waitForDialogToDisappear (AndroidDriver<MobileElement> d) {
+		By by = By.id(customDialogContainerId);
+		waitForVisible(d, by, 7);
+		boolean result = waitForNotVisible(d, by, 7);
+		return result;
+	}
+	
+	
 
 }

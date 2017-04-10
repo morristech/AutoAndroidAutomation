@@ -397,6 +397,14 @@ public class TestRoot {
 		return false;
 	}
 
+	public static AndroidElement getListItem(AndroidDriver<MobileElement> d, By listItem, int index){
+		List<MobileElement> list = findElements(d, listItem);
+		if (list.size() > index){
+			return (AndroidElement) list.get(index);
+		}
+		return null;
+	}
+	
 	public static MobileElement findElement(AndroidDriver<MobileElement> d, By by){
 		MobileElement e = null;
 		try{
@@ -492,7 +500,7 @@ public class TestRoot {
 	}
 	
 	public static AndroidElement scrollUntil(AndroidDriver<MobileElement> d, int direction, By by){
-		AndroidElement foundElement = waitForVisible(d, by, 1);
+		AndroidElement foundElement = waitForVisible(d, by, 3);
 		int maxSwipes = 10;
 		int count = 0;
 		// Loop until it's found

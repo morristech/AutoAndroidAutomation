@@ -50,7 +50,7 @@ public class Options extends Page {
 	/*******************/
 	
 	public static AndroidElement getDoneButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(optionsDoneButtonId), 3);
+		return waitForVisible(d, By.id(optionsDoneButtonId), 7);
 	}
 	
 	public static AndroidElement getLoggedInEmailTextView (AndroidDriver<MobileElement> d) {
@@ -59,18 +59,6 @@ public class Options extends Page {
 	
 	public static AndroidElement scrollToGetOptionItem (AndroidDriver<MobileElement> d, int direction, OptionItem option) {
 		return scrollUntil(d, direction, By.id(option.mId));
-	}
-	
-	public static AndroidElement getLogOutDialogButton (AndroidDriver<MobileElement> d) {
-		return getAcceptButton(d);
-	}
-	
-	public static AndroidElement getCancelDialogButton (AndroidDriver<MobileElement> d) {
-		return getDenyButton(d);
-	}
-	
-	public static AndroidElement getLoggedOutOkayDialogButton (AndroidDriver<MobileElement> d) {
-		return getDenyButton(d);
 	}
 	
 	/***************************************/
@@ -86,18 +74,6 @@ public class Options extends Page {
 		return click(d, scrollToGetOptionItem(d, direction, option), errorMessage, "scrollAndTapOptionItem");
 	}
 	
-	public static Errors tapLogOutDialogButton (AndroidDriver<MobileElement> d) {
-		return click(d, getLogOutDialogButton(d), "Cannot tap log out dialog button!", "tapLogOutDialogButton");
-	}
-	
-	public static Errors tapCancelDialogButton (AndroidDriver<MobileElement> d) {
-		return click(d, getCancelDialogButton(d), "Cannot tap cancel dialog button!", "tapCancelDialogButton");
-	}
-	
-	public static Errors tapLoggedOutOkayDialogButton (AndroidDriver<MobileElement> d) {
-		return click(d, getLoggedOutOkayDialogButton(d), "Cannot tap logged out okay dialog button!", "tapLoggedOutOkayDialogButton");
-	}
-	
 	/*******************/
 	/* *** Utility *** */
 	/*******************/
@@ -109,8 +85,8 @@ public class Options extends Page {
 	public static Errors logOut (AndroidDriver<MobileElement> d) {
 		Errors err = new Errors();
 		err.add(d, scrollAndTapOptionItem(d, DOWN, OptionItem.LOGGED_IN_AS));
-		err.add(d, tapLogOutDialogButton(d));
-		err.add(d, tapLoggedOutOkayDialogButton(d));
+		err.add(d, tapRedDialogButton(d)); // Log out button
+		err.add(d, Page.tapWhiteDialogButton(d)); // Okay button
 		return err;
 	}
 }

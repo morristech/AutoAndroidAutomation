@@ -30,24 +30,24 @@ public class SignUp extends Page {
 	/*******************/
 	
 	public static AndroidElement getEmailConfirmEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(emailConfirmEditTextId), 3);
+		return waitForVisible(d, By.id(emailConfirmEditTextId), 7);
 	}
 	
 	public static AndroidElement getBirthYearEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(birthYearEditTextId), 3);
+		return waitForVisible(d, By.id(birthYearEditTextId), 7);
 	}
 	
 	public static AndroidElement getZipCodeEditText (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(zipCodeEditTextId), 3);
+		return waitForVisible(d, By.id(zipCodeEditTextId), 7);
 	}
 	
 	public static AndroidElement getGenderRadioButton (AndroidDriver<MobileElement> d, Gender gender) {
 		String id = (gender == Gender.MALE) ? maleRadioButtonId : femaleRadioButtonId;
-		return waitForVisible(d, By.id(id), 3);
+		return waitForVisible(d, By.id(id), 7);
 	}
 	
 	public static AndroidElement getAgreeCheckBox (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(agreeCheckBoxId), 3);
+		return waitForVisible(d, By.id(agreeCheckBoxId), 7);
 	}
 	
 	public static AndroidElement getSignUpButton (AndroidDriver<MobileElement> d) {
