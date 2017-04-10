@@ -5,7 +5,7 @@ import org.junit.experimental.categories.Categories.IncludeCategory;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import suites.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.Sanity;
 
 @RunWith(Categories.class)
 @IncludeCategory(Sanity.class)

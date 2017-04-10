@@ -8,9 +8,10 @@ import org.junit.experimental.categories.Category;
 
 import Pages.Page;
 import Utilities.TestRoot;
-import suites.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.TestCommons;
 
-public class TestSignUpLogIn extends TestRoot {
+public class TestSignUpLogIn extends TestCommons {
 	
 	@Before
 	public void before () {

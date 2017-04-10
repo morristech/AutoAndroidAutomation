@@ -11,9 +11,10 @@ import org.junit.experimental.categories.Category;
 import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
 import Utilities.TestRoot;
-import suites.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.TestCommons;
 
-public class TestSettings extends TestRoot {
+public class TestSettings extends TestCommons {
 
 	@Before
 	public void before () {

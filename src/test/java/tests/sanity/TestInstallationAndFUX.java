@@ -6,10 +6,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import Utilities.TestRoot;
-import suites.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.TestCommons;
 
-public class TestInstallationAndFUX extends TestRoot{
+public class TestInstallationAndFUX extends TestCommons{
 	@Before
 	public void before () {
 		if (!setup()) {

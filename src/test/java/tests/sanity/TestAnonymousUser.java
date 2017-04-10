@@ -1,5 +1,7 @@
 package tests.sanity;
 
+import java.util.function.BiConsumer;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,10 +14,10 @@ import Pages.Menu;
 import Pages.Page;
 import Pages.Player;
 import Pages.SignUpLogInGate;
-import Utilities.TestRoot;
-import suites.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.TestCommons;
 
-public class TestAnonymousUser extends TestRoot {
+public class TestAnonymousUser extends TestCommons {
 
 	@Before
 	public void before () {
@@ -40,16 +42,27 @@ public class TestAnonymousUser extends TestRoot {
 		Assert.assertTrue("Unable to tap NEAR YOU!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());
 		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 1).noErrors());
 		
+		BiConsumer<Integer, String> waitForChange = (maxSleepTime, oldText) -> {
+			double sleepTime = 250.0;
+			int maxLoops = (int) Math.ceil(maxSleepTime / 250.0);
+			for (int i = 0; i < maxLoops; i++) {
+				sleep( (long) sleepTime);
+				if (!Player.getPlayerMetaLineText(driver, 1).equals(oldText)) {
+					break;
+				}
+			}
+		};
+		
 		/*** Test Player ***/
 		
 		// Test Scan
 		String textBeforeScan = Player.getPlayerMetaLineText(driver, 1);
 		Assert.assertTrue("Unable to tap scan!", Player.tapPlayerButton(driver, Player.PlayerButton.SCAN).noErrors());
-		sleep(5000); // Wait for scan
+		waitForChange.accept(5000, textBeforeScan); // Wait for scan
 		String textAfterScan = Player.getPlayerMetaLineText(driver, 1);
 		Assert.assertNotEquals("Text are equal before and after scan!", textBeforeScan, textAfterScan);
 		
-		sleep(10000); // Wait so that we get a new station due to the scan not stopping until we press scan again
+		waitForChange.accept(10000, textAfterScan); // Wait so that we get a new station due to the scan not stopping until we press scan again
 		String textAfterScanWait = Player.getPlayerMetaLineText(driver, 1);
 		Assert.assertNotEquals("Text are equal before and after scan wait!", textAfterScan, textAfterScanWait);
 		Assert.assertTrue("Unable to tap scan!", Player.tapPlayerButton(driver, Player.PlayerButton.SCAN).noErrors());
@@ -59,12 +72,23 @@ public class TestAnonymousUser extends TestRoot {
 		Assert.assertTrue("Unable to tap cover image", Player.tapCoverImage(driver).noErrors());
 		Assert.assertTrue("Unable to tap cover image", Player.tapCoverImage(driver).noErrors());
 		
-		// Test Thumbs and Create Station
-		Assert.assertTrue("Unable to tap on thumbs!", Player.tapPlayerButton(driver, Player.PlayerButton.THUMBS).noErrors());
-		Assert.assertTrue("Unable to tap cancel button!", Page.tapWhiteDialogButton(driver).noErrors()); // Cancel button
-		Assert.assertTrue("Unable to tap on Create Station!", Player.tapPlayerButton(driver, Player.PlayerButton.CREATE_STATION).noErrors());
-		Assert.assertTrue("Unable to tap sign up button!", Page.tapRedDialogButton(driver).noErrors()); // Sign Up button
-		Assert.assertTrue("Sign Up button not present!", isVisible(SignUpLogInGate.getSignUpButton(driver)));
+		// Test Thumbs and Create Station		
+		if (!isCommercialPlaying()) {
+			Assert.assertTrue("Unable to tap on thumbs!", Player.tapPlayerButton(driver, Player.PlayerButton.THUMBS).noErrors());
+			Assert.assertTrue("Unable to tap cancel button!", Page.tapWhiteDialogButton(driver).noErrors()); // Cancel button
+		}
+		else {
+			System.out.println("Cannot test thumbs due to commercials or lack of meta data!");
+		}
+		
+		if (!isCommercialPlaying()) {
+			Assert.assertTrue("Unable to tap on Create Station!", Player.tapPlayerButton(driver, Player.PlayerButton.CREATE_STATION).noErrors());
+			Assert.assertTrue("Unable to tap sign up button!", Page.tapRedDialogButton(driver).noErrors()); // Sign Up button
+			Assert.assertTrue("Sign Up button not present!", isVisible(SignUpLogInGate.getSignUpButton(driver)));
+		}
+		else {
+			System.out.println("Cannot test create station due to commercials or lack of meta data!");
+		}
 	}
 	
 	@Test
