@@ -149,10 +149,18 @@ public class Menu extends Page {
 	}
 	
 	public static AndroidElement getItem (AndroidDriver<MobileElement> d, String title) {
-		return (AndroidElement) findElements(d, By.id(menuItemTitle)).stream()
-		                                                             .filter(menuItem -> getText(menuItem).equalsIgnoreCase(title))
-		                                                             .findFirst()
-		                                                             .orElse(null);
+		int waitTime = 7000;
+		int interval = 500;
+		AndroidElement element;
+		do {
+			sleep(interval);
+			waitTime -= interval;
+			element = (AndroidElement) findElements(d, By.id(menuItemTitle)).stream()
+			                                                                .filter(menuItem -> getText(menuItem).equalsIgnoreCase(title))
+			                                                                .findFirst()
+			                                                                .orElse(null);
+		} while (waitTime > 0 && element == null);
+		return element;
 	}
 	
 	public static AndroidElement getMenuItem (AndroidDriver<MobileElement> d, Enum<?> item) {
@@ -226,6 +234,10 @@ public class Menu extends Page {
 	
 	public static List<String> getLiveRadioByGenreMenuItemTextList() {
 		return getMenuItemTextList(LiveRadioByGenreMenuItem.class);
+	}
+	
+	public static List<String> getArtistRadioByGenreMenuItemTextList () {
+		return getMenuItemTextList(ArtistRadioByGenreMenuItem.class);
 	}
 	
 }

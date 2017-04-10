@@ -27,7 +27,7 @@ public class TestAnonymousUser extends TestCommons {
 		
 		BiConsumer<Integer, String> waitForChange = (maxSleepTime, oldText) -> {
 			double sleepTime = 250.0;
-			int maxLoops = (int) Math.ceil(maxSleepTime / 250.0);
+			int maxLoops = (int) Math.ceil(maxSleepTime / sleepTime);
 			for (int i = 0; i < maxLoops; i++) {
 				sleep( (long) sleepTime);
 				String newText = Player.getPlayerMetaLineText(driver, 1);
