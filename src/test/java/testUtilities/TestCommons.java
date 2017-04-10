@@ -28,12 +28,10 @@ public class TestCommons extends TestRoot {
 	
 	public static boolean isCommercialPlaying () {
 		int tries = 0;
-		int MAX_TRIES = 12;
+		int MAX_TRIES = 24;
 		while (tries < MAX_TRIES && !isEnabled(Pages.Player.getPlayerButton(driver, Pages.Player.PlayerButton.THUMBS))) {
-			Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
-			sleep(5000);
+			sleep(2500);
 			tries++;
-			Assert.assertTrue("Cannot tap close menu button!", Pages.Menu.tapMenuCloseButton(driver).noErrors());
 		}
 		return tries == MAX_TRIES;
 	};

@@ -47,7 +47,8 @@ public class TestAnonymousUser extends TestCommons {
 			int maxLoops = (int) Math.ceil(maxSleepTime / 250.0);
 			for (int i = 0; i < maxLoops; i++) {
 				sleep( (long) sleepTime);
-				if (!Player.getPlayerMetaLineText(driver, 1).equals(oldText)) {
+				String newText = Player.getPlayerMetaLineText(driver, 1);
+				if (!newText.equals("Buffering…") && !newText.equals(oldText)) {
 					break;
 				}
 			}
