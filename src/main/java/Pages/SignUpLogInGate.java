@@ -2,10 +2,11 @@ package Pages;
 
 import org.openqa.selenium.By;
 
-import Utilities.Errors;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+
+import testCommons.Errors;
 
 public class SignUpLogInGate extends Page {
 

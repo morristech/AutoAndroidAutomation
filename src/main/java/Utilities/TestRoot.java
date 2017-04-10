@@ -25,6 +25,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import testCommons.CommandExecutor;
+import testCommons.Errors;
 import testCommons.LoadProperties;
 
 
@@ -1056,7 +1057,7 @@ public class TestRoot {
 						// Catch the failure, take the screenshot, then pass the failure on
 						if(driver != null){
 							String errorMethod = "assertFrom_" + method.getName();
-							Errors.captureScreenshot(driver, errorMethod);
+							Errors.captureScreenshot(driver, errorMethod, SCREENSHOT_DIRECTORY, SCREENSHOT_URL);
 						}
 						// Make sure we quit
 						quit();
