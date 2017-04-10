@@ -41,20 +41,30 @@ public class TestSettings extends TestRoot {
 		
 		// Test Choose A City
 		int chosenCityIndex = 0;
-		Assert.assertTrue("Unable to tap Choose A City!", MyLocation.scrollAndTapMyLocationItem(driver, UP, MyLocation.MyLocationOption.CHOOSE_A_CITY).noErrors());
+		swipeOnScreen(driver, UP, 750);
+		Assert.assertTrue("Unable to tap Choose A City!", MyLocation.tapChooseCityItem(driver).noErrors());
 		String chosenCity = MyLocation.getChooseACityListItemText(driver, chosenCityIndex);
 		Assert.assertTrue("Unable to tap choose a city list item!", MyLocation.tapChooseACityListItem(driver, chosenCityIndex).noErrors());
 		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapWhiteDialogButton(driver).noErrors()); // Continue Button
-		Assert.assertTrue("Unable to scroll to current city!", isVisible(MyLocation.scrollToGetMyLocationItem(driver, DOWN, MyLocation.MyLocationOption.CURRENT_CITY)));
+		swipeOnScreen(driver, DOWN, 750);
+		Assert.assertTrue("Unable to scroll to current city!", isVisible(MyLocation.getCurrentCityItem(driver)));
 		String currentCityForChooseACity = MyLocation.getCurrentCityAndStateText(driver);
 		Assert.assertEquals(String.format("Cities don't match! Expected: %s Actual: %s.", chosenCity, currentCityForChooseACity), chosenCity, currentCityForChooseACity);
 		
+		// Tap Update Now
+		Assert.assertTrue("Unable to tap update now!", MyLocation.tapUpdateNowItem(driver).noErrors());
+		Assert.assertTrue("Unable to tap continue button!", MyLocation.tapWhiteDialogButton(driver).noErrors()); // Continue Button
+		String currentCityForUpdateNow = MyLocation.getCurrentCityAndStateText(driver);
+		Assert.assertEquals(String.format("Cities don't match! Expected: %s Actual: %s.", originalCurrentCity, currentCityForUpdateNow), originalCurrentCity, currentCityForUpdateNow);
+		
 		// Test Enter Zip
-		Assert.assertTrue("Cannot tap Enter ZIP Code!", MyLocation.scrollAndTapMyLocationItem(driver, UP, MyLocation.MyLocationOption.ENTER_ZIP_CODE).noErrors());;
+		swipeOnScreen(driver, UP, 750);
+		Assert.assertTrue("Cannot tap Enter ZIP Code!", MyLocation.tapEnterZipCodeItem(driver).noErrors());;
 		Assert.assertTrue("Unable to enter ZIP!", MyLocation.enterZIPAndContinue(driver, "96701").noErrors());
-		Assert.assertTrue("Unable to scroll to current city!", isVisible(MyLocation.scrollToGetMyLocationItem(driver, DOWN, MyLocation.MyLocationOption.CURRENT_CITY)));
+		swipeOnScreen(driver, DOWN, 750);
+		Assert.assertTrue("Unable to scroll to current city!", isVisible(MyLocation.getCurrentCityItem(driver)));
 		String currentCityForEnterZIP = MyLocation.getCurrentCityAndStateText(driver);
-		Assert.assertNotEquals(String.format("City didn't change! Actual: %s.", currentCityForEnterZIP), currentCityForChooseACity, currentCityForEnterZIP);
+		Assert.assertNotEquals(String.format("City didn't change! Actual: %s.", currentCityForEnterZIP), currentCityForUpdateNow, currentCityForEnterZIP);
 		
 		// Turn on Update Automatically
 		Assert.assertTrue("Unable to turn update automatically on!", MyLocation.toggleOnOff(driver, OptionsOnOff.ON).noErrors());
