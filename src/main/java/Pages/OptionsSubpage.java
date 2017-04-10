@@ -92,9 +92,49 @@ public class OptionsSubpage extends Page {
 			
 			try {
 				img = ImageIO.read(tempScreenshot);
+				
+				/* 
+				 * Subimage method requires the x and y values for the upper-left corner.
+				 * However, because the auto app is locked in landscape mode only and also because the screenshot taken
+				 * is always in portrait mode, we need new coordinates to reflect this change.
+				 * 
+				 * The landscape bottom-left corner will be the portrait mode's top-right corner.
+				 * 
+				 * Example:
+				 * 
+				 * Landscape Mode:
+				 * 
+				 *    0 1 2 3 4 5 6 7             (X,Y)
+				 *  0 X X X X X X A X         A = (6,0)
+				 *  1 X X X X X X B X         B = (6,1)
+				 *  2 X X X X X X C X         C = (6,2)
+				 *  3 X X X X X X X X
+				 *  
+				 *  Portrait Mode:
+				 *  
+				 *    0 1 2 3 
+				 *  0 X X X X
+				 *  1 X X X X 
+				 *  2 X X X X
+				 *  3 X X X X                     (X,Y)
+				 *  4 X X X X                 A = (3,6)
+				 *  5 X X X X                 B = (2,6)
+				 *  6 X C B A                 C = (1,6)
+				 *  7 X X X X
+				 *  
+				 *  We need an algorithm that when given A(6,0) in landscape will give us C(1,6) in portrait.
+				 *  In our example, 
+				 *  screenheight (landscape) = 4
+				 *  height of object (landscape) = 3.
+				 *  A's X/width = 6
+				 *  A's Y/height = 0
+				 *  
+				 *  C's X (in portrait) = 4 - (0 + 3) = 1
+				 *  C's Y (in portrait) = A's X (in landscape) = 6
+				 *  The height becomes the new width and vice versa because of the rotation.
+				 */
 				img = img.getSubimage(screenHeight - (y + height), x, height, width);
 				
-				// Test Center Pixel
 				Predicate<Color> isGray = (c) -> c.getRed() > 180 && c.getGreen() > 180 && c.getBlue() > 180;
 				int rgb = img.getRGB(xTestValue, yTestValue);
 				
