@@ -3,11 +3,28 @@ package testUtilities;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 
 import Utilities.TestRoot;
 
 public class TestCommons extends TestRoot {
 
+	@Before
+	public void before () {
+		if (!setup()) {
+			Assert.fail("Could not load driver");
+		}
+	}
+	
+	// Replaces @After's quit() method, takes screenshot of last screen if test
+	// fails
+	@Rule
+	public ScreenshotRule screenshot = new ScreenshotRule();
+	
+	@Rule
+	public RetryRule retry = new RetryRule(1);
+	
 	public static void checkMainMenuItems () {
 		List<String> actualMenuItemTextList = Pages.Menu.getAllItemTextOnScreen(driver);
 		Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());

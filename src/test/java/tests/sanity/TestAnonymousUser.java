@@ -3,8 +3,6 @@ package tests.sanity;
 import java.util.function.BiConsumer;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -18,21 +16,6 @@ import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.TestCommons;
 
 public class TestAnonymousUser extends TestCommons {
-
-	@Before
-	public void before () {
-		if (!setup()) {
-			Assert.fail("Could not load driver");
-		}
-	}
-	
-	// Replaces @After's quit() method, takes screenshot of last screen if test
-	// fails
-	@Rule
-	public ScreenshotRule screenshot = new ScreenshotRule();
-	
-	@Rule
-	public RetryRule retry = new RetryRule(1);
 	
 	@Test
 	@Category(Sanity.class)
