@@ -1,5 +1,7 @@
 package tests.sanity;
 
+import java.util.Random;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -98,8 +100,9 @@ public class TestSettings extends TestRoot {
 	@Test
 	@Category(Sanity.class)
 	public void testUpdatePassword () {
+		Random random = new Random();
 		String email;
-		String newPassword = "abc123";
+		String newPassword = TestRoot.IHEARTPASSWORD + random.nextInt(1000);
 		
 		Assert.assertTrue("Unable to sign up!", Page.signUp(driver, false).noErrors());
 		Assert.assertTrue("Unable to tap options button!", ConnectionGate.tapOptionsButton(driver).noErrors());
