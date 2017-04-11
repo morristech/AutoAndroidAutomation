@@ -45,9 +45,9 @@ public class TestCommons extends TestRoot {
 	
 	public static boolean isCommercialPlaying () {
 		int tries = 0;
-		int MAX_TRIES = 24;
+		int MAX_TRIES = 90;
 		while (tries < MAX_TRIES && !isEnabled(Pages.Player.getPlayerButton(driver, Pages.Player.PlayerButton.THUMBS))) {
-			sleep(2500);
+			sleep(500);
 			tries++;
 		}
 		return tries == MAX_TRIES;
