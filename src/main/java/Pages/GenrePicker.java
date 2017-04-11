@@ -2,11 +2,11 @@ package Pages;
 
 import org.openqa.selenium.By;
 
-import Utilities.Errors;
-import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+
+import testCommons.Errors;
 
 public class GenrePicker extends Page {
 	
@@ -66,7 +66,7 @@ public class GenrePicker extends Page {
 		
 		if (shouldClick) {
 			String errorMessage = String.format("Could not %s genre element with row: %d and column: %d!", mode.toString(), row, column);
-			errs.add(d, TestRoot.click(d, getGenreItem(d, row, column), errorMessage));
+			errs.add(d, click(d, getGenreItem(d, row, column), errorMessage));
 		}
 		
 		return errs;

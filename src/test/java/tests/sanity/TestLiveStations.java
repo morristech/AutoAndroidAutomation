@@ -5,32 +5,15 @@ import java.util.List;
 import java.util.function.IntConsumer;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import Utilities.TestRoot;
-import suites.CategoryInterfaces.Sanity;
+import testUtilities.TestCommons;
+import testUtilities.CategoryInterfaces.Sanity;
 
-public class TestLiveStations extends TestRoot {
+public class TestLiveStations extends TestCommons {
 
 	private static String cannotTestErrorMessage = "Cannot test %s due to commercials or lack of meta-data.";
-	
-	@Before
-	public void before () {
-		if (!setup()) {
-			Assert.fail("Could not load driver");
-		}
-	}
-	
-	// Replaces @After's quit() method, takes screenshot of last screen if test
-	// fails
-	@Rule
-	public ScreenshotRule screenshot = new ScreenshotRule();
-	
-	@Rule
-	public RetryRule retry = new RetryRule(1);
 	
 	@Test
 	@Category(Sanity.class)
@@ -200,35 +183,5 @@ public class TestLiveStations extends TestRoot {
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
 		Assert.assertTrue("Unable to tap NEAR YOU!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());
 	}
-	
-	private static void checkMainMenuItems () {
-		List<String> actualMenuItemTextList = Pages.Menu.getAllItemTextOnScreen(driver);
-		Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-		actualMenuItemTextList.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		int numMissing = getNumOfMissingItems(Pages.Menu.getMainMenuItemTextList(), actualMenuItemTextList);
-		Assert.assertEquals(String.format("Missing %d menu items!", numMissing), 0, numMissing);
-	}
-	
-	/**
-	 * Returns the number of items in expected that is not in actual.
-	 * E.g. Expected = [A, B], Actual = [A, C, D], Return value = 1 b/c B is not in actual. 
-	 */
-	private static int getNumOfMissingItems (List<String> expected, List<String> actual) {
-		return (int) expected.stream()
-		                     .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
-		                     .count();
-	}
-	
-	private static boolean isCommercialPlaying () {
-		int tries = 0;
-		int MAX_TRIES = 24;
-		while (tries < MAX_TRIES && !isEnabled(Pages.Player.getPlayerButton(driver, Pages.Player.PlayerButton.THUMBS))) {
-			Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
-			sleep(5000);
-			tries++;
-			Assert.assertTrue("Cannot tap close menu button!", Pages.Menu.tapMenuCloseButton(driver).noErrors());
-		}
-		return tries == MAX_TRIES;
-	};
 	
 }
