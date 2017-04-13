@@ -1,19 +1,16 @@
 package tests.sanity;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.IntConsumer;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import Pages.Page;
 import testUtilities.TestCommons;
 import testUtilities.CategoryInterfaces.Sanity;
 
 public class TestLiveStations extends TestCommons {
-
-	private static String cannotTestErrorMessage = "Cannot test %s due to commercials or lack of meta-data.";
 	
 	@Test
 	@Category(Sanity.class)
@@ -47,7 +44,7 @@ public class TestLiveStations extends TestCommons {
 	
 	@Test
 	@Category(Sanity.class)
-	public void testByGenre () {
+	public void testByGenreForLiveStations () {
 		// Logic for getting to Live Radio
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
@@ -77,24 +74,8 @@ public class TestLiveStations extends TestCommons {
 	
 	@Test
 	@Category(Sanity.class)
-	public void testPreviewFeaturesLiveStations () {
-		testPathToNearYou();
-		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 1).noErrors());
-		
-		// Player
-		Assert.assertTrue("Unable to tap previous button!", Pages.Player.tapPreviousButton(driver).noErrors());
-		Assert.assertTrue("Unable to tap return to player button!", Pages.Player.tapReturnToPlayerButton(driver).noErrors());
-		Assert.assertFalse("Return to player button is visible for some reason!", isVisible(Pages.Player.getReturnToPlayerButton(driver)));
-		Assert.assertTrue("Unable to tap next button!", Pages.Player.tapNextButton(driver).noErrors());
-		Assert.assertTrue("Unable to tap return to player button!", Pages.Player.tapReturnToPlayerButton(driver).noErrors());
-		Assert.assertFalse("Return to player button is visible for some reason!", isVisible(Pages.Player.getReturnToPlayerButton(driver)));
-	}
-	
-	@Test
-	@Category(Sanity.class)
-	public void testScanLiveStations () {
-		testPathToNearYou();
-		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 0).noErrors());
+	public void testScanForLiveStations () {
+		testPathToNearYouAndPlayItem(SignInType.LOG_IN);
 		
 		String stationNameBeforeScan = Pages.Player.getPlayerMetaLineText(driver, 1);
 		Assert.assertTrue("Unable to tap scan button!", Pages.Player.tapPlayerButton(driver, Pages.Player.PlayerButton.SCAN).noErrors());
@@ -104,57 +85,26 @@ public class TestLiveStations extends TestCommons {
 	
 	@Test
 	@Category(Sanity.class)
-	public void testCreateStation () {
-		testPathToNearYou();
-		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 0).noErrors());
-		
-		if (!isCommercialPlaying()) {
-			Assert.assertTrue("Unable to tap Create Station", Pages.Player.tapPlayerButton(driver, Pages.Player.PlayerButton.CREATE_STATION).noErrors());
-			String stationName = Pages.Player.getCreateStationMessageText(driver);
-			Assert.assertTrue("Unable to tap Yes button!", Pages.Player.tapRedDialogButton(driver).noErrors()); // Yes button
-			String actualStationCreated = Pages.Player.getPlayerMetaLineText(driver, 1);
-			Assert.assertTrue("Created wrong station.", stationName.contains(actualStationCreated));
-		}
-		else {
-			System.out.println(String.format(cannotTestErrorMessage, "Create Station"));
-		}
+	public void testPreviewFeaturesForLiveStations () {
+		testPreviewFeatures(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
 	@Category(Sanity.class)
-	public void testThumbUpAndDown () {
-		testPathToNearYou();
-		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 0).noErrors());
-		
-		if (!isCommercialPlaying()) {
-			Assert.assertTrue("Unable to thumbs up song!", Pages.Player.tapThumbUpOrDownButton(driver, Pages.Player.Thumb.UP).noErrors());
-			sleep(5000); // wait for modal to disappear
-		}
-		else {
-			System.out.println(String.format(cannotTestErrorMessage, "Thumbs Up"));
-		}
-		
-		if (!isCommercialPlaying()) {
-			Assert.assertTrue("Unable to thumbs down song!", Pages.Player.tapThumbUpOrDownButton(driver, Pages.Player.Thumb.DOWN).noErrors());
-		}
-		else {
-			System.out.println(String.format(cannotTestErrorMessage, "Thumbs Down"));
-		}
+	public void testCreateStationForLiveStations () {
+		testCreateStation(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
 	@Category(Sanity.class)
-	public void testAddAndRemoveFromFavorites () {
-		testPathToNearYou();
-		int itemIndex = 0;
-		String stationName = Pages.Menu.getItemTitle(driver, itemIndex);
-		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, itemIndex).noErrors());
-		
-		// Favorite our station
-		Assert.assertTrue("Cannot tap favorite button!", Pages.Player.tapFavoriteButton(driver).noErrors());
-		
-		IntConsumer goToFavorites = time -> {
-			sleep(time); // wait for modal to disappear
+	public void testThumbsForLiveStations () {
+		testThumbs(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN), TestType.LIVE_STATIONS);
+	}
+	
+	@Test
+	@Category(Sanity.class)
+	public void testFavoritesForLiveStations () {
+		Runnable goToFavorites = () -> {
 			Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
 			Assert.assertTrue("Unable to tap menu back button!", Pages.Menu.tapMenuBackButton(driver).noErrors());
 			Assert.assertTrue("Unable to tap menu back button!", Pages.Menu.tapMenuBackButton(driver).noErrors());
@@ -162,26 +112,21 @@ public class TestLiveStations extends TestCommons {
 			Assert.assertTrue("Unable to tap favorites menu item!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.FAVORITES).noErrors());
 		};
 		
-		// Verify that the station is in favorites
-		goToFavorites.accept(5000);
-		int numMissing = getNumOfMissingItems(Arrays.asList(stationName), Pages.Menu.getAllItemTextOnScreen(driver));
-		Assert.assertEquals(String.format("%s not saved in favorites!", stationName), 0, numMissing);
-		Assert.assertTrue("Unable to tap menu close button!", Pages.Menu.tapMenuCloseButton(driver).noErrors());
-		
-		// Unfavorite our station
-		Assert.assertTrue("Cannot tap favorite button!", Pages.Player.tapFavoriteButton(driver).noErrors());
-		
-		// Verify that the station is not in favorites
-		goToFavorites.accept(5000);
-		Assert.assertTrue("Cannot tap no favorites continue button!", Pages.Menu.tapWhiteDialogButton(driver).noErrors()); // Continue button
+		testFavorites(() -> testPathToNearYouAndPlayItem(SignInType.SIGN_UP), goToFavorites);
 	}
 	
-	private static void testPathToNearYou () {
-		Assert.assertTrue("Unable to sign up!", Pages.SignUpLogInGate.signUp(driver, true).noErrors());
+	private static void testPathToNearYouAndPlayItem (SignInType type) {
+		if (type == SignInType.LOG_IN) {
+			Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
+		}
+		else {
+			Assert.assertTrue("Unable to sign up!", Page.signUp(driver, true).noErrors());
+		}
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap next!", Pages.Menu.tapNextButton(driver).noErrors());
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
 		Assert.assertTrue("Unable to tap NEAR YOU!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());
+		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 1).noErrors());
 	}
 	
 }

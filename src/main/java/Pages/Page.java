@@ -31,7 +31,10 @@ public class Page extends TestRoot {
 	private static String whiteDialogButtonId = Page.connectId + "button_white_top";
 
 	private static String cardItemId = Page.connectId + "card_%d_%d";
+	
+	
 	private static String customDialogContainerId = Page.connectId + "custom_dialog_container";
+	private static String customDialogTextDescriptionId = Page.connectId  + "text_desc";
 	
 	/*******************/
 	/* *** Getters *** */
@@ -170,6 +173,10 @@ public class Page extends TestRoot {
 		waitForVisible(d, by, 7);
 		boolean result = waitForNotVisible(d, by, 7);
 		return result;
+	}
+	
+	public static String getCustomDialogText (AndroidDriver<MobileElement> d) {
+		return getText(waitForVisible(d, By.id(customDialogTextDescriptionId), 7));
 	}
 	
 	
