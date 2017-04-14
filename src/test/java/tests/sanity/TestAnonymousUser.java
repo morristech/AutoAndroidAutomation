@@ -13,9 +13,9 @@ import Pages.Page;
 import Pages.Player;
 import Pages.SignUpLogInGate;
 import testUtilities.CategoryInterfaces.Sanity;
-import testUtilities.TestCommons;
+import testUtilities.TestUtilities;
 
-public class TestAnonymousUser extends TestCommons {
+public class TestAnonymousUser extends TestUtilities {
 	
 	@Test
 	@Category(Sanity.class)

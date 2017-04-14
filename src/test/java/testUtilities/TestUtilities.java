@@ -1,9 +1,11 @@
 package testUtilities;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,7 +18,7 @@ import Pages.Player.PlayerButton;
 import Pages.Player.Thumb;
 import Utilities.TestRoot;
 
-public class TestCommons extends TestRoot {
+public class TestUtilities extends TestRoot {
 
 	public static String cannotTestErrorMessage = "Cannot test %s due to commercials or lack of meta-data.";
 	
@@ -49,11 +51,14 @@ public class TestCommons extends TestRoot {
 	}
 	
 	public static void checkMainMenuItems () {
-		List<String> actualMenuItemTextList = Pages.Menu.getAllItemTextOnScreen(driver);
+		List<String> expectedItems = Menu.getMainMenuItemTextList();
+		List<String> actualItems = Pages.Menu.getAllItemTextOnScreen(driver);
 		Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-		actualMenuItemTextList.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		int numMissing = getNumOfMissingItems(Pages.Menu.getMainMenuItemTextList(), actualMenuItemTextList);
-		Assert.assertEquals(String.format("Missing %d menu items!", numMissing), 0, numMissing);
+		actualItems.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
+		
+		int numMissing = getNumOfMissingItems(expectedItems, actualItems);
+		String errorMessage = String.format("Missing %d menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
+		Assert.assertEquals(errorMessage, 0, numMissing);
 	}
 	
 	public void testPreviewFeatures (Runnable playStation) {
@@ -104,11 +109,12 @@ public class TestCommons extends TestRoot {
 	 */
 	public void testThumbs (Runnable playStation, TestType type) {
 		playStation.run();
+		Set<Thumb> thumbs = EnumSet.allOf(Thumb.class);
 		
-		BiConsumer<Thumb, TestType> testThumb = (option, t) -> {
+		for (Thumb option : thumbs) {
 				if (!isCommercialPlaying()) {
 					String expectedText = "";
-					switch (t) {
+					switch (type) {
 						case ARTIST_STATIONS:	
 							expectedText = (option == Thumb.UP) ? "You like this song!\nWe'll try to play more like it." : "You dislike this song!\nWe won't play it again on this station.";
 							break;
@@ -129,10 +135,7 @@ public class TestCommons extends TestRoot {
 				else {
 					System.out.println(String.format(cannotTestErrorMessage, option.toString()));
 				}
-		};
-		
-		testThumb.accept(Thumb.UP, type);
-		testThumb.accept(Thumb.DOWN, type);
+		}
 	}
 	
 	/**
@@ -182,6 +185,17 @@ public class TestCommons extends TestRoot {
 		return (int) expected.stream()
 		                     .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
 		                     .count();
+	}
+	
+	/**
+	 * Returns the string of items in expected that is not in actual.
+	 * E.g. Expected = [A, B, E], Actual = [A, C, D]
+	 * Return value = "[B, E]"
+	 */
+	public static String getMissingItemsString (List<String> expected, List<String> actual) {
+		return expected.stream()
+		               .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
+		               .collect(Collectors.joining(", ", "[ ", " ]"));
 	}
 	
 	public static boolean isCommercialPlaying () {
