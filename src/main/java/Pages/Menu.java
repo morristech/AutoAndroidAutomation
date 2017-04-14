@@ -212,6 +212,7 @@ public class Menu extends Page {
 	}
 	
 	public static List<String> getAllItemTextOnScreen (AndroidDriver<MobileElement> d) {
+		sleep(500); // Adding this as a just-in-case. Sometimes, we don't seem to get all the elements.
 		return findElements(d, By.id(menuItemTitle)).stream()
 		                                            .map(item -> getText(item))
 		                                            .collect(Collectors.toList());
