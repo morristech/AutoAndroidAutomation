@@ -61,12 +61,7 @@ public class TestLiveStations extends TestUtilities {
 		// Check if By Genre items are all present
 		Assert.assertTrue("Unable to tap By Genre!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.BY_GENRE).noErrors());
 		List<String> expectedByGenreItems = Pages.Menu.getLiveRadioByGenreMenuItemTextList();
-		List<String> actualByGenreItems = Pages.Menu.getAllItemTextOnScreen(driver);
-		int MAX_PAGES = 4;
-		for (int numPages = 0; numPages < MAX_PAGES; numPages++) {
-			Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-			actualByGenreItems.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		}
+		List<String> actualByGenreItems = getAllItemTextOnMultiplePages(driver, 5);
 		int numMissing = getNumOfMissingItems(expectedByGenreItems, actualByGenreItems);
 		String errorMessage = String.format("Missing %d By Genre items: %s", numMissing, getMissingItemsString(expectedByGenreItems, actualByGenreItems));
 		Assert.assertEquals(errorMessage, 0, numMissing);

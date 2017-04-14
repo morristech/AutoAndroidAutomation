@@ -119,6 +119,34 @@ public class Menu extends Page {
 		}
 	}
 	
+	public enum PodcastItem {
+		FEATURED("Featured"),
+		COMEDY("Comedy"),
+		FOOD("Food"),
+		BUSINESS_AND_FINANCE("Business & Finance"),
+		ENTERTAINMENT("Entertainment"),
+		GAMES_AND_HOBBIES("Games & Hobbies"),
+		HEALTH("Health"),
+		PARANORMAL("Paranormal"),
+		RELATIONSHIPS("Relationships"),
+		NEWS("News"),
+		POLITICS("Politics"),
+		SCIENCE_AND_TECHNOLOGY("Science & Technology"),
+		SOCIETY_AND_CULTURE("Society & Culture"),
+		SPORTS("Sports"),
+		SPIRITUALITY("Spirituality");
+		
+		private String displayName;
+		
+		private PodcastItem (String displayName) {
+			this.displayName = displayName;
+		}
+		
+		public String toString () {
+			return displayName;
+		}
+	}
+	
 	/********************/
 	/* *** Elements *** */
 	/********************/
@@ -239,6 +267,10 @@ public class Menu extends Page {
 	
 	public static List<String> getArtistRadioByGenreMenuItemTextList () {
 		return getMenuItemTextList(ArtistRadioByGenreMenuItem.class);
+	}
+	
+	public static List<String> getPodcastMenuItemTextList () {
+		return getMenuItemTextList(PodcastItem.class);
 	}
 	
 }

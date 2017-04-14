@@ -29,12 +29,7 @@ public class TestArtistStation extends TestUtilities {
 		// Test Artist Radio By Genre Items
 		Assert.assertTrue("Unable to tap artist Radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());
 		List<String> expectedItems = Pages.Menu.getArtistRadioByGenreMenuItemTextList();
-		List<String> actualItems = Pages.Menu.getAllItemTextOnScreen(driver);
-		int MAX_PAGES = 2;
-		for (int numPages = 0; numPages < MAX_PAGES; numPages++) {
-			Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-			actualItems.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		}
+		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 3);
 		int numMissing = TestLiveStations.getNumOfMissingItems(expectedItems, actualItems);
 		String errorMessage = String.format("Missing %d By Genre menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
 		Assert.assertEquals(errorMessage, 0, numMissing);

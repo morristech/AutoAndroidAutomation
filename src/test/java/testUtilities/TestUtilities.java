@@ -17,6 +17,8 @@ import Pages.Player;
 import Pages.Player.PlayerButton;
 import Pages.Player.Thumb;
 import Utilities.TestRoot;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 
 public class TestUtilities extends TestRoot {
 
@@ -43,7 +45,8 @@ public class TestUtilities extends TestRoot {
 	
 	public enum TestType {
 		LIVE_STATIONS,
-		ARTIST_STATIONS;
+		ARTIST_STATIONS,
+		PODCASTS;
 	}
 	
 	public enum SignInType {
@@ -52,9 +55,7 @@ public class TestUtilities extends TestRoot {
 	
 	public static void checkMainMenuItems () {
 		List<String> expectedItems = Menu.getMainMenuItemTextList();
-		List<String> actualItems = Pages.Menu.getAllItemTextOnScreen(driver);
-		Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-		actualItems.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
+		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 2);
 		
 		int numMissing = getNumOfMissingItems(expectedItems, actualItems);
 		String errorMessage = String.format("Missing %d menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
@@ -123,6 +124,10 @@ public class TestUtilities extends TestRoot {
 							expectedText = (option == Thumb.UP) ? "Glad you like it!\nWe'll let our DJs know." : "Thanks for the feedback.\nWe'll let our DJs know.";
 							break;
 							
+						case PODCASTS:
+							expectedText = (option == Thumb.UP) ? "Glad you like this show.\nWe appreciate your feedback." : "Thanks for letting us know.\nWe appreciate your feedback.";
+							break;
+							
 						default:
 							break;
 					}
@@ -176,6 +181,21 @@ public class TestUtilities extends TestRoot {
 	/*******************/
 	/* *** Utility *** */
 	/*******************/
+	
+	/**
+	 * Assumes that you are beginning on the first page.
+	 * @param d
+	 * @param pages, total number of pages
+	 * @return
+	 */
+	public static List<String> getAllItemTextOnMultiplePages (AndroidDriver<MobileElement> d, int totalPages) {
+		List<String> actualItems = Pages.Menu.getAllItemTextOnScreen(d);
+		for (int numPages = 0; numPages < totalPages - 1; numPages++) {
+			Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(d).noErrors());
+			actualItems.addAll(Pages.Menu.getAllItemTextOnScreen(d));
+		}
+		return actualItems;
+	}
 	
 	/**
 	 * Returns the number of items in expected that is not in actual.
