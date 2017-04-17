@@ -15,7 +15,8 @@ import testUtilities.CategoryInterfaces.Sanity;
 	tests.sanity.TestSignUpLogIn.class,
 	tests.sanity.TestLiveStations.class,
 	tests.sanity.TestAnonymousUser.class,
-	tests.sanity.TestArtistStation.class
+	tests.sanity.TestArtistStation.class,
+	tests.sanity.TestPodcasts.class
 })
 
 public class SanityTests {
