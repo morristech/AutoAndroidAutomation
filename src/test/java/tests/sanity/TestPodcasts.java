@@ -46,7 +46,7 @@ public class TestPodcasts extends TestUtilities {
 		for (int i = 0; i < MAX_TRIES; i++) {
 			Assert.assertTrue("Unable to tap skip!", Player.tapPlayerButton(driver, PlayerButton.SKIP).noErrors());
 			String popUpText = Page.getCustomDialogText(driver);
-			Assert.assertTrue(String.format("Unexpected popup with text: %s", popUpText), Page.getCustomDialogText(driver).length() == 0);
+			Assert.assertTrue(String.format("Unexpected popup with text: %s", popUpText), popUpText.length() == 0);
 		}
 	}
 	
