@@ -7,9 +7,9 @@ import org.junit.experimental.categories.Category;
 import Pages.Page;
 import Utilities.TestRoot;
 import testUtilities.CategoryInterfaces.Sanity;
-import testUtilities.TestCommons;
+import testUtilities.TestUtilities;
 
-public class TestSignUpLogIn extends TestCommons {
+public class TestSignUpLogIn extends TestUtilities {
 	
 	@Test
 	@Category(Sanity.class)

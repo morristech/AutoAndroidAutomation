@@ -10,9 +10,9 @@ import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
 import Utilities.TestRoot;
 import testUtilities.CategoryInterfaces.Sanity;
-import testUtilities.TestCommons;
+import testUtilities.TestUtilities;
 
-public class TestSettings extends TestCommons {
+public class TestSettings extends TestUtilities {
 	
 	@Test
 	@Category(Sanity.class)

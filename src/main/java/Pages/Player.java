@@ -1,6 +1,16 @@
 package Pages;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
+import javax.imageio.ImageIO;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 
 import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
@@ -12,11 +22,19 @@ import testCommons.Errors;
 public class Player extends Page {
 	
 	public enum PlayerButton {
-		SKIP(0), SCAN(0), THUMBS(1), CREATE_STATION(2), DISCOVERY(3);
+		SKIP("Skip", 0),
+		SCAN("Scan", 0),
+		THUMBS("Thumbs", 1),
+		CREATE_STATION("Create Station", 2),
+		MINUS_TEN_SECONDS("-10 Seconds", 2),
+		DISCOVERY("Discovery", 3),
+		PLUS_THIRTY_SECONDS("+30 Seconds", 3);
 	
+		private final String mDisplayName;
 		private final int mPosition;
 		
-		private PlayerButton (int position) {
+		private PlayerButton (String displayName, int position) {
+			mDisplayName = displayName;
 			mPosition = position;
 		}
 		
@@ -25,7 +43,7 @@ public class Player extends Page {
 		}
 		
 		public String toString () {
-			return name().replace('_', ' ').replaceAll("AND", "&");
+			return mDisplayName;
 		}
 		
 	}
@@ -76,6 +94,7 @@ public class Player extends Page {
 	private static String varietyButtonId = Page.connectId + "variety_btn_%d";
 	private static String createStationTextId = Page.connectId + "text_title";
 	private static String playButtonID = Page.connectId + "play_pause_btn";
+	private static String songProgressBarId = Page.connectId + "song_progress_bar";
 	
 	// Preview
 	private static String previewStationCoverImageId = Page.connectId + "station_image";
@@ -134,6 +153,10 @@ public class Player extends Page {
 	
 	public static AndroidElement getPlayButton (AndroidDriver<MobileElement> d) {
 		return waitForVisible(d, By.id(playButtonID), 7);
+	}
+	
+	public static AndroidElement getSongProgressBar (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(songProgressBarId), 7);
 	}
 	
 	
@@ -220,6 +243,131 @@ public class Player extends Page {
 	
 	public static String getPreviewStationName (AndroidDriver<MobileElement> d) {
 		return getText(getPreviewStationNameTextView(d));
+	}
+	
+	public static boolean isCustomPlaying (AndroidDriver<MobileElement> d, int delay) {
+		int numBefore = getNumOfRedPixelsOnProgressBar(d);
+		sleep(delay);
+		int numAfter = getNumOfRedPixelsOnProgressBar(d);
+		return numAfter > numBefore;
+	}
+	
+	/**
+	 * Technically, it only gives you the number of red pixels on the longest side in order to save computation time.
+	 * 
+	 * Example: 
+	 * 
+	 * Progress bar looks like this:
+	 * 
+	 * R R R R R X X X X X
+	 * R R R R R X X X X X
+	 * R R R R R X X X X X
+	 * 
+	 * After a while, it looks like this:
+	 * 
+	 * R R R R R R R X X X
+	 * R R R R R R R X X X
+	 * R R R R R R R X X X
+	 * 
+	 * We only really need to look at the longest side (top row) to know that the player is currently playing since
+	 * it went from 5 reds to 7 reds.
+	 * 
+	 */
+	
+	public static int getNumOfRedPixelsOnProgressBar (AndroidDriver<MobileElement> d) {
+		AndroidElement progressBar = getSongProgressBar(d);
+		int numOfRedPixels = 0;
+		
+		if (isVisible(progressBar)) {
+			int x = progressBar.getLocation().getX();
+			int y = progressBar.getLocation().getY();
+			int width = progressBar.getSize().getWidth();
+			int height = progressBar.getSize().getHeight();
+			
+			int screenHeight = d.manage().window().getSize().getHeight();
+			
+			sleep(500); // Wait a while before taking the screenshot because tapping the button can be a bit slow.
+			// Create the file and store the screenshot
+			File tempScreenshot = ((TakesScreenshot) d).getScreenshotAs(OutputType.FILE);
+			
+			try {
+				BufferedImage screenShot = ImageIO.read(tempScreenshot);
+				BufferedImage img;
+				
+				int subScreenShotLengthOfLongestSide;
+				boolean isScreenShotPortrait;
+				
+				// Portrait mode screenshot
+				if (screenShot.getHeight() > screenShot.getWidth()) {
+				
+					/* 
+					 * Subimage method requires the x and y values for the upper-left corner.
+					 * However, because the auto app is locked in landscape mode only and also because the screenshot taken
+					 * is always in portrait mode, we need new coordinates to reflect this change.
+					 * 
+					 * The landscape bottom-left corner will be the portrait mode's top-right corner.
+					 * 
+					 * Example:
+					 * 
+					 * Landscape Mode:
+					 * 
+					 *    0 1 2 3 4 5 6 7             (X,Y)
+					 *  0 X X X X X X A X         A = (6,0)
+					 *  1 X X X X X X B X         B = (6,1)
+					 *  2 X X X X X X C X         C = (6,2)
+					 *  3 X X X X X X X X
+					 *  
+					 *  Portrait Mode:
+					 *  
+					 *    0 1 2 3 
+					 *  0 X X X X
+					 *  1 X X X X 
+					 *  2 X X X X
+					 *  3 X X X X                     (X,Y)
+					 *  4 X X X X                 A = (3,6)
+					 *  5 X X X X                 B = (2,6)
+					 *  6 X C B A                 C = (1,6)
+					 *  7 X X X X
+					 *  
+					 *  We need an algorithm that when given A(6,0) in landscape will give us C(1,6) in portrait.
+					 *  In our example, 
+					 *  screenheight (landscape) = 4
+					 *  height of object (landscape) = 3.
+					 *  A's X/width = 6
+					 *  A's Y/height = 0
+					 *  
+					 *  C's X (in portrait) = 4 - (0 + 3) = 1
+					 *  C's Y (in portrait) = A's X (in landscape) = 6
+					 *  The height becomes the new width and vice versa because of the rotation.
+					 */
+					img = screenShot.getSubimage(screenHeight - (y + height), x, height, width);
+					subScreenShotLengthOfLongestSide = img.getHeight();
+					isScreenShotPortrait = true;
+				}
+				// Landscape mode screenshot
+				else {
+					img = screenShot.getSubimage(x, y, width, height);
+					subScreenShotLengthOfLongestSide = img.getWidth();
+					isScreenShotPortrait = false;
+				}
+                
+				Predicate<Color> isRed = (c) -> c.getRed() > 200 && c.getGreen() < 100 && c.getBlue() < 100;
+				
+				numOfRedPixels = (int) IntStream.range(0, subScreenShotLengthOfLongestSide - 1)
+				                                .map(i -> (isScreenShotPortrait) ? img.getRGB(3, i) : img.getRGB(i, 3))
+				                                .filter(rgb -> isRed.test(new Color(rgb)))
+				                                .count();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			finally {
+				tempScreenshot.delete();
+			}
+		}
+		
+		return numOfRedPixels;
 	}
 
 }

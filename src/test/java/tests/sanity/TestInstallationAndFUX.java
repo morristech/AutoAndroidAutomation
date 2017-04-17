@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import testUtilities.CategoryInterfaces.Sanity;
-import testUtilities.TestCommons;
+import testUtilities.TestUtilities;
 
-public class TestInstallationAndFUX extends TestCommons{
+public class TestInstallationAndFUX extends TestUtilities{
 	
 	@Test
 	@Category(Sanity.class)

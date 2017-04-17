@@ -6,16 +6,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import Pages.Menu;
 import Pages.Page;
-import testUtilities.TestCommons;
+import testUtilities.TestUtilities;
 import testUtilities.CategoryInterfaces.Sanity;
 
-public class TestLiveStations extends TestCommons {
+public class TestLiveStations extends TestUtilities {
 	
 	@Test
 	@Category(Sanity.class)
-	public void testNearYou () {
-		// Logic for getting to Live Radio
+	public void testLiveStationMainMenuItems () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
 		checkMainMenuItems();
@@ -25,9 +25,14 @@ public class TestLiveStations extends TestCommons {
 		List<String> expectedLiveRadioItems = Pages.Menu.getLiveRadioMenuItemTextList();
 		List<String> actualLiveRadioItems = Pages.Menu.getAllItemTextOnScreen(driver);
 		int numMissing = getNumOfMissingItems(expectedLiveRadioItems, actualLiveRadioItems);
-		Assert.assertEquals(String.format("Missing %d menu items!", numMissing), 0, numMissing);
-		
-		// Near You
+		String errorMessage = String.format("Missing %d menu items: %s", numMissing, getMissingItemsString(expectedLiveRadioItems, actualLiveRadioItems));
+		Assert.assertEquals(errorMessage, 0, numMissing);
+	}
+	
+	@Test
+	@Category(Sanity.class)
+	public void testNearYou () {
+		testPathToLiveRadio();
 		Assert.assertTrue("Unable to tap Near You!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());
 		String stationName = Pages.Menu.getItemTitle(driver, 1);
 		Assert.assertTrue(String.format("Unable to tap station %s.", stationName), Pages.Menu.tapItem(driver, 1).noErrors());
@@ -37,37 +42,29 @@ public class TestLiveStations extends TestCommons {
 							stationName.equalsIgnoreCase(stationCurrentlyPlaying));
 	}
 	
-	// TODO: Create this test after locations page has been implemented.
+	@Test
+	@Category(Sanity.class)
 	public void testByLocation () {
-		
+		testPathToLiveRadio();
+		Assert.assertTrue("Unable to tap By Location!", Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.BY_LOCATION).noErrors());
+		Assert.assertTrue("Unable to tap first item", Menu.tapItem(driver, 0).noErrors());
+		Assert.assertTrue("Unable to tap state item!", Menu.tapItem(driver, 0, 0).noErrors());
+		Assert.assertTrue("Unable to tap city item!", Menu.tapItem(driver, 0, 0).noErrors());
+		Assert.assertTrue("Unable to tap station item!", Menu.tapItem(driver, 0).noErrors());
 	}
 	
 	@Test
 	@Category(Sanity.class)
 	public void testByGenreForLiveStations () {
-		// Logic for getting to Live Radio
-		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
-		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
-		Assert.assertTrue("Unable to tap next button!", Pages.Player.tapNextButton(driver).noErrors());
-		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
-		
-		// Check if Live Radio items are all present
-		List<String> expectedLiveRadioItems = Pages.Menu.getLiveRadioMenuItemTextList();
-		List<String> actualLiveRadioItems = Pages.Menu.getAllItemTextOnScreen(driver);
-		int numMissing = getNumOfMissingItems(expectedLiveRadioItems, actualLiveRadioItems);
-		Assert.assertEquals(String.format("Missing %d menu items!", numMissing), 0, numMissing);
+		testPathToLiveRadio();
 		
 		// Check if By Genre items are all present
 		Assert.assertTrue("Unable to tap By Genre!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.BY_GENRE).noErrors());
 		List<String> expectedByGenreItems = Pages.Menu.getLiveRadioByGenreMenuItemTextList();
-		List<String> actualByGenreItems = Pages.Menu.getAllItemTextOnScreen(driver);
-		int MAX_PAGES = 4;
-		for (int numPages = 0; numPages < MAX_PAGES; numPages++) {
-			Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-			actualByGenreItems.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		}
-		numMissing = getNumOfMissingItems(expectedByGenreItems, actualByGenreItems);
-		Assert.assertEquals(String.format("Missing %d By Genre menu items!", numMissing), 0, numMissing);
+		List<String> actualByGenreItems = getAllItemTextOnMultiplePages(driver, 5);
+		int numMissing = getNumOfMissingItems(expectedByGenreItems, actualByGenreItems);
+		String errorMessage = String.format("Missing %d By Genre items: %s", numMissing, getMissingItemsString(expectedByGenreItems, actualByGenreItems));
+		Assert.assertEquals(errorMessage, 0, numMissing);
 		
 		Assert.assertTrue("Unable to tap EDM", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioByGenreMenuItem.EDM).noErrors());
 	}
@@ -127,6 +124,13 @@ public class TestLiveStations extends TestCommons {
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
 		Assert.assertTrue("Unable to tap NEAR YOU!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());
 		Assert.assertTrue("Unable to tap station", Pages.Menu.tapItem(driver, 1).noErrors());
+	}
+	
+	private static void testPathToLiveRadio () {
+		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
+		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
+		Assert.assertTrue("Unable to tap next button!", Pages.Player.tapNextButton(driver).noErrors());
+		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
 	}
 	
 }

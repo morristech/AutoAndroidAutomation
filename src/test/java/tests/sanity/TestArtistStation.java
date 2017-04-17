@@ -14,10 +14,10 @@ import Pages.Player;
 import Pages.Player.DiscoveryMode;
 import Pages.Player.PlayerButton;
 
-import testUtilities.TestCommons;
+import testUtilities.TestUtilities;
 import testUtilities.CategoryInterfaces.Sanity;
 
-public class TestArtistStation extends TestCommons {
+public class TestArtistStation extends TestUtilities {
 	
 	@Test
 	@Category(Sanity.class)
@@ -28,15 +28,11 @@ public class TestArtistStation extends TestCommons {
 		
 		// Test Artist Radio By Genre Items
 		Assert.assertTrue("Unable to tap artist Radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());
-		List<String> expectedArtistRadioByGenreItems = Pages.Menu.getArtistRadioByGenreMenuItemTextList();
-		List<String> actualArtistRadioByGenreItems = Pages.Menu.getAllItemTextOnScreen(driver);
-		int MAX_PAGES = 2;
-		for (int numPages = 0; numPages < MAX_PAGES; numPages++) {
-			Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-			actualArtistRadioByGenreItems.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		}
-		int numMissing = TestLiveStations.getNumOfMissingItems(expectedArtistRadioByGenreItems, actualArtistRadioByGenreItems);
-		Assert.assertEquals(String.format("Missing %d By Genre menu items!", numMissing), 0, numMissing);
+		List<String> expectedItems = Pages.Menu.getArtistRadioByGenreMenuItemTextList();
+		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 3);
+		int numMissing = TestLiveStations.getNumOfMissingItems(expectedItems, actualItems);
+		String errorMessage = String.format("Missing %d By Genre menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
+		Assert.assertEquals(errorMessage, 0, numMissing);
 		
 		Assert.assertTrue("Unable to tap artist radio by genre item!", Menu.tapItem(driver, 0, 0).noErrors());
 		
@@ -44,7 +40,7 @@ public class TestArtistStation extends TestCommons {
 		String artistName = Menu.getItemTitle(driver, itemIndex); 
 		Assert.assertTrue("Unable to tap artist radio item!", Menu.tapItem(driver, itemIndex).noErrors());
 		String playingArtistStation = Player.getPlayerMetaLineText(driver, 1);
-		String errorMessage = String.format("Error! Expected %s. Actual %s!", artistName, playingArtistStation);
+		errorMessage = String.format("Error! Expected %s. Actual %s!", artistName, playingArtistStation);
 		Assert.assertTrue(errorMessage, playingArtistStation.contains(artistName));
 	}
 	

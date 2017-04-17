@@ -1,9 +1,11 @@
 package testUtilities;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,8 +17,10 @@ import Pages.Player;
 import Pages.Player.PlayerButton;
 import Pages.Player.Thumb;
 import Utilities.TestRoot;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 
-public class TestCommons extends TestRoot {
+public class TestUtilities extends TestRoot {
 
 	public static String cannotTestErrorMessage = "Cannot test %s due to commercials or lack of meta-data.";
 	
@@ -41,7 +45,8 @@ public class TestCommons extends TestRoot {
 	
 	public enum TestType {
 		LIVE_STATIONS,
-		ARTIST_STATIONS;
+		ARTIST_STATIONS,
+		PODCASTS;
 	}
 	
 	public enum SignInType {
@@ -49,11 +54,12 @@ public class TestCommons extends TestRoot {
 	}
 	
 	public static void checkMainMenuItems () {
-		List<String> actualMenuItemTextList = Pages.Menu.getAllItemTextOnScreen(driver);
-		Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
-		actualMenuItemTextList.addAll(Pages.Menu.getAllItemTextOnScreen(driver));
-		int numMissing = getNumOfMissingItems(Pages.Menu.getMainMenuItemTextList(), actualMenuItemTextList);
-		Assert.assertEquals(String.format("Missing %d menu items!", numMissing), 0, numMissing);
+		List<String> expectedItems = Menu.getMainMenuItemTextList();
+		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 2);
+		
+		int numMissing = getNumOfMissingItems(expectedItems, actualItems);
+		String errorMessage = String.format("Missing %d menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
+		Assert.assertEquals(errorMessage, 0, numMissing);
 	}
 	
 	public void testPreviewFeatures (Runnable playStation) {
@@ -104,35 +110,37 @@ public class TestCommons extends TestRoot {
 	 */
 	public void testThumbs (Runnable playStation, TestType type) {
 		playStation.run();
+		Set<Thumb> thumbs = EnumSet.allOf(Thumb.class);
 		
-		BiConsumer<Thumb, TestType> testThumb = (option, t) -> {
-				if (!isCommercialPlaying()) {
-					String expectedText = "";
-					switch (t) {
-						case ARTIST_STATIONS:	
-							expectedText = (option == Thumb.UP) ? "You like this song!\nWe'll try to play more like it." : "You dislike this song!\nWe won't play it again on this station.";
-							break;
-						
-						case LIVE_STATIONS:
-							expectedText = (option == Thumb.UP) ? "Glad you like it!\nWe'll let our DJs know." : "Thanks for the feedback.\nWe'll let our DJs know.";
-							break;
-							
-						default:
-							break;
-					}
+		for (Thumb option : thumbs) {
+			if (!isCommercialPlaying()) {
+				String expectedText = "";
+				switch (type) {
+					case ARTIST_STATIONS:	
+						expectedText = (option == Thumb.UP) ? "You like this song!\nWe'll try to play more like it." : "You dislike this song!\nWe won't play it again on this station.";
+						break;
 					
-					Assert.assertTrue(String.format("Unable to thumbs %s!", option.toString()), Player.tapThumbUpOrDownButton(driver, option).noErrors());
-					String actualText = Page.getCustomDialogText(driver);
-					Assert.assertEquals(String.format("Unexpected thumbs %s dialog text: %s.", option.toString(), actualText), expectedText, actualText);
-					Page.waitForDialogToDisappear(driver);
+					case LIVE_STATIONS:
+						expectedText = (option == Thumb.UP) ? "Glad you like it!\nWe'll let our DJs know." : "Thanks for the feedback.\nWe'll let our DJs know.";
+						break;
+							
+					case PODCASTS:
+						expectedText = (option == Thumb.UP) ? "Glad you like this show.\nWe appreciate your feedback." : "Thanks for letting us know.\nWe appreciate your feedback.";
+						break;
+							
+					default:
+						break;
 				}
-				else {
-					System.out.println(String.format(cannotTestErrorMessage, option.toString()));
-				}
-		};
-		
-		testThumb.accept(Thumb.UP, type);
-		testThumb.accept(Thumb.DOWN, type);
+					
+				Assert.assertTrue(String.format("Unable to thumbs %s!", option.toString()), Player.tapThumbUpOrDownButton(driver, option).noErrors());
+				String actualText = Page.getCustomDialogText(driver);
+				Assert.assertEquals(String.format("Unexpected thumbs %s dialog text: %s.", option.toString(), actualText), expectedText, actualText);
+				Page.waitForDialogToDisappear(driver);
+			}
+			else {
+				System.out.println(String.format(cannotTestErrorMessage, option.toString()));
+			}
+		}
 	}
 	
 	/**
@@ -175,6 +183,21 @@ public class TestCommons extends TestRoot {
 	/*******************/
 	
 	/**
+	 * Assumes that you are beginning on the first page.
+	 * @param d
+	 * @param pages, total number of pages
+	 * @return
+	 */
+	public static List<String> getAllItemTextOnMultiplePages (AndroidDriver<MobileElement> d, int totalPages) {
+		List<String> actualItems = Pages.Menu.getAllItemTextOnScreen(d);
+		for (int numPages = 0; numPages < totalPages - 1; numPages++) {
+			Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(d).noErrors());
+			actualItems.addAll(Pages.Menu.getAllItemTextOnScreen(d));
+		}
+		return actualItems;
+	}
+	
+	/**
 	 * Returns the number of items in expected that is not in actual.
 	 * E.g. Expected = [A, B], Actual = [A, C, D], Return value = 1 b/c B is not in actual. 
 	 */
@@ -182,6 +205,17 @@ public class TestCommons extends TestRoot {
 		return (int) expected.stream()
 		                     .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
 		                     .count();
+	}
+	
+	/**
+	 * Returns the string of items in expected that is not in actual.
+	 * E.g. Expected = [A, B, E], Actual = [A, C, D]
+	 * Return value = "[B, E]"
+	 */
+	public static String getMissingItemsString (List<String> expected, List<String> actual) {
+		return expected.stream()
+		               .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
+		               .collect(Collectors.joining(", ", "[ ", " ]"));
 	}
 	
 	public static boolean isCommercialPlaying () {
