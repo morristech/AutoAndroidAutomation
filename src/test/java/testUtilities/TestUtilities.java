@@ -113,33 +113,33 @@ public class TestUtilities extends TestRoot {
 		Set<Thumb> thumbs = EnumSet.allOf(Thumb.class);
 		
 		for (Thumb option : thumbs) {
-				if (!isCommercialPlaying()) {
-					String expectedText = "";
-					switch (type) {
-						case ARTIST_STATIONS:	
-							expectedText = (option == Thumb.UP) ? "You like this song!\nWe'll try to play more like it." : "You dislike this song!\nWe won't play it again on this station.";
-							break;
-						
-						case LIVE_STATIONS:
-							expectedText = (option == Thumb.UP) ? "Glad you like it!\nWe'll let our DJs know." : "Thanks for the feedback.\nWe'll let our DJs know.";
-							break;
-							
-						case PODCASTS:
-							expectedText = (option == Thumb.UP) ? "Glad you like this show.\nWe appreciate your feedback." : "Thanks for letting us know.\nWe appreciate your feedback.";
-							break;
-							
-						default:
-							break;
-					}
+			if (!isCommercialPlaying()) {
+				String expectedText = "";
+				switch (type) {
+					case ARTIST_STATIONS:	
+						expectedText = (option == Thumb.UP) ? "You like this song!\nWe'll try to play more like it." : "You dislike this song!\nWe won't play it again on this station.";
+						break;
 					
-					Assert.assertTrue(String.format("Unable to thumbs %s!", option.toString()), Player.tapThumbUpOrDownButton(driver, option).noErrors());
-					String actualText = Page.getCustomDialogText(driver);
-					Assert.assertEquals(String.format("Unexpected thumbs %s dialog text: %s.", option.toString(), actualText), expectedText, actualText);
-					Page.waitForDialogToDisappear(driver);
+					case LIVE_STATIONS:
+						expectedText = (option == Thumb.UP) ? "Glad you like it!\nWe'll let our DJs know." : "Thanks for the feedback.\nWe'll let our DJs know.";
+						break;
+							
+					case PODCASTS:
+						expectedText = (option == Thumb.UP) ? "Glad you like this show.\nWe appreciate your feedback." : "Thanks for letting us know.\nWe appreciate your feedback.";
+						break;
+							
+					default:
+						break;
 				}
-				else {
-					System.out.println(String.format(cannotTestErrorMessage, option.toString()));
-				}
+					
+				Assert.assertTrue(String.format("Unable to thumbs %s!", option.toString()), Player.tapThumbUpOrDownButton(driver, option).noErrors());
+				String actualText = Page.getCustomDialogText(driver);
+				Assert.assertEquals(String.format("Unexpected thumbs %s dialog text: %s.", option.toString(), actualText), expectedText, actualText);
+				Page.waitForDialogToDisappear(driver);
+			}
+			else {
+				System.out.println(String.format(cannotTestErrorMessage, option.toString()));
+			}
 		}
 	}
 	
