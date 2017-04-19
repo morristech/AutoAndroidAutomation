@@ -16,11 +16,13 @@ import Pages.Player.PlayerButton;
 
 import testUtilities.TestUtilities;
 import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.StableSanity;
+import testUtilities.CategoryInterfaces.UnstableSanity;
 
 public class TestArtistStation extends TestUtilities {
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testNavigateAndStreamByGenre () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());		
@@ -45,7 +47,7 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testLimitedSkipsForArtistStations () {
 		goToArtistRadioAndPlayItem(SignInType.LOG_IN);
 		
@@ -62,25 +64,25 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testPreviewFeaturesForArtistStations () {
 		testPreviewFeatures(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testCreateStationForArtistStations () {
 		testCreateStation(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, StableSanity.class})
 	public void testThumbsForArtistStations () {
 		testThumbs(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN), TestType.ARTIST_STATIONS);
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testFavoritesForArtistStations () {	
 		Runnable goToFavorites = () -> {
 			Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
@@ -92,7 +94,7 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, StableSanity.class})
 	public void testDiscoveryForArtistStations () {
 		goToArtistRadioAndPlayItem(SignInType.LOG_IN);
 		Set<DiscoveryMode> discoveryModes = EnumSet.allOf(DiscoveryMode.class);

@@ -10,12 +10,14 @@ import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
 import Utilities.TestRoot;
 import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.StableSanity;
+import testUtilities.CategoryInterfaces.UnstableSanity;
 import testUtilities.TestUtilities;
 
 public class TestSettings extends TestUtilities {
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testMyLocation () {
 		Assert.assertTrue("Unable to sign up!", SignUpLogInGate.signUp(driver, false).noErrors());
 		Assert.assertTrue("Unable to tap on Options!", ConnectionGate.tapOptionsButton(driver).noErrors());
@@ -62,7 +64,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, StableSanity.class})
 	public void testResetPassword () {
 		String email;
 		
@@ -82,7 +84,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, StableSanity.class})
 	public void testUpdatePassword () {
 		Random random = new Random();
 		String email;
@@ -116,7 +118,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, StableSanity.class})
 	public void testExplicitContentOff () {
 		setExplicitContentAndGoToPop(OptionsOnOff.OFF);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
@@ -126,7 +128,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category(Sanity.class)
+	@Category({Sanity.class, StableSanity.class})
 	public void testExplicitContentOn () {
 		setExplicitContentAndGoToPop(OptionsOnOff.ON);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
