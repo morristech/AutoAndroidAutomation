@@ -64,7 +64,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Category({Sanity.class, UnstableSanity.class})
 	public void testResetPassword () {
 		String email;
 		
