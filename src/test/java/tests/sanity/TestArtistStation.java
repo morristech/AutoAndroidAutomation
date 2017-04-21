@@ -114,12 +114,7 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	private static void goToArtistRadioAndPlayItem (SignInType type) {
-		if (type == SignInType.LOG_IN) {
-			Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
-		}
-		else {
-			Assert.assertTrue("Unable to sign up!", Page.signUp(driver, true).noErrors());
-		}
+		testSignIn(type);
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());	
 		Assert.assertTrue("Unable to tap next button!", Pages.Menu.tapNextButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap artist Radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());	

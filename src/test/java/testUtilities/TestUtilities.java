@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.experimental.categories.Category;
 
 import Pages.Menu;
 import Pages.Page;
@@ -19,6 +20,9 @@ import Pages.Player.Thumb;
 import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import testUtilities.CategoryInterfaces.Sanity;
+import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.TestUtilities.SignInType;
 
 public class TestUtilities extends TestRoot {
 
@@ -60,6 +64,15 @@ public class TestUtilities extends TestRoot {
 		int numMissing = getNumOfMissingItems(expectedItems, actualItems);
 		String errorMessage = String.format("Missing %d menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
 		Assert.assertEquals(errorMessage, 0, numMissing);
+	}
+	
+	public static void testSignIn (SignInType type) {
+		if (type == SignInType.LOG_IN) {
+			Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
+		}
+		else {
+			Assert.assertTrue("Unable to sign up!", Page.signUp(driver, true).noErrors());
+		}
 	}
 	
 	public void testPreviewFeatures (Runnable playStation) {

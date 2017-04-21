@@ -38,12 +38,7 @@ public class TestRecentStation extends TestUtilities {
 	}
 	
 	private void testGoToRecentStationAndPlayItem (SignInType type) {
-		if (type == SignInType.LOG_IN) {
-			Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
-		}
-		else {
-			Assert.assertTrue("Unable to sign up!", Page.signUp(driver, true).noErrors());
-		}
+		testSignIn(type);
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());	
 		Assert.assertTrue("Unable to tap Recent Station!", Menu.tapMenuItem(driver, Menu.MainMenuItem.RECENT_STATIONS).noErrors());	
 		Assert.assertTrue("Unable to tap recent station item!", Menu.tapItem(driver, 0).noErrors());
