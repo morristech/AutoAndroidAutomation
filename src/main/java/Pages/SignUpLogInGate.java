@@ -22,16 +22,18 @@ public class SignUpLogInGate extends Page {
 	/* *** Getters *** */
 	/*******************/
 	
+	// Using 30 second waits here because slower devices might take longer to pass the splash screen.
+	
 	public static AndroidElement getSignUpButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(signUpButtonId), 7);
+		return waitForVisible(d, By.id(signUpButtonId), 30);
 	}
 	
 	public static AndroidElement getLogInButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(logInButtonId), 7);
+		return waitForVisible(d, By.id(logInButtonId), 30);
 	}
 	
 	public static AndroidElement getMaybeLaterButton (AndroidDriver<MobileElement> d) {
-		return waitForVisible(d, By.id(maybeLaterButtonId), 7);
+		return waitForVisible(d, By.id(maybeLaterButtonId), 30);
 	}
 	
 	/********************/

@@ -197,13 +197,21 @@ public class TestUtilities extends TestRoot {
 		return actualItems;
 	}
 	
+	public static boolean isSameStation (String expected, String actual) {
+		String cleanedActual = actual.trim().toLowerCase();
+		if (cleanedActual.charAt(cleanedActual.length() - 1) == '\u2026') { // '…' character
+			cleanedActual = cleanedActual.substring(0, cleanedActual.length() - 1);
+		}
+		return expected.toLowerCase().contains(cleanedActual);
+	}
+	
 	/**
 	 * Returns the number of items in expected that is not in actual.
 	 * E.g. Expected = [A, B], Actual = [A, C, D], Return value = 1 b/c B is not in actual. 
 	 */
 	public static int getNumOfMissingItems (List<String> expected, List<String> actual) {
 		return (int) expected.stream()
-		                     .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
+		                     .filter(item -> !actual.stream().anyMatch(i -> isSameStation(item, i)))
 		                     .count();
 	}
 	
@@ -214,7 +222,7 @@ public class TestUtilities extends TestRoot {
 	 */
 	public static String getMissingItemsString (List<String> expected, List<String> actual) {
 		return expected.stream()
-		               .filter(item -> !actual.stream().anyMatch(i -> i.equalsIgnoreCase(item)))
+		               .filter(item -> !actual.stream().anyMatch(i -> isSameStation(item, i)))
 		               .collect(Collectors.joining(", ", "[ ", " ]"));
 	}
 	

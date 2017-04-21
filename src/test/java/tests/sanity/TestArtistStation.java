@@ -57,9 +57,9 @@ public class TestArtistStation extends TestUtilities {
 			sleep(250);
 		}
 		
-		String dialogText = Page.getCustomDialogText(driver);
-		String expectedDialogText = "Sorry, you've reached your skip limit for this station.";
-		Assert.assertEquals(String.format("Unexpected skip limit dialog text: %s.", dialogText), expectedDialogText, dialogText);
+		String actualDialogText = Page.getCustomDialogText(driver);
+		String expectedDialogText = "skip limit"; // There seems to be multiple dialog text. They all have "skip limit" in common so let's go with that.
+		Assert.assertTrue(String.format("Unexpected skip limit dialog text: %s.", actualDialogText), actualDialogText.contains(expectedDialogText));
 		
 	}
 	
