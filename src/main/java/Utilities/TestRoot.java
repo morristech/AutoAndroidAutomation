@@ -251,14 +251,29 @@ public class TestRoot {
         		System.out.println("\n\nAttempting to restart ADB, "
         				+ "in case this is the problem. Make sure a device is attached!\n");
         		// Get ADB
-        		String adb = CommandExecutor.executeCommand("which adb", false);
-        		if (!strGood(adb)){
-        			// Use a default location
-        			adb = "/usr/local/bin/adb";
+        		String adbDefaultLocation = "/usr/local/bin/adb";
+        		String adb = CommandExecutor.executeCommand(new String [] {"bash", "-c", String.format("find %s -name adb", adbDefaultLocation)}, false);
+        		
+        		if (adbDefaultLocation.equals(adb)){
+        			System.out.println("Using adb found in default location: " + adbDefaultLocation);
+        		}
+        		
+        		else {
+        			System.out.println(String.format("adb is not in default location: %s.\nAttempting to find adb location in $HOME.", adbDefaultLocation));
+        			String unparsedOutput = CommandExecutor.executeCommand(new String [] {"bash", "-c", "find $HOME -name adb"}, false);
+        			String [] adbPaths = unparsedOutput.split("\n");
+        			
+        			if (adbPaths.length >= 1) {
+        				System.out.println("Attempting first search result: " + adbPaths[0]);
+        				adb = adbPaths[0].trim(); // We are going with the first one that we find.
+        			}
+        			else {
+        				System.out.println("Cannot find adb! Quitting setup!");
+        				return false;
+        			}
         		}
         		
         		// Execute the commands to restart adb
-    			System.out.println("Using adb from: " + adb);
     			System.out.println("Shutting down ADB.\n" 
     					+ CommandExecutor.executeCommand(adb + " kill-server"));
     			System.out.println("Restarting ADB and listing attached devices:\n"
