@@ -75,6 +75,11 @@ public class TestUtilities extends TestRoot {
 		}
 	}
 	
+	/**
+	 * Use this only with existing accounts. If you are testing for Favorites or Recent Station, make
+	 * sure to select an station in the middle. That way, previous and next exist.
+	 * @param playStation, method that goes to the correct station and plays it.
+	 */
 	public void testPreviewFeatures (Runnable playStation) {
 		playStation.run();
 		
@@ -157,6 +162,8 @@ public class TestUtilities extends TestRoot {
 	}
 	
 	/**
+	 * Use this only with new accounts! Do not use with existing account! Existing test accounts already have 3
+	 * favorite stations (which are needed for other tests). This test assumes that you begin with none.
 	 * @param playStation, method that goes to the correct station and plays it.
 	 * @param goToFavorites, method that goes to Favorites from the player screen.
 	 */
