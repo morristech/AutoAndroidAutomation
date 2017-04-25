@@ -100,7 +100,7 @@ public class TestUtilities extends TestRoot {
 		String playingArtistStation = Player.getPlayerMetaLineText(driver, 1);
 		
 		String errorMessage = String.format("Error! Expected %s. Actual %s!", previewStation, playingArtistStation);
-		Assert.assertTrue(errorMessage, playingArtistStation.contains(previewStation));
+		Assert.assertTrue(errorMessage, isSameStation(playingArtistStation, previewStation));
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class TestUtilities extends TestRoot {
 			Assert.assertTrue("Cannot tap Yes button!", Player.tapRedDialogButton(driver).noErrors()); // Yes button
 			String actualStationName = Player.getPlayerMetaLineText(driver, 1);
 			String errorMessage = String.format("Error! Expected: %s Actual: %s.", expectedStationName, actualStationName);
-			Assert.assertTrue(errorMessage, expectedStationName.contains(actualStationName));
+			Assert.assertTrue(errorMessage, isSameStation(expectedStationName, actualStationName));
 		}
 		else {
 			System.out.println(String.format(cannotTestErrorMessage, "Create Station"));
@@ -217,12 +217,37 @@ public class TestUtilities extends TestRoot {
 		return actualItems;
 	}
 	
+	/**
+	 * Due to different screen size, textview size, the addition of "Radio" to some
+	 * stations names, etc, we end up comparing strings such as
+	 * 
+	 * "Ennio Morricone Ra..." vs "Ennio Morriocone Radio".
+	 * "Britney Spears" vs "Britney Spears Radio"
+	 * "WiLD" vs "WiLD!"
+	 * 
+	 * This method is just an easy way for us to make sure that
+	 * we can easily identify the same stations even though the texts
+	 * might a bit different.
+	 */
 	public static boolean isSameStation (String expected, String actual) {
-		String cleanedActual = actual.trim().toLowerCase();
-		if (cleanedActual.charAt(cleanedActual.length() - 1) == '\u2026') { // '…' character
-			cleanedActual = cleanedActual.substring(0, cleanedActual.length() - 1);
-		}
-		return expected.toLowerCase().contains(cleanedActual);
+		String standardizedExpected = standardizeString(expected);
+		String standardizedActual = standardizeString(actual);
+		System.out.println(String.format("Expected: %s Actual: %s", standardizedExpected, standardizedActual));
+		return standardizedExpected.contains(standardizedActual) ||
+			   standardizedActual.contains(standardizedExpected);
+	}
+	
+	/**
+	 * Standardizes strings by removing non-alphanumeric characters.
+	 * Also converts all letters to lowercase.
+	 */
+	public static String standardizeString (String str) {
+		return str.chars()
+		          .mapToObj(i -> (char) i)
+		          .filter(Character::isLetterOrDigit)
+		          .map(Character::toLowerCase)
+		          .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+		          .toString();
 	}
 	
 	/**

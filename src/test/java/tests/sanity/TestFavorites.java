@@ -25,7 +25,7 @@ public class TestFavorites extends TestUtilities{
 		Assert.assertTrue("Unable to tap favorites item!", Menu.tapItem(driver, index).noErrors());
 		String actualStationNameInPlayer = Player.getPlayerMetaLineText(driver, 1);
 		String errorMessage = String.format("Station names do not match! Expected: %s Actual: %s", expectedStationName, actualStationNameInPlayer);
-		Assert.assertTrue(errorMessage, expectedStationName.equalsIgnoreCase(actualStationNameInPlayer));
+		Assert.assertTrue(errorMessage, isSameStation(expectedStationName, actualStationNameInPlayer));
 	}
 	
 	@Test

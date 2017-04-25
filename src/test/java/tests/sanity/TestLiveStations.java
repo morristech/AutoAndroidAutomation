@@ -41,7 +41,7 @@ public class TestLiveStations extends TestUtilities {
 		
 		String stationCurrentlyPlaying = Pages.Player.getPlayerMetaLineText(driver, 1);
 		Assert.assertTrue(String.format("Stations don't match! Expected: %s Actual: %s.", stationName, stationCurrentlyPlaying),
-							stationName.equalsIgnoreCase(stationCurrentlyPlaying));
+							isSameStation(stationName, stationCurrentlyPlaying));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class TestLiveStations extends TestUtilities {
 		String stationNameBeforeScan = Pages.Player.getPlayerMetaLineText(driver, 1);
 		Assert.assertTrue("Unable to tap scan button!", Pages.Player.tapPlayerButton(driver, Pages.Player.PlayerButton.SCAN).noErrors());
 		String stationNameAfterScan = Pages.Player.getPlayerMetaLineText(driver, 1);
-		Assert.assertNotEquals("Error! Station name is still the same after scan!", stationNameBeforeScan, stationNameAfterScan);
+		Assert.assertFalse("Error! Station name is still the same after scan!", isSameStation(stationNameBeforeScan, stationNameAfterScan));
 	}
 	
 	@Test

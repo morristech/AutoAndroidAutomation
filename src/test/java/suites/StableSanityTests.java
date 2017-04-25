@@ -13,6 +13,8 @@ import testUtilities.CategoryInterfaces.StableSanity;
 	// Keep it in alphabetical order please.
 	tests.sanity.TestAnonymousUser.class,
 	tests.sanity.TestArtistStation.class,
+	tests.sanity.TestFavorites.class,
+	tests.sanity.TestForYou.class,
 	tests.sanity.TestInstallationAndFUX.class,
 	tests.sanity.TestLiveStations.class,
 	tests.sanity.TestPodcasts.class,
