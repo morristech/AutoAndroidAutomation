@@ -232,7 +232,6 @@ public class TestUtilities extends TestRoot {
 	public static boolean isSameStation (String expected, String actual) {
 		String standardizedExpected = standardizeString(expected);
 		String standardizedActual = standardizeString(actual);
-		System.out.println(String.format("Expected: %s Actual: %s", standardizedExpected, standardizedActual));
 		return standardizedExpected.contains(standardizedActual) ||
 			   standardizedActual.contains(standardizedExpected);
 	}
