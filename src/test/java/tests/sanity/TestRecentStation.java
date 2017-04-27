@@ -23,12 +23,12 @@ public class TestRecentStation extends TestUtilities {
 		Assert.assertTrue("Unable to tap recent station item!", Menu.tapItem(driver, index).noErrors());
 		String actualStationNameInPlayer = Player.getPlayerMetaLineText(driver, 1);
 		String errorMessage = String.format("Station names do not match! Expected: %s Actual: %s", expectedStationName, actualStationNameInPlayer);
-		Assert.assertTrue(errorMessage, expectedStationName.equalsIgnoreCase(actualStationNameInPlayer));
+		Assert.assertTrue(errorMessage, isSameStation(expectedStationName, actualStationNameInPlayer));
 		
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());
 		String expectedStationNameInPositionZero = Menu.getItemTitle(driver, 0);
 		errorMessage = String.format("Station not in left most position! Expected: %s Actual: %s", expectedStationNameInPositionZero, expectedStationName);
-		Assert.assertTrue(errorMessage, expectedStationNameInPositionZero.equals(expectedStationName));
+		Assert.assertTrue(errorMessage, isSameStation(expectedStationNameInPositionZero, expectedStationName));
 	}
 	
 	@Test

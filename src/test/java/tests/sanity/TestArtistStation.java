@@ -23,7 +23,7 @@ public class TestArtistStation extends TestUtilities {
 	
 	@Test
 	@Category({Sanity.class, UnstableSanity.class})
-	public void testNavigateAndStreamByGenre () {
+	public void testNavigateAndStreamByGenreForArtistStations () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());		
 		TestLiveStations.checkMainMenuItems();
@@ -43,7 +43,7 @@ public class TestArtistStation extends TestUtilities {
 		Assert.assertTrue("Unable to tap artist radio item!", Menu.tapItem(driver, itemIndex).noErrors());
 		String playingArtistStation = Player.getPlayerMetaLineText(driver, 1);
 		errorMessage = String.format("Error! Expected %s. Actual %s!", artistName, playingArtistStation);
-		Assert.assertTrue(errorMessage, playingArtistStation.contains(artistName));
+		Assert.assertTrue(errorMessage, isSameStation(playingArtistStation, artistName));
 	}
 	
 	@Test
