@@ -6,13 +6,14 @@ import org.junit.experimental.categories.Category;
 
 import Pages.Page;
 import testUtilities.TestUtilities;
+import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
 
 public class TestForYou extends TestUtilities {
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testNavigateAndStreamForForYou () {
 		testPathToForYou(SignInType.LOG_IN);
 
@@ -26,7 +27,7 @@ public class TestForYou extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForForYou () {
 		Runnable testPathToForYouAndPlayItem = () -> {
 			testPathToForYou(SignInType.LOG_IN);
