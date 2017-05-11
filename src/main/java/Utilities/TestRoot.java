@@ -3,8 +3,6 @@ package Utilities;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,14 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
-import org.junit.rules.MethodRule;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -30,7 +22,6 @@ import io.appium.java_client.android.AndroidElement;
 import testCommons.CommandExecutor;
 import testCommons.Errors;
 import testCommons.LoadProperties;
-import testUtilities.Flaky;
 
 
 /**
