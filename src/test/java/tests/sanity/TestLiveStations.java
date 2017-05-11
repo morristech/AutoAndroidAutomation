@@ -14,10 +14,12 @@ import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestLiveStations extends TestUtilities {
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testLiveStationMainMenuItems () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
@@ -34,6 +36,7 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNearYou () {
 		testPathToLiveRadio();
@@ -47,6 +50,7 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testByLocation () {
 		testPathToLiveRadio();
@@ -58,6 +62,7 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testByGenreForLiveStations () {
 		testPathToLiveRadio();
@@ -74,6 +79,7 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testScanForLiveStations () {
 		testPathToNearYouAndPlayItem(SignInType.LOG_IN);
@@ -85,24 +91,28 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForLiveStations () {
 		testPreviewFeatures(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testCreateStationForLiveStations () {
 		testCreateStation(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testThumbsForLiveStations () {
 		testThumbs(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN), TestType.LIVE_STATIONS);
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testFavoritesForLiveStations () {
 		Runnable goToFavorites = () -> {

@@ -9,11 +9,13 @@ import testUtilities.CategoryInterfaces.S7PR;
 import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 import testUtilities.TestUtilities;
 
 public class TestRecentStation extends TestUtilities {
 
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamForRecentStations () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
@@ -34,6 +36,7 @@ public class TestRecentStation extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForRecentStations () {
 		testPreviewFeatures(() -> testGoToRecentStationAndPlayItem(SignInType.LOG_IN));

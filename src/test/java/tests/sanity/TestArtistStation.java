@@ -20,10 +20,12 @@ import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestArtistStation extends TestUtilities {
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamByGenreForArtistStations () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
@@ -49,6 +51,7 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testLimitedSkipsForArtistStations () {
 		goToArtistRadioAndPlayItem(SignInType.LOG_IN);
@@ -66,24 +69,28 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testPreviewFeaturesForArtistStations () {
 		testPreviewFeatures(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testCreateStationForArtistStations () {
 		testCreateStation(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testThumbsForArtistStations () {
 		testThumbs(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN), TestType.ARTIST_STATIONS);
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testFavoritesForArtistStations () {	
 		Runnable goToFavorites = () -> {
@@ -96,6 +103,7 @@ public class TestArtistStation extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testDiscoveryForArtistStations () {
 		goToArtistRadioAndPlayItem(SignInType.LOG_IN);

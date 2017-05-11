@@ -12,10 +12,12 @@ import testUtilities.CategoryInterfaces.S7PR;
 import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestFavorites extends TestUtilities{
 
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamForFavorites () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
@@ -31,6 +33,7 @@ public class TestFavorites extends TestUtilities{
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForFavorites () {
 		testPreviewFeatures(() -> goToFavoritesAndPlayItem(SignInType.LOG_IN));

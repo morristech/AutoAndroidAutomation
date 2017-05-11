@@ -10,10 +10,12 @@ import testUtilities.CategoryInterfaces.S7PR;
 import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestForYou extends TestUtilities {
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamForForYou () {
 		testPathToForYou(SignInType.LOG_IN);
@@ -28,6 +30,7 @@ public class TestForYou extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForForYou () {
 		Runnable testPathToForYouAndPlayItem = () -> {

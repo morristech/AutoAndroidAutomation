@@ -17,11 +17,13 @@ import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 import testUtilities.TestUtilities;
 
 public class TestAnonymousUser extends TestUtilities {
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testPlayerBehavior () {
 		testMaybeLaterToMenu();
@@ -80,6 +82,7 @@ public class TestAnonymousUser extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testRegGateForArtistsAndPodcast () {
 		testMaybeLaterToMenu();

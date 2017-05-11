@@ -16,10 +16,12 @@ import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestPodcasts extends TestUtilities {
 
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamPodcast () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
@@ -42,6 +44,7 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testUnlimitedSkipsForPodcast () {
 		testPathToPodcastAndPlayItem(SignInType.LOG_IN);
@@ -55,6 +58,7 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testPodcastSeek () {
 		testPathToPodcastAndPlayItem(SignInType.LOG_IN);
@@ -70,18 +74,21 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForPodcast () {
 		testPreviewFeatures(() -> testPathToPodcastAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testThumbsForPodcast () {
 		testThumbs(() -> testPathToPodcastAndPlayItem(SignInType.LOG_IN), TestType.PODCASTS);
 	}
 	
 	@Test
+	@Flaky
 	@Category({Sanity.class, S7StableSanity.class})
 	public void testFavoritesForPodcasts () {
 		Runnable goToFavorites = () -> {
