@@ -8,6 +8,7 @@ import Pages.Menu;
 import Pages.Page;
 import Pages.Player;
 import testUtilities.TestUtilities;
+import testUtilities.CategoryInterfaces.S7PR;
 import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
@@ -15,7 +16,7 @@ import testUtilities.CategoryInterfaces.UnstableSanity;
 public class TestFavorites extends TestUtilities{
 
 	@Test
-	@Category({Sanity.class, S7StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamForFavorites () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());

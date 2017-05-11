@@ -9,6 +9,7 @@ import org.junit.experimental.categories.Category;
 import Pages.Menu;
 import Pages.Page;
 import testUtilities.TestUtilities;
+import testUtilities.CategoryInterfaces.S7PR;
 import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
@@ -17,7 +18,7 @@ import testUtilities.CategoryInterfaces.UnstableSanity;
 public class TestLiveStations extends TestUtilities {
 	
 	@Test
-	@Category({Sanity.class, S7StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testLiveStationMainMenuItems () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
@@ -33,7 +34,7 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, S7StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNearYou () {
 		testPathToLiveRadio();
 		Assert.assertTrue("Unable to tap Near You!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());

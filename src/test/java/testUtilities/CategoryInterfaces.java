@@ -8,4 +8,8 @@ public class CategoryInterfaces {
 	public interface S7StableSanity {}
 	public interface S6StableSantiy {}
 	public interface S4StableSanity {}
+	
+	public interface S7PR {}
+	public interface S6PR {}
+	public interface S4PR {}
 }

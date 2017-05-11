@@ -11,6 +11,7 @@ import Pages.Page;
 import Pages.Player;
 import Pages.Player.PlayerButton;
 import testUtilities.TestUtilities;
+import testUtilities.CategoryInterfaces.S7PR;
 import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
@@ -19,7 +20,7 @@ import testUtilities.CategoryInterfaces.UnstableSanity;
 public class TestPodcasts extends TestUtilities {
 
 	@Test
-	@Category({Sanity.class, S7StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamPodcast () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
