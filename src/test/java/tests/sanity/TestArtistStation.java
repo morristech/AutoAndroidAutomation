@@ -52,14 +52,14 @@ public class TestArtistStation extends TestUtilities {
 	
 	@Test
 	@Flaky
-	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testLimitedSkipsForArtistStations () {
-		goToArtistRadioAndPlayItem(SignInType.LOG_IN);
+		goToArtistRadioAndPlayItem(SignInType.SIGN_UP);
 		
 		int MAX_SKIP_LIMIT_PLUS_ONE = 7; // Plus one so that we get the popup modal about hitting the limit.
 		for (int i = 0; i < MAX_SKIP_LIMIT_PLUS_ONE; i++) {
 			Assert.assertTrue("Unable to tap skip!", Player.tapPlayerButton(driver, PlayerButton.SKIP).noErrors());
-			sleep(250);
+			sleep(1000);
 		}
 		
 		String actualDialogText = Page.getCustomDialogText(driver);

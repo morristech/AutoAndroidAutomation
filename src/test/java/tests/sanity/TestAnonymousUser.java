@@ -24,7 +24,7 @@ public class TestAnonymousUser extends TestUtilities {
 	
 	@Test
 	@Flaky
-	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testPlayerBehavior () {
 		testMaybeLaterToMenu();
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
@@ -83,7 +83,7 @@ public class TestAnonymousUser extends TestUtilities {
 	
 	@Test
 	@Flaky
-	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testRegGateForArtistsAndPodcast () {
 		testMaybeLaterToMenu();
 		Assert.assertTrue("Cannot tap artist radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());
