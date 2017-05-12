@@ -12,11 +12,6 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
-import org.junit.rules.MethodRule;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -992,100 +987,6 @@ public class TestRoot {
 		}
 		return false;
 	}
-	
-	public class RetryRule implements TestRule{
-		int retries = 1; // default
-		public RetryRule(){
-			this.retries = 1;
-		}
-		public RetryRule(int r){
-			this.retries = r;
-		}
-		
-		@Override
-		public Statement apply(Statement base, Description description) {
-			return statement(base, description);
-		}
-		
-		private Statement statement(final Statement base, final Description description){
-			return new Statement(){
-				@Override
-				public void evaluate() throws Throwable {
-					// Save the exception for the end of the retries
-					Throwable caughtThrowable = null;
-					
-					for (int i = 0; i < retries; i++){
-						try{
-							base.evaluate();
-							return; // End
-						}
-						catch (Throwable t){
-							System.out.println(t);
-							caughtThrowable = t;
-							// Only retry if it was a driver issue, not an assertion
-							if(!(t instanceof java.lang.AssertionError)
-									&& t.getMessage().contains("session is either terminated or not started")){
-								System.err.println("\n\nRun #" + (i + 1) + " failed, may retry.");
-							}
-							else{
-								throw t;
-							}
-						}
-					}
-					if (caughtThrowable != null){
-						throw caughtThrowable;
-					}
-				}
-			};
-		}
-	}
-	
-	/**
-	 * Screenshot Rule
-	 * Runs after every test. 
-	 * If the test passed, this runs the usual shutdown method
-	 * If it failed, it takes a screenshot, then runs the usual shutdown method
-	 * This replaces @after with the following:
-	 * @Rule
-	 * public ScreenshotRule screenshot = new ScreenshotRule();
-	 * 
-	 */
-	public class ScreenshotRule implements MethodRule{
-		
-		@Override
-		/**
-		 * Tests run within this. Once it ends, it takes a screenshot for failures, but ends regardless
-		 */
-		public Statement apply(final Statement statement, final FrameworkMethod method, Object target) {
-			return new Statement() {
-				@Override
-				/**
-				 * Run the test, if it fails, catch the failure (an exception/throwable)
-				 * 		and take a screenshot, before allowing the failure to continue.
-				 * Then, fail the test. 		
-				 */
-				public void evaluate() throws Throwable {
-					try{
-						statement.evaluate();
-					}
-					catch(Throwable t){
-						// Catch the failure, take the screenshot, then pass the failure on
-						if(driver != null){
-							String errorMethod = "assertFrom_" + method.getName();
-							Errors.captureScreenshot(driver, errorMethod, SCREENSHOT_DIRECTORY, SCREENSHOT_URL);
-						}
-						// Make sure we quit
-						quit();
-						// Throw the original error
-						throw t;
-					}
-					finally{
-						// Quit even if it did not fail
-						quit();
-					}
-				}
-			};
-		}
-	}
+
 }
 

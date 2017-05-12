@@ -12,15 +12,19 @@ import Pages.Menu;
 import Pages.Page;
 import Pages.Player;
 import Pages.SignUpLogInGate;
+import testUtilities.CategoryInterfaces.S7PR;
+import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 import testUtilities.TestUtilities;
 
 public class TestAnonymousUser extends TestUtilities {
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testPlayerBehavior () {
 		testMaybeLaterToMenu();
 		Assert.assertTrue("Cannot tap live radio!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.LIVE_RADIO).noErrors());
@@ -78,7 +82,8 @@ public class TestAnonymousUser extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testRegGateForArtistsAndPodcast () {
 		testMaybeLaterToMenu();
 		Assert.assertTrue("Cannot tap artist radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());

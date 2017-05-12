@@ -6,6 +6,8 @@ import org.junit.experimental.categories.Category;
 
 import Pages.Page;
 import Utilities.TestRoot;
+import testUtilities.CategoryInterfaces.S7PR;
+import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.TestUtilities;
@@ -13,7 +15,7 @@ import testUtilities.TestUtilities;
 public class TestSignUpLogIn extends TestUtilities {
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testSignUp () {
 		String randomlyGeneratedEmail = Pages.SignUp.generateEmailAddress();
 		
@@ -35,7 +37,7 @@ public class TestSignUpLogIn extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testLogInAndOptionAndHelp () {
 		Assert.assertTrue("Unable to tap Log In Button!", Pages.SignUpLogInGate.tapLogInButton(driver).noErrors());
 		Assert.assertTrue("Unable to enter e-mail!", Page.enterEmail(driver, TestRoot.IHEARTUSERNAME).noErrors());

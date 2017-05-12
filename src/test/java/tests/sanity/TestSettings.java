@@ -9,6 +9,7 @@ import org.junit.experimental.categories.Category;
 import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
 import Utilities.TestRoot;
+import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
@@ -64,7 +65,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testResetPassword () {
 		String email;
 		
@@ -84,7 +85,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testUpdatePassword () {
 		Random random = new Random();
 		String email;
@@ -118,7 +119,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testExplicitContentOff () {
 		setExplicitContentAndGoToPop(OptionsOnOff.OFF);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());
@@ -128,7 +129,7 @@ public class TestSettings extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testExplicitContentOn () {
 		setExplicitContentAndGoToPop(OptionsOnOff.ON);
 		Assert.assertTrue("Unable to tap first item!", Menu.tapItem(driver, 0).noErrors());

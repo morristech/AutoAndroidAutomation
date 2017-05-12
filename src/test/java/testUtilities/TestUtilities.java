@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.experimental.categories.Category;
 
 import Pages.Menu;
 import Pages.Page;
@@ -20,9 +19,9 @@ import Pages.Player.Thumb;
 import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import testUtilities.CategoryInterfaces.Sanity;
-import testUtilities.CategoryInterfaces.UnstableSanity;
-import testUtilities.TestUtilities.SignInType;
+import testUtilities.customRules.DriverFailureRule;
+import testUtilities.customRules.FlakyRule;
+import testUtilities.customRules.ScreenshotRule;
 
 public class TestUtilities extends TestRoot {
 
@@ -41,7 +40,10 @@ public class TestUtilities extends TestRoot {
 	public ScreenshotRule screenshot = new ScreenshotRule();
 	
 	@Rule
-	public RetryRule retry = new RetryRule(1);
+	public DriverFailureRule retry = new DriverFailureRule(1);
+	
+	@Rule
+	public FlakyRule flaky = new FlakyRule(1);
 	
 	/************************/
 	/* *** Common Tests *** */

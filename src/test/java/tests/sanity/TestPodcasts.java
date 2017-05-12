@@ -11,14 +11,18 @@ import Pages.Page;
 import Pages.Player;
 import Pages.Player.PlayerButton;
 import testUtilities.TestUtilities;
+import testUtilities.CategoryInterfaces.S7PR;
+import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestPodcasts extends TestUtilities {
 
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNavigateAndStreamPodcast () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
@@ -40,7 +44,8 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testUnlimitedSkipsForPodcast () {
 		testPathToPodcastAndPlayItem(SignInType.LOG_IN);
 		
@@ -53,7 +58,8 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testPodcastSeek () {
 		testPathToPodcastAndPlayItem(SignInType.LOG_IN);
 		int numRedPixelsBegin = Player.getNumOfRedPixelsOnProgressBar(driver);
@@ -68,19 +74,22 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForPodcast () {
 		testPreviewFeatures(() -> testPathToPodcastAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testThumbsForPodcast () {
 		testThumbs(() -> testPathToPodcastAndPlayItem(SignInType.LOG_IN), TestType.PODCASTS);
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testFavoritesForPodcasts () {
 		Runnable goToFavorites = () -> {
 			Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());

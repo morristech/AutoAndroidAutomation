@@ -9,14 +9,18 @@ import org.junit.experimental.categories.Category;
 import Pages.Menu;
 import Pages.Page;
 import testUtilities.TestUtilities;
+import testUtilities.CategoryInterfaces.S7PR;
+import testUtilities.CategoryInterfaces.S7StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
+import testUtilities.Flaky;
 
 public class TestLiveStations extends TestUtilities {
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testLiveStationMainMenuItems () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());		
@@ -32,7 +36,8 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
 	public void testNearYou () {
 		testPathToLiveRadio();
 		Assert.assertTrue("Unable to tap Near You!", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.NEAR_YOU).noErrors());
@@ -45,7 +50,8 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testByLocation () {
 		testPathToLiveRadio();
 		Assert.assertTrue("Unable to tap By Location!", Menu.tapMenuItem(driver, Pages.Menu.LiveRadioMenuItem.BY_LOCATION).noErrors());
@@ -56,7 +62,8 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testByGenreForLiveStations () {
 		testPathToLiveRadio();
 		
@@ -72,7 +79,8 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testScanForLiveStations () {
 		testPathToNearYouAndPlayItem(SignInType.LOG_IN);
 		
@@ -83,25 +91,29 @@ public class TestLiveStations extends TestUtilities {
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testPreviewFeaturesForLiveStations () {
 		testPreviewFeatures(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testCreateStationForLiveStations () {
 		testCreateStation(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
 	}
 	
 	@Test
-	@Category({Sanity.class, StableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testThumbsForLiveStations () {
 		testThumbs(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN), TestType.LIVE_STATIONS);
 	}
 	
 	@Test
-	@Category({Sanity.class, UnstableSanity.class})
+	@Flaky
+	@Category({Sanity.class, S7StableSanity.class})
 	public void testFavoritesForLiveStations () {
 		Runnable goToFavorites = () -> {
 			Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
