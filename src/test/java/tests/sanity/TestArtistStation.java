@@ -56,7 +56,7 @@ public class TestArtistStation extends TestUtilities {
 	public void testLimitedSkipsForArtistStations () {
 		goToArtistRadioAndPlayItem(SignInType.SIGN_UP);
 		
-		int MAX_SKIP_LIMIT_PLUS_TWO = 7; // Plus one for getting the skip limit popup. An extra one just to be sure.
+		int MAX_SKIP_LIMIT_PLUS_TWO = 8; // Plus one for getting the skip limit popup. An extra one just to be sure.
 		for (int i = 0; i < MAX_SKIP_LIMIT_PLUS_TWO; i++) {
 			Assert.assertTrue("Unable to tap skip!", Player.tapPlayerButton(driver, PlayerButton.SKIP).noErrors());
 			sleep(2000);
