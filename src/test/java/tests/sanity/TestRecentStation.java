@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import Pages.*;
-import testUtilities.CategoryInterfaces.S7PR;
-import testUtilities.CategoryInterfaces.S7StableSanity;
+import testUtilities.CategoryInterfaces.StablePR;
+import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
 import testUtilities.Flaky;
@@ -16,7 +16,7 @@ public class TestRecentStation extends TestUtilities {
 
 	@Test
 	@Flaky
-	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
+	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testNavigateAndStreamForRecentStations () {
 		Assert.assertTrue("Unable to log in!", Page.logIn(driver, true).noErrors());
 		Assert.assertTrue("Unable to tap menu", Player.tapMenuButton(driver).noErrors());
@@ -37,7 +37,7 @@ public class TestRecentStation extends TestUtilities {
 	
 	@Test
 	@Flaky
-	@Category({Sanity.class, S7StableSanity.class})
+	@Category({Sanity.class, StableSanity.class})
 	public void testPreviewFeaturesForRecentStations () {
 		testPreviewFeatures(() -> testGoToRecentStationAndPlayItem(SignInType.LOG_IN));
 	}
