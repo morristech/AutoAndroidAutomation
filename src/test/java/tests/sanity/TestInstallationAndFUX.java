@@ -4,8 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import testUtilities.CategoryInterfaces.S7PR;
-import testUtilities.CategoryInterfaces.S7StableSanity;
+import testUtilities.CategoryInterfaces.StablePR;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.TestUtilities;
@@ -13,7 +12,7 @@ import testUtilities.TestUtilities;
 public class TestInstallationAndFUX extends TestUtilities{
 	
 	@Test
-	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
+	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testInstall () {
 		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUpLogInGate.tapSignUpButton(driver).noErrors());
 		Assert.assertTrue("Cannot find confirmation e-mail edit text!", isVisible(Pages.SignUp.getEmailConfirmEditText(driver)));
@@ -28,7 +27,7 @@ public class TestInstallationAndFUX extends TestUtilities{
 	}
 	
 	@Test
-	@Category({Sanity.class, S7StableSanity.class, S7PR.class})
+	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testGenreGameStartUpFlow () {
 		Assert.assertTrue("Cannot tap maybe later button!", Pages.SignUpLogInGate.tapMaybeLaterButton(driver).noErrors());
 		

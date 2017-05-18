@@ -5,10 +5,10 @@ import org.junit.experimental.categories.Categories.IncludeCategory;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import testUtilities.CategoryInterfaces.S7PR;
+import testUtilities.CategoryInterfaces.StablePR;
 
 @RunWith(Categories.class)
-@IncludeCategory(S7PR.class)
+@IncludeCategory(StablePR.class)
 @Suite.SuiteClasses({
 	// Keep it in alphabetical order please.
 	tests.sanity.TestAnonymousUser.class,
@@ -23,6 +23,6 @@ import testUtilities.CategoryInterfaces.S7PR;
 	tests.sanity.TestSignUpLogIn.class
 })
 
-public class S7PRTests {
+public class StablePRTests {
 
 }
