@@ -38,7 +38,8 @@ public class TestUtilities extends TestRoot {
 			AndroidElement skipButton = Pages.Page.getRedDialogButton(driver);
 			if (isVisible(skipButton)) {
 				Pages.Page.tapRedDialogButton(driver);
-				break;
+				sleep(2000); // wait a bit
+				Pages.Page.tapWhiteDialogButton(driver); // Okay
 			}
 			else {
 				sleep(2000); // wait a bit
