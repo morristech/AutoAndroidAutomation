@@ -19,6 +19,7 @@ import Pages.Player.Thumb;
 import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import testUtilities.customRules.DriverFailureRule;
 import testUtilities.customRules.FlakyRule;
 import testUtilities.customRules.ScreenshotRule;
@@ -31,6 +32,19 @@ public class TestUtilities extends TestRoot {
 	public void before () {
 		if (!setup()) {
 			Assert.fail("Could not load driver");
+		}
+		if (TestRoot.useEmulator) {
+				final int MAX_TRIES = 2;
+				for (int tries = 0; tries < MAX_TRIES; tries++) {
+					AndroidElement skipButton = Pages.Page.getRedDialogButton(driver);
+					if (isVisible(skipButton)) {
+						Pages.Page.tapRedDialogButton(driver);
+						break;
+					}
+					else {
+						sleep(1000); // wait a bit
+					}
+				}
 		}
 	}
 	
