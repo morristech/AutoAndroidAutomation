@@ -33,18 +33,17 @@ public class TestUtilities extends TestRoot {
 		if (!setup()) {
 			Assert.fail("Could not load driver");
 		}
-		if (TestRoot.useEmulator) {
-				final int MAX_TRIES = 2;
-				for (int tries = 0; tries < MAX_TRIES; tries++) {
-					AndroidElement skipButton = Pages.Page.getRedDialogButton(driver);
-					if (isVisible(skipButton)) {
-						Pages.Page.tapRedDialogButton(driver);
-						break;
-					}
-					else {
-						sleep(1000); // wait a bit
-					}
-				}
+		final int MAX_TRIES = 3;
+		for (int tries = 0; tries < MAX_TRIES; tries++) {
+			AndroidElement skipButton = Pages.Page.getRedDialogButton(driver);
+			if (isVisible(skipButton)) {
+				Pages.Page.tapRedDialogButton(driver);
+				break;
+			}
+			else {
+				sleep(2000); // wait a bit
+				System.out.println("Trying to find skip button!");
+			}
 		}
 	}
 	
