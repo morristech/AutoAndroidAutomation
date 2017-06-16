@@ -2,12 +2,12 @@ package Pages;
 
 import org.openqa.selenium.By;
 
-import Pages.SignUp.Gender;
 import Utilities.TestRoot;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-
+import testCommons.Account;
+import testCommons.AccountBuilder;
 import testCommons.Errors;
 
 public class Page extends TestRoot {
@@ -124,22 +124,22 @@ public class Page extends TestRoot {
 	/*******************/
 	
 	public static Errors signUp (AndroidDriver<MobileElement> d, boolean bypass) {
-		String email = Pages.SignUp.generateEmailAddress();
-		return signUp(d, email, TestRoot.NEWACCOUNTPASSWORD, "1995", "10013", Pages.SignUp.Gender.MALE, bypass);
+		Account account = new AccountBuilder().build();
+		return signUp(d, account, bypass);
 	}
 	
-	public static Errors signUp (AndroidDriver<MobileElement> d, String email, String password, String year, String zipCode, Gender gender, boolean bypass) {
+	public static Errors signUp (AndroidDriver<MobileElement> d, Account account, boolean bypass) {
 		Errors err = new Errors();
 		if (isVisible(Pages.SignUpLogInGate.getSignUpButton(d))) {
 			err.add(d, Pages.SignUpLogInGate.tapSignUpButton(d));
 		}
-		err.add(d, Pages.SignUp.enterEmail(d, email));
-		err.add(d, Pages.SignUp.enterEmailConfirmation(d, email));
+		err.add(d, Pages.SignUp.enterEmail(d, account.email));
+		err.add(d, Pages.SignUp.enterEmailConfirmation(d, account.email));
 		err.add(d, Pages.SignUp.tapNextButton(d));
-		err.add(d, Pages.SignUp.enterPassword(d, password));
-		err.add(d, Pages.SignUp.enterBirthYear(d, year));
-		err.add(d, Pages.SignUp.enterZipCode(d, zipCode));
-		err.add(d, Pages.SignUp.checkGender(d, gender));
+		err.add(d, Pages.SignUp.enterPassword(d, account.password));
+		err.add(d, Pages.SignUp.enterBirthYear(d, account.birthYear));
+		err.add(d, Pages.SignUp.enterZipCode(d, account.zip));
+		err.add(d, Pages.SignUp.checkGender(d, account.gender));
 		err.add(d, Pages.SignUp.checkAgree(d));
 		err.add(d, Pages.SignUp.tapSignUpButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
@@ -150,16 +150,16 @@ public class Page extends TestRoot {
 	}
 	
 	public static Errors logIn (AndroidDriver<MobileElement> d, boolean bypass) {
-		return logIn(d, TestRoot.IHEARTUSERNAME, TestRoot.IHEARTPASSWORD, bypass);
+		return logIn(d, FREE_ACCOUNT, bypass);
 	}
 	
-	public static Errors logIn (AndroidDriver<MobileElement> d, String email, String password, boolean bypass) {
+	public static Errors logIn (AndroidDriver<MobileElement> d, Account account, boolean bypass) {
 		Errors err = new Errors();
 		if (isVisible(Pages.SignUpLogInGate.getLogInButton(d))) {
 			err.add(d, Pages.SignUpLogInGate.tapLogInButton(d));
 		}
-		err.add(d, Page.enterEmail(d, email));
-		err.add(d, Page.enterPassword(d, password));
+		err.add(d, Page.enterEmail(d, account.email));
+		err.add(d, Page.enterPassword(d, account.password));
 		err.add(d, Pages.LogIn.tapLogInButton(d));
 		err.add(d, Pages.GenrePicker.selectFirstGenreItemAndContinue(d));
 		if (bypass) {

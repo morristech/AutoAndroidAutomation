@@ -6,6 +6,7 @@ import org.junit.experimental.categories.Category;
 
 import Pages.Page;
 import Utilities.TestRoot;
+import testCommons.Account.Gender;
 import testUtilities.CategoryInterfaces.StablePR;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
@@ -25,7 +26,7 @@ public class TestSignUpLogIn extends TestUtilities {
 		Assert.assertTrue("Cannot enter password!", Pages.SignUp.enterPassword(driver, "dskjfds564655").noErrors());
 		Assert.assertTrue("Cannot enter birth year!", Pages.SignUp.enterBirthYear(driver, "1990").noErrors());
 		Assert.assertTrue("Cannot enter zip code!", Pages.SignUp.enterZipCode(driver, "11013").noErrors());
-		Assert.assertTrue("Cannot enter gender!", Pages.SignUp.checkGender(driver, Pages.SignUp.Gender.FEMALE).noErrors());
+		Assert.assertTrue("Cannot enter gender!", Pages.SignUp.checkGender(driver, Gender.FEMALE).noErrors());
 		Assert.assertTrue("Cannot check agree!", Pages.SignUp.checkAgree(driver).noErrors());
 		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUp.tapSignUpButton(driver).noErrors());
 		Assert.assertTrue("Unable to select first genre item and continue!", Pages.GenrePicker.selectFirstGenreItemAndContinue(driver).noErrors());
