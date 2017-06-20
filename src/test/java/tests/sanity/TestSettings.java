@@ -9,6 +9,8 @@ import org.junit.experimental.categories.Category;
 import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
 import Utilities.TestRoot;
+import testCommons.Account;
+import testCommons.AccountBuilder;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
 import testUtilities.CategoryInterfaces.UnstableSanity;
@@ -86,19 +88,18 @@ public class TestSettings extends TestUtilities {
 	@Test
 	@Category({Sanity.class, StableSanity.class})
 	public void testUpdatePassword () {
-		Random random = new Random();
-		String email;
-		String newPassword = TestRoot.IHEARTPASSWORD + random.nextInt(1000);
+		Account account = new AccountBuilder().build();
 		
-		Assert.assertTrue("Unable to sign up!", Page.signUp(driver, false).noErrors());
+		Assert.assertTrue("Unable to sign up!", Page.signUp(driver, account, false).noErrors());
 		Assert.assertTrue("Unable to tap options button!", ConnectionGate.tapOptionsButton(driver).noErrors());
-		email = Options.getLoggedInEmail(driver);
 		
 		// Change Password
 		Assert.assertTrue("Unable to tap on update password!", Options.scrollAndTapOptionItem(driver, UP, Options.OptionItem.UPDATE_PASSWORD).noErrors());
-		Assert.assertTrue("Unable to enter current password!", UpdateResetPassword.enterCurrentPassword(driver, TestRoot.NEWACCOUNTPASSWORD).noErrors());
-		Assert.assertTrue("Unable to enter new password!", UpdateResetPassword.enterNewPassword(driver, newPassword).noErrors());
-		Assert.assertTrue("Unable to enter new password confirmation!", UpdateResetPassword.enterConfirmNewPassword(driver, newPassword).noErrors());
+		Assert.assertTrue("Unable to enter current password!", UpdateResetPassword.enterCurrentPassword(driver, account.password).noErrors());
+		
+		account.password += "1";
+		Assert.assertTrue("Unable to enter new password!", UpdateResetPassword.enterNewPassword(driver, account.password).noErrors());
+		Assert.assertTrue("Unable to enter new password confirmation!", UpdateResetPassword.enterConfirmNewPassword(driver, account.password).noErrors());
 		Assert.assertTrue("Unable to press update!", UpdateResetPassword.tapUpdatePasswordButton(driver).noErrors());
 		
 		Page.waitForDialogToDisappear(driver); // Wait for modal to disappear.
@@ -109,8 +110,8 @@ public class TestSettings extends TestUtilities {
 		// Logging Back In
 		Assert.assertTrue("Unable to tap Sign Up or Log In!", Options.scrollAndTapOptionItem(driver, UP, Options.OptionItem.SIGN_UP_OR_LOG_IN).noErrors());
 		Assert.assertTrue("Unable to tap Log In Button!", Pages.SignUpLogInGate.tapLogInButton(driver).noErrors());
-		Assert.assertTrue("Unable to enter e-mail!", Page.enterEmail(driver, email).noErrors());
-		Assert.assertTrue("Unable to enter password!", Page.enterPassword(driver, newPassword).noErrors());
+		Assert.assertTrue("Unable to enter e-mail!", Page.enterEmail(driver, account.email).noErrors());
+		Assert.assertTrue("Unable to enter password!", Page.enterPassword(driver, account.password).noErrors());
 		Assert.assertTrue("Unable to tap log in button!", Pages.LogIn.tapLogInButton(driver).noErrors());
 		
 		// Verify that we are at the options page after logging back in.

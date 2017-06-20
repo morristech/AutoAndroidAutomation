@@ -6,14 +6,10 @@ import Pages.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-
+import testCommons.Account.Gender;
 import testCommons.Errors;
 
 public class SignUp extends Page {
-	
-	public enum Gender {
-		MALE, FEMALE;
-	}
 	
 	/********************/
 	/* *** Elements *** */

@@ -19,6 +19,8 @@ import Pages.Xpath;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import testCommons.Account;
+import testCommons.Account.Subscription;
 import testCommons.CommandExecutor;
 import testCommons.Errors;
 import testCommons.LoadProperties;
@@ -46,17 +48,10 @@ public class TestRoot {
 	protected static String address;
 	protected static String port;
 	
+	
+	public static Account FREE_ACCOUNT;
 	public static String IHEARTUSERNAME;
 	public static String IHEARTPASSWORD;
-	public static String FACEBOOKUSERNAME;
-	public static String FACEBOOKPASSWORD;
-	public static String NEWACCOUNTPASSWORD;
-	public static String IHEARTUSERNAMEODFREE;
-	public static String IHEARTPASSWORDODFREE;
-	public static String IHEARTUSERNAMEODPLUS;
-	public static String IHEARTPASSWORDODPLUS;
-	public static String IHEARTUSERNAMEODPREMIUM;
-	public static String IHEARTPASSWORDODPREMIUM;
 	
 	public static boolean ISMARSHMALLOW = false;
 	public static String APPIUM_VERSION;
@@ -174,30 +169,14 @@ public class TestRoot {
 			// Load from passwords file
 			IHEARTUSERNAME = passwords.getProperty("IHEART.USERNAME");
 			IHEARTPASSWORD = passwords.getProperty("IHEART.PASSWORD");
-			IHEARTUSERNAMEODFREE = passwords.getProperty("IHEART.USERNAMEOD.FREE");
-			IHEARTPASSWORDODFREE = passwords.getProperty("IHEART.PASSWORDOD.FREE");
-			IHEARTUSERNAMEODPLUS = passwords.getProperty("IHEART.USERNAMEOD.PLUS");
-			IHEARTPASSWORDODPLUS = passwords.getProperty("IHEART.PASSWORDOD.PLUS");
-			IHEARTUSERNAMEODPREMIUM = passwords.getProperty("IHEART.USERNAMEOD.PREMIUM");
-			IHEARTPASSWORDODPREMIUM = passwords.getProperty("IHEART.PASSWORDOD.PREMIUM");
-			FACEBOOKUSERNAME = passwords.getProperty("FACEBOOK.USERNAME");
-			FACEBOOKPASSWORD = passwords.getProperty("FACEBOOK.PASSWORD");
-			NEWACCOUNTPASSWORD = passwords.getProperty("NEWACCOUNTPASSWORD");
 		}
 		else{
 			// Load from system properties (Jenkins automation uses this method)
 			IHEARTUSERNAME = System.getProperty("IHEART.USERNAME");
 			IHEARTPASSWORD = System.getProperty("IHEART.PASSWORD");
-			IHEARTUSERNAMEODFREE = System.getProperty("IHEART.USERNAMEOD.FREE");
-			IHEARTPASSWORDODFREE = System.getProperty("IHEART.PASSWORDOD.FREE");
-			IHEARTUSERNAMEODPLUS = System.getProperty("IHEART.USERNAMEOD.PLUS");
-			IHEARTPASSWORDODPLUS = System.getProperty("IHEART.PASSWORDOD.PLUS");
-			IHEARTUSERNAMEODPREMIUM = System.getProperty("IHEART.USERNAMEOD.PREMIUM");
-			IHEARTPASSWORDODPREMIUM = System.getProperty("IHEART.PASSWORDOD.PREMIUM");
-			FACEBOOKUSERNAME = System.getProperty("FACEBOOK.USERNAME");
-			FACEBOOKPASSWORD = System.getProperty("FACEBOOK.PASSWORD");
-			NEWACCOUNTPASSWORD = System.getProperty("NEWACCOUNTPASSWORD");
 		}
+		
+		FREE_ACCOUNT = new Account (IHEARTUSERNAME, IHEARTPASSWORD, Subscription.FREE);
 
         try{
         	System.out.println("Attempting to start driver...");
