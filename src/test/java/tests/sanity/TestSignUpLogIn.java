@@ -4,9 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import Pages.GenrePicker;
 import Pages.Page;
-import Utilities.TestRoot;
-import testCommons.Account.Gender;
+import testCommons.Account;
+import testCommons.AccountBuilder;
 import testUtilities.CategoryInterfaces.StablePR;
 import testUtilities.CategoryInterfaces.Sanity;
 import testUtilities.CategoryInterfaces.StableSanity;
@@ -17,16 +18,16 @@ public class TestSignUpLogIn extends TestUtilities {
 	@Test
 	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testSignUp () {
-		String randomlyGeneratedEmail = Pages.SignUp.generateEmailAddress();
+		Account account = new AccountBuilder().build();
 		
 		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUpLogInGate.tapSignUpButton(driver).noErrors());
-		Assert.assertTrue("Cannot enter e-mail!", Pages.SignUp.enterEmail(driver, randomlyGeneratedEmail).noErrors());
-		Assert.assertTrue("Cannot enter e-mail confirmation!", Pages.SignUp.enterEmailConfirmation(driver, randomlyGeneratedEmail).noErrors());
+		Assert.assertTrue("Cannot enter e-mail!", Pages.SignUp.enterEmail(driver, account.email).noErrors());
+		Assert.assertTrue("Cannot enter e-mail confirmation!", Pages.SignUp.enterEmailConfirmation(driver, account.email).noErrors());
 		Assert.assertTrue("Cannot tap next button!", Pages.SignUp.tapNextButton(driver).noErrors());
-		Assert.assertTrue("Cannot enter password!", Pages.SignUp.enterPassword(driver, "dskjfds564655").noErrors());
-		Assert.assertTrue("Cannot enter birth year!", Pages.SignUp.enterBirthYear(driver, "1990").noErrors());
-		Assert.assertTrue("Cannot enter zip code!", Pages.SignUp.enterZipCode(driver, "11013").noErrors());
-		Assert.assertTrue("Cannot enter gender!", Pages.SignUp.checkGender(driver, Gender.FEMALE).noErrors());
+		Assert.assertTrue("Cannot enter password!", Pages.SignUp.enterPassword(driver, account.password).noErrors());
+		Assert.assertTrue("Cannot enter birth year!", Pages.SignUp.enterBirthYear(driver, account.birthYear).noErrors());
+		Assert.assertTrue("Cannot enter zip code!", Pages.SignUp.enterZipCode(driver, account.zip).noErrors());
+		Assert.assertTrue("Cannot enter gender!", Pages.SignUp.checkGender(driver, account.gender).noErrors());
 		Assert.assertTrue("Cannot check agree!", Pages.SignUp.checkAgree(driver).noErrors());
 		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUp.tapSignUpButton(driver).noErrors());
 		Assert.assertTrue("Unable to select first genre item and continue!", Pages.GenrePicker.selectFirstGenreItemAndContinue(driver).noErrors());
@@ -40,14 +41,60 @@ public class TestSignUpLogIn extends TestUtilities {
 	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testLogInAndOptionAndHelp () {
 		Assert.assertTrue("Unable to tap Log In Button!", Pages.SignUpLogInGate.tapLogInButton(driver).noErrors());
-		Assert.assertTrue("Unable to enter e-mail!", Page.enterEmail(driver, TestRoot.IHEARTUSERNAME).noErrors());
-		Assert.assertTrue("Unable to enter password!", Page.enterPassword(driver, TestRoot.IHEARTPASSWORD).noErrors());
+		Assert.assertTrue("Unable to enter e-mail!", Page.enterEmail(driver, FREE_ACCOUNT.email).noErrors());
+		Assert.assertTrue("Unable to enter password!", Page.enterPassword(driver, FREE_ACCOUNT.password).noErrors());
 		Assert.assertTrue("Unable to tap log in button!", Pages.LogIn.tapLogInButton(driver).noErrors());
 		Assert.assertTrue("Unable to select first genre item and continue!", Pages.GenrePicker.selectFirstGenreItemAndContinue(driver).noErrors());
 		Assert.assertTrue("Unable to tap options button!", Pages.ConnectionGate.tapOptionsButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap done button!", Pages.Options.tapDoneButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap help button!", Pages.ConnectionGate.tapHelpButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap close button!", Pages.ConnectionGate.tapCloseButton(driver).noErrors());
+	}
+	
+	@Test
+	public void testSignUpWithInvalidInfo () {
+		Account account = new AccountBuilder().build();
+		
+		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUpLogInGate.tapSignUpButton(driver).noErrors());
+		Assert.assertTrue("Cannot enter e-mail!", Pages.SignUp.enterEmail(driver, account.email).noErrors());
+		Assert.assertTrue("Cannot enter e-mail confirmation!", Pages.SignUp.enterEmailConfirmation(driver, account.email + "o").noErrors());
+		Assert.assertTrue("Cannot tap next button!", Pages.SignUp.tapNextButton(driver).noErrors());
+		Assert.assertNotNull("Cannot find e-mail edit text!", Pages.SignUp.getEmailEditText(driver));		
+	}
+	
+	@Test
+	public void testSignUpUnder18YearsOld () {
+		Account account = new AccountBuilder().setBirthYear("2010").build();
+		
+		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUpLogInGate.tapSignUpButton(driver).noErrors());
+		Assert.assertTrue("Cannot enter e-mail!", Pages.SignUp.enterEmail(driver, account.email).noErrors());
+		Assert.assertTrue("Cannot enter e-mail confirmation!", Pages.SignUp.enterEmailConfirmation(driver, account.email).noErrors());
+		Assert.assertTrue("Cannot tap next button!", Pages.SignUp.tapNextButton(driver).noErrors());
+		Assert.assertTrue("Cannot enter password!", Pages.SignUp.enterPassword(driver, account.password).noErrors());
+		Assert.assertTrue("Cannot enter birth year!", Pages.SignUp.enterBirthYear(driver, account.birthYear).noErrors());
+		Assert.assertTrue("Cannot enter zip code!", Pages.SignUp.enterZipCode(driver, account.zip).noErrors());
+		Assert.assertTrue("Cannot enter gender!", Pages.SignUp.checkGender(driver, account.gender).noErrors());
+		Assert.assertTrue("Cannot check agree!", Pages.SignUp.checkAgree(driver).noErrors());
+		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUp.tapSignUpButton(driver).noErrors());
+		
+		Assert.assertNull("Error! In genre picker page even though we didn't check terms of use!", GenrePicker.getGenreItem(driver, 0,0));
+	}
+	
+	@Test
+	public void testNotCheckedTermsOfUse () {
+		Account account = new AccountBuilder().build();
+		
+		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUpLogInGate.tapSignUpButton(driver).noErrors());
+		Assert.assertTrue("Cannot enter e-mail!", Pages.SignUp.enterEmail(driver, account.email).noErrors());
+		Assert.assertTrue("Cannot enter e-mail confirmation!", Pages.SignUp.enterEmailConfirmation(driver, account.email).noErrors());
+		Assert.assertTrue("Cannot tap next button!", Pages.SignUp.tapNextButton(driver).noErrors());
+		Assert.assertTrue("Cannot enter password!", Pages.SignUp.enterPassword(driver, account.password).noErrors());
+		Assert.assertTrue("Cannot enter birth year!", Pages.SignUp.enterBirthYear(driver, account.birthYear).noErrors());
+		Assert.assertTrue("Cannot enter zip code!", Pages.SignUp.enterZipCode(driver, account.zip).noErrors());
+		Assert.assertTrue("Cannot enter gender!", Pages.SignUp.checkGender(driver, account.gender).noErrors());
+		Assert.assertTrue("Cannot tap sign up button!", Pages.SignUp.tapSignUpButton(driver).noErrors());
+		
+		Assert.assertNull("Error! In genre picker page even though we didn't check terms of use!", GenrePicker.getGenreItem(driver, 0,0));
 	}
 	
 }

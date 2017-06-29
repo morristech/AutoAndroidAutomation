@@ -33,19 +33,6 @@ public class TestUtilities extends TestRoot {
 		if (!setup()) {
 			Assert.fail("Could not load driver");
 		}
-		final int MAX_TRIES = 3;
-		for (int tries = 0; tries < MAX_TRIES; tries++) {
-			AndroidElement skipButton = Pages.Page.getRedDialogButton(driver);
-			if (isVisible(skipButton)) {
-				Pages.Page.tapRedDialogButton(driver);
-				sleep(2000); // wait a bit
-				Pages.Page.tapWhiteDialogButton(driver); // Okay
-			}
-			else {
-				sleep(2000); // wait a bit
-				System.out.println("Trying to find skip button!");
-			}
-		}
 	}
 	
 	// Replaces @After's quit() method, takes screenshot of last screen if test
