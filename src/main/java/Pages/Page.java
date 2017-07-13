@@ -32,9 +32,10 @@ public class Page extends TestRoot {
 
 	private static String cardItemId = Page.connectId + "card_%d_%d";
 	
-	
 	private static String customDialogContainerId = Page.connectId + "custom_dialog_container";
 	private static String customDialogTextDescriptionId = Page.connectId  + "text_desc";
+	
+	private static String optionTitleId = Page.connectId + "option_label";
 	
 	/*******************/
 	/* *** Getters *** */
@@ -179,6 +180,9 @@ public class Page extends TestRoot {
 		return getText(waitForVisible(d, By.id(customDialogTextDescriptionId), 7));
 	}
 	
+	public static String getOptionsTitle (AndroidDriver<MobileElement> d) {
+		return getText(waitForVisible(d, By.id(optionTitleId), 7));
+	}
 	
 
 }

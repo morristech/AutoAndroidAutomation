@@ -1,14 +1,11 @@
 package tests.sanity;
 
-import java.util.Random;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
-import Utilities.TestRoot;
 import testCommons.Account;
 import testCommons.AccountBuilder;
 import testUtilities.CategoryInterfaces.Sanity;

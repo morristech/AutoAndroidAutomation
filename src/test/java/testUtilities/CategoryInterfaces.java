@@ -7,4 +7,6 @@ public class CategoryInterfaces {
 	
 	public interface StablePR {}
 	public interface UnstablePR {}
+	
+	public interface RegressionSpecific {}
 }
