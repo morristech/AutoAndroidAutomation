@@ -3,12 +3,12 @@ package tests.sanity;
 import java.util.Random;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import Pages.*;
 import Pages.OptionsSubpage.OptionsOnOff;
-import Utilities.TestRoot;
 import testCommons.Account;
 import testCommons.AccountBuilder;
 import testUtilities.CategoryInterfaces.Sanity;
@@ -19,6 +19,7 @@ import testUtilities.TestUtilities;
 public class TestSettings extends TestUtilities {
 	
 	@Test
+	@Ignore
 	@Category({Sanity.class, UnstableSanity.class})
 	public void testMyLocation () {
 		Assert.assertTrue("Unable to sign up!", SignUpLogInGate.signUp(driver, false).noErrors());
