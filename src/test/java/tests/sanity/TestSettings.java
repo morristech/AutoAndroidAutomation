@@ -1,7 +1,5 @@
 package tests.sanity;
 
-import java.util.Random;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

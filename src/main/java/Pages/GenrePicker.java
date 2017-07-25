@@ -27,6 +27,7 @@ public class GenrePicker extends Page {
 	private static String genreItemNameId = Page.connectId + "item_name";
 	private static String genreItemCheckId = Page.connectId + "item_check";
 	private static String continueButtonId = Page.connectId + "continue_button";
+	private static String cancelButtonId = Page.connectId + "cancel_button";
 	
 	/*******************/
 	/* *** Getters *** */
@@ -43,6 +44,10 @@ public class GenrePicker extends Page {
 	
 	public static AndroidElement getContinueButton (AndroidDriver<MobileElement> d) {
 		return waitForVisible(d, By.id(continueButtonId), 7);
+	}
+	
+	public static AndroidElement getCancelButton (AndroidDriver<MobileElement> d) {
+		return waitForVisible(d, By.id(cancelButtonId), 7);
 	}
 	
 	/***************************************/
@@ -84,6 +89,9 @@ public class GenrePicker extends Page {
 		return click(d, getContinueButton(d), "Cannot tap on continue button!", "tapContinueButton");
 	}
 
+	public static Errors tapCancelButton (AndroidDriver<MobileElement> d) {
+		return click(d, getCancelButton(d), "Cannot tap on cancel button!", "tapCancelButton");
+	}
 	
 	/*******************/
 	/* *** Utility *** */
