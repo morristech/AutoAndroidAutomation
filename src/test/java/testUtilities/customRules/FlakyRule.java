@@ -29,7 +29,6 @@ public class FlakyRule implements TestRule {
 
 			@Override
 			public void evaluate() throws Throwable {
-				Throwable caughtThrowable = null;
 				
 				while (retryCount.get() >= 0) {
 					try {
@@ -38,12 +37,12 @@ public class FlakyRule implements TestRule {
 					}
 					catch (Throwable t) {
 						if (retryCount.getAndDecrement() > 0 && description.getAnnotation(Flaky.class) != null) {
-							caughtThrowable = t;
 							System.err.println(description.getDisplayName() + ": Failed.");
+							System.err.println(t.getMessage());
 							System.err.println(retryCount.toString() + " retries remaining.");
 						}
 						else {
-							throw caughtThrowable;
+							throw t;
 						}
 					}
 				}
