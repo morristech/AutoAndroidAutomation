@@ -71,7 +71,7 @@ public class GenrePicker extends Page {
 		
 		if (shouldClick) {
 			String errorMessage = String.format("Could not %s genre element with row: %d and column: %d!", mode.toString(), row, column);
-			errs.add(d, click(d, getGenreItem(d, row, column), errorMessage));
+			errs.add(d, click(d, getGenreItem(d, row, column), errorMessage, "selectOrDeselectGenre"));
 		}
 		
 		return errs;
@@ -100,7 +100,7 @@ public class GenrePicker extends Page {
 	public static String getGenreItemName (AndroidDriver<MobileElement> d, int row, int column) {
 		AndroidElement genreItem = getGenreItem(d, row, column);
 		AndroidElement nameTextView = findChildElement(d, genreItem, By.id(genreItemNameId));
-		return getText(nameTextView);
+		return getText(d, nameTextView);
 	}
 	
 	public static boolean isGenreItemSelected (AndroidDriver<MobileElement> d, int row, int column) {

@@ -97,11 +97,11 @@ public class MyLocation extends OptionsSubpage {
 	/*******************/
 	
 	public static String getCurrentCityAndStateText (AndroidDriver<MobileElement> d) {
-		return getText(getCurrentCityAndState(d));
+		return getText(d, getCurrentCityAndState(d));
 	}
 	
 	public static String getChooseACityListItemText (AndroidDriver<MobileElement> d, int index) {
-		return getText(getChooseACityListItem(d, index));
+		return getText(d, getChooseACityListItem(d, index));
 	}
 
 	public static Errors enterZIPAndContinue (AndroidDriver<MobileElement> d, String zip) {

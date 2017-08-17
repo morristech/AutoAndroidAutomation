@@ -128,7 +128,7 @@ public class Player extends Page {
 	
 	private static AndroidElement getEnumButton (AndroidDriver<MobileElement> d, String id, String text) {
 		AndroidElement button = waitForVisible(d, By.id(id), 7);
-		if (isVisible(button) && TestRoot.getText(button).equalsIgnoreCase(text)) {
+		if (isVisible(button) && TestRoot.getText(d, button).equalsIgnoreCase(text)) {
 			return button;
 		}
 		return null;
@@ -230,19 +230,19 @@ public class Player extends Page {
 	/*******************/
 	
 	public static String getCurrentMenuTitle (AndroidDriver<MobileElement> d) {
-		return getText(getCurrentMenuTitleTextView(d));
+		return getText(d, getCurrentMenuTitleTextView(d));
 	}
 	
 	public static String getPlayerMetaLineText (AndroidDriver<MobileElement> d, int index) {
-		return getText(getPlayerMetaLine(d, index));
+		return getText(d, getPlayerMetaLine(d, index));
 	}
 	
 	public static String getCreateStationMessageText (AndroidDriver<MobileElement> d) {
-		return getText(getCreateStationMessageTextView(d));
+		return getText(d, getCreateStationMessageTextView(d));
 	}
 	
 	public static String getPreviewStationName (AndroidDriver<MobileElement> d) {
-		return getText(getPreviewStationNameTextView(d));
+		return getText(d, getPreviewStationNameTextView(d));
 	}
 	
 	public static boolean isCustomPlaying (AndroidDriver<MobileElement> d, int delay) {

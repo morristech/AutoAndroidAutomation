@@ -80,7 +80,7 @@ public class Options extends Page {
 	/*******************/
 	
 	public static String getLoggedInEmail (AndroidDriver<MobileElement> d) {
-		return getText(getLoggedInEmailTextView(d));
+		return getText(d, getLoggedInEmailTextView(d));
 	}
 	
 	public static Errors logOut (AndroidDriver<MobileElement> d) {
