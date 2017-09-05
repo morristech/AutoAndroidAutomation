@@ -122,19 +122,25 @@ public class Menu extends Page {
 	public enum PodcastItem {
 		FEATURED("Featured"),
 		COMEDY("Comedy"),
-		FOOD("Food"),
-		BUSINESS_AND_FINANCE("Business & Finance"),
 		ENTERTAINMENT("Entertainment"),
+		BUSINESS_AND_FINANCE("Business & Finance"),
+		CRIME("Crime"),
+		FANTASY_FOOTBALL("Fantasy Football"),
+		FOOD("Food"),
 		GAMES_AND_HOBBIES("Games & Hobbies"),
+		MUSIC("Music"),
+		GAME_OF_THRONES("Game of Thrones"),
 		HEALTH("Health"),
-		PARANORMAL("Paranormal"),
-		RELATIONSHIPS("Relationships"),
 		NEWS("News"),
-		POLITICS("Politics"),
+		PARANORMAL("Paranormal"),
+		POPULAR("Popular"),
 		SCIENCE_AND_TECHNOLOGY("Science & Technology"),
+		POLITICS("Politics"),
+		RELATIONSHIPS("Relationships"),
 		SOCIETY_AND_CULTURE("Society & Culture"),
+		SPIRITUALITY("Spirituality"),
 		SPORTS("Sports"),
-		SPIRITUALITY("Spirituality");
+		SPOKENEDITION("SpokenEdition");
 		
 		private String displayName;
 		
