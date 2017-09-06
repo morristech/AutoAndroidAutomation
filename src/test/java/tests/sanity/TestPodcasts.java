@@ -31,7 +31,7 @@ public class TestPodcasts extends TestUtilities {
 		
 		// Check if all Podcast topic items are present
 		List<String> expectedItems = Pages.Menu.getPodcastMenuItemTextList();
-		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 3);
+		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 4);
 		
 		int numMissing = getNumOfMissingItems(expectedItems, actualItems);
 		String errorMessage = String.format("Missing %d menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
