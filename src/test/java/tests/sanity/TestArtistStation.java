@@ -55,12 +55,13 @@ public class TestArtistStation extends TestUtilities {
 	public void testLimitedSkipsForArtistStations () {
 		goToArtistRadioAndPlayItem(SignInType.SIGN_UP);
 		
-		int MAX_SKIP_LIMIT_PLUS_TWO = 8; // Plus one for getting the skip limit popup. An extra one just to be sure.
-		for (int i = 0; i < MAX_SKIP_LIMIT_PLUS_TWO; i++) {
+		int MAX_SKIP_LIMIT_PLUS_ONE = 7; // Plus one for getting the skip limit popup.
+		for (int i = 0; i < MAX_SKIP_LIMIT_PLUS_ONE; i++) {
 			Assert.assertTrue("Unable to tap skip!", Player.tapPlayerButton(driver, PlayerButton.SKIP).noErrors());
 			sleep(2000);
 		}
 		
+		Assert.assertTrue("Unable to tap skip!", Player.tapPlayerButton(driver, PlayerButton.SKIP).noErrors());
 		String actualDialogText = Page.getCustomDialogText(driver);
 		String expectedDialogText = "skip limit"; // There seems to be multiple dialog text. They all have "skip limit" in common so let's go with that.
 		Assert.assertTrue(String.format("Unexpected skip limit dialog text: %s.", actualDialogText), actualDialogText.contains(expectedDialogText));
