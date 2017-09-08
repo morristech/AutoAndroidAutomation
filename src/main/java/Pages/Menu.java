@@ -185,7 +185,7 @@ public class Menu extends Page {
 	public static AndroidElement getItem (AndroidDriver<MobileElement> d, String title) {
 		sleep(1500); // Just-in-case for slower device
 		return (AndroidElement) findElements(d, By.id(menuItemTitle)).stream()
-		                                                             .filter(menuItem -> getText(menuItem).equalsIgnoreCase(title))
+		                                                             .filter(menuItem -> getText(d, menuItem).equalsIgnoreCase(title))
 		                                                             .findFirst()
 		                                                             .orElse(null);
 	}
@@ -232,18 +232,18 @@ public class Menu extends Page {
 	
 	public static String getItemTitle (AndroidDriver<MobileElement> d, int position) {
 		sleep(1500); // Just-in-case for slower devices.
-		return getText(findChildElement(d, getItem(d, position), By.id(menuItemTitle)));
+		return getText(d, findChildElement(d, getItem(d, position), By.id(menuItemTitle)));
 	}
 	
 	public static String getItemTitle (AndroidDriver<MobileElement> d, int row, int column) {
 		sleep(1500); // Just-in-case for slower devices.
-		return getText(findChildElement(d, getItem(d, row, column), By.id(menuItemTitle)));
+		return getText(d, findChildElement(d, getItem(d, row, column), By.id(menuItemTitle)));
 	}
 	
 	public static List<String> getAllItemTextOnScreen (AndroidDriver<MobileElement> d) {
 		sleep(1500); // Adding this as a just-in-case. Sometimes, we don't seem to get all the elements.
 		return findElements(d, By.id(menuItemTitle)).stream()
-		                                            .map(item -> getText(item))
+		                                            .map(item -> getText(d, item))
 		                                            .collect(Collectors.toList());
 	}
 	

@@ -177,11 +177,11 @@ public class Page extends TestRoot {
 	}
 	
 	public static String getCustomDialogText (AndroidDriver<MobileElement> d) {
-		return getText(waitForVisible(d, By.id(customDialogTextDescriptionId), 7));
+		return getText(d, waitForVisible(d, By.id(customDialogTextDescriptionId), 7));
 	}
 	
 	public static String getOptionsTitle (AndroidDriver<MobileElement> d) {
-		return getText(waitForVisible(d, By.id(optionTitleId), 7));
+		return getText(d, waitForVisible(d, By.id(optionTitleId), 7));
 	}
 	
 
