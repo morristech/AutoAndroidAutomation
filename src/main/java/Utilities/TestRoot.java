@@ -769,14 +769,16 @@ public class TestRoot {
 		Errors err = new Errors();
 		if (isVisible(element)) {
 			if (clear) {
-				clearText(d, element);
-				hideKey(d);
+				//clearText(d, element);
+				//hideKey(d);
 			}
 			type(d, element, text);
+			hideKey(d);
 		}
 		else {
 			if (waitForElementToBeVisible(d, element, 2)){
 				type(d, element, text);
+				hideKey(d);
 			}
 			else{
 				err.add(d, String.format("Unable to send text: %s", text));
