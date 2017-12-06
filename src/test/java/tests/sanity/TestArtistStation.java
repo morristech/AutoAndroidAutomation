@@ -33,11 +33,11 @@ public class TestArtistStation extends TestUtilities {
 		
 		// Test Artist Radio By Genre Items
 		Assert.assertTrue("Unable to tap artist Radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());
-		List<String> expectedItems = Pages.Menu.getArtistRadioByGenreMenuItemTextList();
-		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 3);
-		int numMissing = TestLiveStations.getNumOfMissingItems(expectedItems, actualItems);
-		String errorMessage = String.format("Missing %d By Genre menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
-		Assert.assertEquals(errorMessage, 0, numMissing);
+//		List<String> expectedItems = Pages.Menu.getArtistRadioByGenreMenuItemTextList();
+//		List<String> actualItems = getAllItemTextOnMultiplePages(driver, 3);
+//		int numMissing = TestLiveStations.getNumOfMissingItems(expectedItems, actualItems);
+//		String errorMessage = String.format("Missing %d By Genre menu items: %s", numMissing, getMissingItemsString(expectedItems, actualItems));
+//		Assert.assertEquals(errorMessage, 0, numMissing);
 		
 		Assert.assertTrue("Unable to tap artist radio by genre item!", Menu.tapItem(driver, 0, 0).noErrors());
 		
@@ -45,7 +45,7 @@ public class TestArtistStation extends TestUtilities {
 		String artistName = Menu.getItemTitle(driver, itemIndex); 
 		Assert.assertTrue("Unable to tap artist radio item!", Menu.tapItem(driver, itemIndex).noErrors());
 		String playingArtistStation = Player.getPlayerMetaLineText(driver, 1);
-		errorMessage = String.format("Error! Expected %s. Actual %s!", artistName, playingArtistStation);
+		String errorMessage = String.format("Error! Expected %s. Actual %s!", artistName, playingArtistStation);
 		Assert.assertTrue(errorMessage, isSameStation(playingArtistStation, artistName));
 	}
 	
