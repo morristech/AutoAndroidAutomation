@@ -86,7 +86,7 @@ public class TestAnonymousUser extends TestUtilities {
 	public void testRegGateForArtistsAndPodcast () {
 		testMaybeLaterToMenu();
 		Assert.assertTrue("Cannot tap artist radio!", Menu.tapMenuItem(driver, Menu.MainMenuItem.ARTIST_RADIO).noErrors());
-		Assert.assertTrue("Cannot tap Pop!", Menu.tapItem(driver, "Pop").noErrors());
+		Assert.assertTrue("Cannot tap artist radio category!", Menu.tapItem(driver, 1).noErrors());
 		Assert.assertTrue("Unable to tap station", Menu.tapItem(driver, 1).noErrors());
 		
 		Page.back(driver);
@@ -94,7 +94,7 @@ public class TestAnonymousUser extends TestUtilities {
 		Assert.assertTrue("Cannot tap menu back button!", Menu.tapMenuBackButton(driver).noErrors());
 		Assert.assertTrue("Cannot tap menu back button!", Menu.tapMenuBackButton(driver).noErrors());
 		Assert.assertTrue("Cannot tap podcasts!", Menu.tapMenuItem(driver, Menu.MainMenuItem.PODCASTS).noErrors());
-		Assert.assertTrue("Cannot tap Featured!", Menu.tapItem(driver, "Featured").noErrors());
+		Assert.assertTrue("Cannot tap Podcast category!", Menu.tapItem(driver, 1).noErrors());
 		Assert.assertTrue("Unable to tap station", Menu.tapItem(driver, 1).noErrors());
 	}
 	
