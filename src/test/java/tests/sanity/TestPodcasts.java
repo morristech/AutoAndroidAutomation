@@ -1,13 +1,10 @@
 package tests.sanity;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import Pages.Menu;
-import Pages.Page;
 import Pages.Player;
 import Pages.Player.PlayerButton;
 import testUtilities.TestUtilities;
@@ -40,23 +37,9 @@ public class TestPodcasts extends TestUtilities {
 //		Assert.assertEquals(errorMessage, 0, numMissing);
 		
 		// Test Podcast Item
-		Assert.assertTrue("Unable to tap podcast topic!", Menu.tapItem(driver, 0, 0).noErrors());
+		Assert.assertTrue("Unable to tap podcast topic!", Menu.tapItem(driver, 0, 1).noErrors());
 		Assert.assertTrue("Unable to tap podcast item!", Menu.tapItem(driver, 0).noErrors());
 		Assert.assertTrue("Error! Not on player screen for some reason!", isVisible(Player.getCoverImage(driver)));
-	}
-	
-	@Test
-	@Flaky
-	@Category({Sanity.class, UnstableSanity.class})
-	public void testUnlimitedSkipsForPodcast () {
-		testPathToPodcastAndPlayItem(SignInType.LOG_IN);
-		
-		int MAX_TRIES = 10;
-		for (int i = 0; i < MAX_TRIES; i++) {
-			Assert.assertTrue("Unable to tap skip!", Player.tapPlayerButton(driver, PlayerButton.SKIP).noErrors());
-			String popUpText = Page.getCustomDialogText(driver);
-			Assert.assertTrue(String.format("Unexpected popup with text: %s", popUpText), popUpText.length() == 0);
-		}
 	}
 	
 	@Test
@@ -67,11 +50,11 @@ public class TestPodcasts extends TestUtilities {
 		int numRedPixelsBegin = Player.getNumOfRedPixelsOnProgressBar(driver);
 		Assert.assertTrue("Unable to tap +30 seconds!", Player.tapPlayerButton(driver, PlayerButton.PLUS_THIRTY_SECONDS).noErrors());
 		int numRedPixelsPlusThirty = Player.getNumOfRedPixelsOnProgressBar(driver);
-		Assert.assertTrue("Unable to tap -10 seconds!", Player.tapPlayerButton(driver, PlayerButton.MINUS_TEN_SECONDS).noErrors());
+		Assert.assertTrue("Unable to tap -15 seconds!", Player.tapPlayerButton(driver, PlayerButton.MINUS_FIFTHTEEN_SECONDS).noErrors());
 		int numRedPixelsMinusTen = Player.getNumOfRedPixelsOnProgressBar(driver);
 		
 		Assert.assertTrue("More red pixels in the beginning than after tapping +30 seconds!", numRedPixelsBegin < numRedPixelsPlusThirty);
-		Assert.assertTrue("More red pixels after tapping -10 seconds than before!", numRedPixelsMinusTen < numRedPixelsPlusThirty);
+		Assert.assertTrue("More red pixels after tapping -15 seconds than before!", numRedPixelsMinusTen < numRedPixelsPlusThirty);
 		Assert.assertTrue("More red pixels in beginning than +30 follow by -10 secs!", numRedPixelsBegin < numRedPixelsMinusTen);
 	}
 	
@@ -80,13 +63,6 @@ public class TestPodcasts extends TestUtilities {
 	@Category({Sanity.class, UnstableSanity.class})
 	public void testPreviewFeaturesForPodcast () {
 		testPreviewFeatures(() -> testPathToPodcastAndPlayItem(SignInType.LOG_IN));
-	}
-	
-	@Test
-	@Flaky
-	@Category({Sanity.class, UnstableSanity.class})
-	public void testThumbsForPodcast () {
-		testThumbs(() -> testPathToPodcastAndPlayItem(SignInType.LOG_IN), TestType.PODCASTS);
 	}
 	
 	@Test
@@ -110,7 +86,7 @@ public class TestPodcasts extends TestUtilities {
 		Assert.assertTrue("Cannot tap menu button!", Pages.Player.tapMenuButton(driver).noErrors());
 		Assert.assertTrue("Unable to tap next!", Pages.Menu.tapNextButton(driver).noErrors());
 		Assert.assertTrue("Cannot tap podcast!", Pages.Menu.tapMenuItem(driver, Pages.Menu.MainMenuItem.PODCASTS).noErrors());
-		Assert.assertTrue("Unable to tap podcast topic!", Menu.tapItem(driver, 0, 0).noErrors());
+		Assert.assertTrue("Unable to tap podcast topic!", Menu.tapItem(driver, 0, 1).noErrors());
 		Assert.assertTrue("Unable to tap podcast item!", Menu.tapItem(driver, 0).noErrors());
 	}
 	

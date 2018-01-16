@@ -74,7 +74,7 @@ public class TestLiveStations extends TestUtilities {
 		String errorMessage = String.format("Missing %d By Genre items: %s", numMissing, getMissingItemsString(expectedByGenreItems, actualByGenreItems));
 		Assert.assertEquals(errorMessage, 0, numMissing);
 		
-		Assert.assertTrue("Unable to tap EDM", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioByGenreMenuItem.EDM).noErrors());
+		Assert.assertTrue("Unable to tap Public Radio", Pages.Menu.tapMenuItem(driver, Pages.Menu.LiveRadioByGenreMenuItem.PUBLIC_RADIO).noErrors());
 	}
 	
 	@Test

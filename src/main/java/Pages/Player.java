@@ -26,7 +26,7 @@ public class Player extends Page {
 		SCAN("Scan", 0),
 		THUMBS("Thumbs", 1),
 		CREATE_STATION("Create Station", 2),
-		MINUS_TEN_SECONDS("-10 Seconds", 2),
+		MINUS_FIFTHTEEN_SECONDS("-15 Seconds", 2),
 		DISCOVERY("Discovery", 3),
 		PLUS_THIRTY_SECONDS("+30 Seconds", 3);
 	

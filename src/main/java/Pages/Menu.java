@@ -67,16 +67,11 @@ public class Menu extends Page {
 		TOP_40_AND_POP("Top 40 & Pop"),
 		DANCE("Dance"),
 		SPORTS("Sports"),
-		WORLD("World"),
 		_80S_AND_90S_HITS("80s & 90s Hits"),
 		PUBLIC_RADIO("Public Radio"),
 		HOLIDAY("Holiday"),
 		COMEDY("Comedy"),
-		HOSTS_AND_DJS("Hosts and DJs"),
 		COLLEGE_RADIO("College Radio"),
-		MEXICO("Mexico"),
-		EDM("EDM"),
-		PERSONALITIES("Personalities"),
 		KIDS_AND_FAMILY("Kids & Family");
 		
 		private String displayName;
