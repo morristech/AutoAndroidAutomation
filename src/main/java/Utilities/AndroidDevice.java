@@ -88,6 +88,7 @@ public class AndroidDevice extends TestDevice {
 		capabilities.setCapability("appWaitActivity", this.appActivity);
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 1200);
 		capabilities.setCapability(MobileCapabilityType.FULL_RESET, true);
+		capabilities.setCapability("automationName", "uiautomator2");
 		
 		return capabilities;
 	}
