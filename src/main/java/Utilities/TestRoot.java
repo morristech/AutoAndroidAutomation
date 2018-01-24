@@ -605,6 +605,27 @@ public class TestRoot {
 		return foundElement;
 	}
 	
+	/**
+	 * Waits the minimum time for looping through fluid waits
+	 * If the actual duration is greater than the minimum wait time, it returns that
+	 * Otherwise, it returns the minimum wait time
+	 * You would then subtract this from the max wait time
+	 * 
+	 * @param minWait
+	 * @param actualDuration
+	 * @return
+	 */
+	public static long waitMinTime(long minWait, long actualDuration) {
+		if (actualDuration < minWait) {
+			sleep(minWait - actualDuration);
+			return minWait;
+		}
+		else {
+			return actualDuration;
+		}
+		
+	}
+	
 	public static AndroidElement waitForPresent(AndroidDriver<MobileElement> d, By by, long timeoutInSec){
 		long timeLeftMil = timeoutInSec * 1000;
 		while(timeLeftMil > 0){
@@ -649,22 +670,18 @@ public class TestRoot {
 		if (!isVisible(ele)){
 			long timeLeftMil = timeoutInSec * 1000;
 			while (timeLeftMil > 0){
-				long beforeSearch = System.currentTimeMillis();
+				long beforeFind = System.currentTimeMillis();
 				try {
 					found = ele.isDisplayed();
+					if (found) {
+						break;
+					}
 				}
 				catch (Exception e) {
 				}
-				long afterSearch = System.currentTimeMillis();
-				long duration = afterSearch - beforeSearch;
-				// Always wait at least 100 ms between checks
-				if (duration < 100){
-					sleep (100);
-					timeLeftMil -= 100;
-				}
-				else {
-					timeLeftMil -= duration;
-				}
+				// Subtract the duration time (or wait a little between runs)
+				long afterFind = System.currentTimeMillis();
+				timeLeftMil -= waitMinTime(50, afterFind - beforeFind);
 			}
 		}
 		else{
@@ -1010,25 +1027,6 @@ public class TestRoot {
 		return d.manage().window().getSize().getHeight();
 	}
 	
-	/**
-	 * Returns the displayed text of an element
-	 * @param d
-	 * @param by
-	 * @return
-	 */
-	public static String getText(AndroidDriver<MobileElement> d, By by){
-		MobileElement e = TestRoot.waitForVisible(d, by, 20);
-		if (!isVisible(e)){
-			e = TestRoot.waitForVisible(d, by, 2);
-		}
-		if(e == null){
-			return null;
-		}
-		else{
-			return e.getText();
-		}
-	}
-	
 	public static String getText (AndroidDriver<MobileElement> d, MobileElement element) {
 		String text = "";
 		if (isVisible(element)) {
@@ -1040,29 +1038,6 @@ public class TestRoot {
 			}
 		}
 		return text;
-	}
-	
-	public static boolean waitForAdditionalContext(AndroidDriver<MobileElement> d, int timeInMS){
-		boolean foundContext = false;
-		
-		while(timeInMS > 0){
-			if(d.getContextHandles().size() > 1){
-				foundContext = true;
-				break;
-			}
-			sleep(100);
-			timeInMS -= 100;
-		}
-		
-		return foundContext;
-	}
-	// Window context
-	public static void switchToWebViewContext(AndroidDriver<MobileElement> d){
-		d.context("WEBVIEW_com.clearchannel.iheartradio.controller");
-	}
-	//Main context
-	public static void switchToNativeContext(AndroidDriver<MobileElement> d){
-		d.context("NATIVE_APP");
 	}
 	
 	/**
