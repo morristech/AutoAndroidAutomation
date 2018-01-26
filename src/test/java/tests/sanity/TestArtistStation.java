@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -70,6 +71,7 @@ public class TestArtistStation extends TestUtilities {
 	
 	@Test
 	@Flaky
+	@Ignore
 	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testPreviewFeaturesForArtistStations () {
 		testPreviewFeatures(() -> goToArtistRadioAndPlayItem(SignInType.LOG_IN));

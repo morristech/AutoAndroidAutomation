@@ -1,6 +1,7 @@
 package tests.sanity;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -59,6 +60,7 @@ public class TestPodcasts extends TestUtilities {
 	}
 	
 	@Test
+	@Ignore
 	@Flaky
 	@Category({Sanity.class, UnstableSanity.class})
 	public void testPreviewFeaturesForPodcast () {
