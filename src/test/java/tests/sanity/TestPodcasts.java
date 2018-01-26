@@ -52,11 +52,11 @@ public class TestPodcasts extends TestUtilities {
 		Assert.assertTrue("Unable to tap +30 seconds!", Player.tapPlayerButton(driver, PlayerButton.PLUS_THIRTY_SECONDS).noErrors());
 		int numRedPixelsPlusThirty = Player.getNumOfRedPixelsOnProgressBar(driver);
 		Assert.assertTrue("Unable to tap -15 seconds!", Player.tapPlayerButton(driver, PlayerButton.MINUS_FIFTHTEEN_SECONDS).noErrors());
-		int numRedPixelsMinusTen = Player.getNumOfRedPixelsOnProgressBar(driver);
+		int numRedPixelsMinusFifthteen = Player.getNumOfRedPixelsOnProgressBar(driver);
 		
 		Assert.assertTrue("More red pixels in the beginning than after tapping +30 seconds!", numRedPixelsBegin < numRedPixelsPlusThirty);
-		Assert.assertTrue("More red pixels after tapping -15 seconds than before!", numRedPixelsMinusTen < numRedPixelsPlusThirty);
-		Assert.assertTrue("More red pixels in beginning than +30 follow by -10 secs!", numRedPixelsBegin < numRedPixelsMinusTen);
+		Assert.assertTrue("More red pixels after tapping -15 seconds than before!", numRedPixelsMinusFifthteen < numRedPixelsPlusThirty);
+		Assert.assertTrue("More red pixels in beginning than +30 follow by -15 secs!", numRedPixelsBegin < numRedPixelsMinusFifthteen);
 	}
 	
 	@Test
