@@ -3,6 +3,7 @@ package tests.sanity;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -19,6 +20,7 @@ public class TestLiveStations extends TestUtilities {
 	
 	@Test
 	@Flaky
+	@Ignore
 	@Category({Sanity.class, StableSanity.class, StablePR.class})
 	public void testLiveStationMainMenuItems () {
 		Assert.assertTrue("Unable to log in!", Pages.SignUpLogInGate.logIn(driver, true).noErrors());

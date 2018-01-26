@@ -1,6 +1,7 @@
 package tests.sanity;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -34,6 +35,7 @@ public class TestFavorites extends TestUtilities{
 	
 	@Test
 	@Flaky
+	@Ignore
 	@Category({Sanity.class, StableSanity.class})
 	public void testPreviewFeaturesForFavorites () {
 		testPreviewFeatures(() -> goToFavoritesAndPlayItem(SignInType.LOG_IN));
