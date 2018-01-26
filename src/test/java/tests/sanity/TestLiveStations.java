@@ -93,6 +93,7 @@ public class TestLiveStations extends TestUtilities {
 	
 	@Test
 	@Flaky
+	@Ignore
 	@Category({Sanity.class, StableSanity.class})
 	public void testPreviewFeaturesForLiveStations () {
 		testPreviewFeatures(() -> testPathToNearYouAndPlayItem(SignInType.LOG_IN));
