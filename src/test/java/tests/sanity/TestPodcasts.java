@@ -45,6 +45,7 @@ public class TestPodcasts extends TestUtilities {
 	
 	@Test
 	@Flaky
+	@Ignore
 	@Category({Sanity.class, UnstableSanity.class})
 	public void testPodcastSeek () {
 		testPathToPodcastAndPlayItem(SignInType.LOG_IN);
